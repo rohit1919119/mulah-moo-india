@@ -22,6 +22,10 @@ export type RailClient = {
 };
 
 export const RAIL_CLIENTS: RailClient[] = [
+  { name: "Groww", type: "brand", mode: "fit", geo: "India",
+    desc: "Investment platform for stocks, mutual funds and more", img: "/clients/groww.png", bg: "#FFFFFF" },
+  { name: "SAHI", type: "brand", mode: "fit", geo: "India",
+    desc: "Options trading and stock investing app", img: "/clients/sahi.jpg", bg: "#FFFFFF" },
   { name: "Trackk", type: "brand", mode: "fit", geo: "India",
     desc: "Investment platform for next generation investors", img: "/clients/trackk.jpg", bg: "#FFFFFF" },
   { name: "Creator Engine", type: "studio", mode: "bleed", geo: "India",
