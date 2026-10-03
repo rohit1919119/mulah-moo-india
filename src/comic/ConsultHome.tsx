@@ -43,13 +43,6 @@ const STATS: { big: string; to?: number; label: string; accent?: boolean }[] = [
   { big: "2 to 9 yrs", label: "Experience band. The only range our database holds" },
 ];
 
-const MANDATES: [string, string][] = [
-  ["Head of Marketing", "Leadership search"],
-  ["Head of Content", "Leadership search"],
-  ["Brand and Growth Leads", "Leadership search"],
-  ["Content and creative teams", "Team build"],
-];
-
 const SERVICES = [
   {
     no: "01",
@@ -136,22 +129,70 @@ function figure(big: string, to: number | undefined, p: number) {
 export function ConsultHome() {
   const [pricing, setPricing] = useState(false);
   const [svc, setSvc] = useState(0);
-  const [lit, setLit] = useState(0);
+  const [menu, setMenu] = useState(false);
+  const [floating, setFloating] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
   const p = useCountUp(statsRef);
 
-  // the hero's mandate list steps its highlight along, like a search in motion
+  // once the reader leaves the hero, the nav lifts into a floating bar
   useEffect(() => {
-    if (reducedMotion()) return;
-    const id = window.setInterval(() => setLit((i) => (i + 1) % MANDATES.length), 2600);
-    return () => window.clearInterval(id);
+    const onScroll = () => setFloating(window.scrollY > 120);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Escape closes the menu
+  useEffect(() => {
+    if (!menu) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMenu(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menu]);
 
   const S = SERVICES[svc];
 
   return (
     <div className="ch">
       <style dangerouslySetInnerHTML={{ __html: CH_CSS }} />
+
+      <header className={floating ? "ch-nav floating" : "ch-nav"}>
+        <div className="ch-navbar">
+          <nav className="ch-links" aria-label="Main">
+            <a href="#process">How we work</a>
+            <a href="#results">Results</a>
+          </nav>
+          <Link to="/" className="ch-logo" aria-label="Mulah Moo home">mulah<span>moo</span></Link>
+          <button
+            type="button"
+            className="ch-menubtn"
+            aria-expanded={menu}
+            aria-controls="ch-menu"
+            aria-label={menu ? "Close menu" : "Open menu"}
+            onClick={() => setMenu((m) => !m)}
+          >
+            <span /><span /><span />
+          </button>
+        </div>
+        <div id="ch-menu" className={menu ? "ch-menu open" : "ch-menu"} hidden={!menu}>
+          <div className="ch-menucols">
+            <div>
+              <p className="ch-kicker">For brands</p>
+              <a href="#services" onClick={() => setMenu(false)}>Leadership search</a>
+              <a href="#services" onClick={() => setMenu(false)}>Team build</a>
+              <a href="#services" onClick={() => setMenu(false)}>Talent partnership</a>
+              <button type="button" onClick={() => { setMenu(false); setPricing(true); }}>Request our fees</button>
+            </div>
+            <div>
+              <p className="ch-kicker">For talent</p>
+              <Link to="/moo-talent">Open roles</Link>
+              <Link to="/moo-talent-form">Register with us</Link>
+              <Link to="/moo-verified">Moo Verified</Link>
+            </div>
+          </div>
+          <a href={CLIENT_CALL_URL} {...ext} className="ch-btn lg">Speak to a consultant</a>
+        </div>
+      </header>
 
       <section className="ch-hero" id="top">
         {/* muted, inline and looping so it autoplays everywhere; the poster
@@ -162,33 +203,17 @@ export function ConsultHome() {
         </video>
         <div className="ch-veil" aria-hidden="true" />
 
-        <header className="ch-wrap ch-navin">
-          <Link to="/" className="ch-logo">mulah<span>moo</span></Link>
-          <nav className="ch-links" aria-label="Main">
-            <a href="#process">How we work</a>
-            <a href="#results">Results</a>
-          </nav>
-          <div className="ch-navcta">
-            <Link to="/moo-talent" className="ch-btn outline sm">For talent</Link>
-            <a href={CLIENT_CALL_URL} {...ext} className="ch-btn light sm">Speak to a consultant</a>
-          </div>
-        </header>
-
         <div className="ch-wrap ch-herobody">
-          <div className="ch-herotext">
-            <h1>We build marketing teams for <em>top internet brands.</em></h1>
-            <div className="ch-actions">
-              <a href={CLIENT_CALL_URL} {...ext} className="ch-btn light lg">Book a consultation</a>
-              <button type="button" className="ch-btn outline lg" onClick={() => setPricing(true)}>Request our fees</button>
-            </div>
-          </div>
-          <div className="ch-heroart">
-            <p className="ch-artlabel">Mandates we handle</p>
-            <ul className="ch-mandates">
-              {MANDATES.map(([role, kind], i) => (
-                <li key={role} className={i === lit ? "on" : undefined}><span>{role}</span><small>{kind}</small></li>
-              ))}
-            </ul>
+          <h1>
+            <span className="l1">We build marketing teams</span>
+            <span className="l2">for top internet brands</span>
+          </h1>
+          <div className="ch-herofoot">
+            <p>
+              Marketing recruitment consultants for India&rsquo;s internet brands. Leadership search, team
+              builds and ongoing talent partnerships.
+            </p>
+            <a href={CLIENT_CALL_URL} {...ext} className="ch-btn light">Book a consultation</a>
           </div>
         </div>
       </section>
@@ -214,8 +239,9 @@ export function ConsultHome() {
 
       <section className="ch-wrap ch-statement">
         <p>
-          We are a recruitment consultancy for marketing. We advise on the role, the level and the pay before we
-          search for the person, <em>so the hire fits how your marketing actually runs.</em>
+          The recruitment consultancy behind the marketing teams at <em>Groww</em>, <em>Wakefit</em> and{" "}
+          <em>Traya</em>. We advise on the role and the pay first, then place the <em>leaders</em> and the
+          teams they run.
         </p>
       </section>
 
@@ -311,6 +337,12 @@ export function ConsultHome() {
         </div>
       </section>
 
+      <section className="ch-mark" aria-hidden="true">
+        <div className="glow" />
+        <p className="ch-markkick">Marketing recruitment · India</p>
+        <p className="ch-markword">mulah<i>moo</i></p>
+      </section>
+
       <section className="ch-cta" id="call">
         <div className="ch-wrap ch-ctain">
           <h2>Have a marketing mandate? <em>Speak to a consultant.</em></h2>
@@ -361,7 +393,7 @@ export function ConsultHome() {
 const CH_CSS = `
 .ch{ --paper:#F7F4EE; --sand:#EFEAE1; --ink:#16121F; --body:#3A3442; --muted:#4A4453; --line:#DDD6CA;
   --purple:#6A2FD4; --deep:#241247; --sun:#F5C542;
-  --display:'Fraunces',Georgia,serif; --ui:'Manrope',system-ui,sans-serif;
+  --display:'Cormorant Garamond','Cormorant',Georgia,serif; --cond:'Sofia Sans Condensed','Arial Narrow',sans-serif; --ui:'Manrope',system-ui,sans-serif;
   background:var(--paper); color:var(--ink); font-family:var(--ui); font-size:17px; line-height:1.6;
   -webkit-font-smoothing:antialiased; }
 .ch *{ box-sizing:border-box; }
@@ -371,12 +403,12 @@ const CH_CSS = `
 .ch-pad{ padding-top:112px; padding-bottom:112px; }
 @media (max-width:640px){ .ch-wrap{ padding-left:18px; padding-right:18px; } .ch-pad{ padding-top:72px; padding-bottom:72px; } }
 
-/* Display type: Fraunces at 500 with a little SOFT, so it keeps its character
-   without the hairlines that made the 300 weight hard to read. Italic carries
-   the accent phrase in each heading. */
-.ch h1, .ch-h2, .ch-statement p, .ch-cta h2, .ch-stat .big, .ch-panel h3, .ch-steps .t{
-  font-family:var(--display); font-variation-settings:'SOFT' 50,'WONK' 0; font-weight:500; }
-.ch h1 em, .ch-h2 em, .ch-statement em, .ch-cta h2 em{ font-style:italic; font-variation-settings:'SOFT' 100,'WONK' 1; font-weight:400; }
+/* Type: a high contrast serif for the hero and the big figures, a tall
+   condensed sans for headings and statements, Manrope for everything read at
+   length. Accent words take the brand purple rather than an italic. */
+.ch h1, .ch-stat .big, .ch-markword, .ch-panel h3, .ch-steps .t{ font-family:var(--display); font-weight:500; }
+.ch-h2, .ch-statement p, .ch-cta h2, .ch-tab .t{ font-family:var(--cond); font-weight:400; }
+.ch-h2 em, .ch-statement em, .ch-cta h2 em{ font-style:normal; }
 
 .ch-btn{ display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 22px; border-radius:999px;
   background:var(--ink); color:var(--paper) !important; border:1.5px solid var(--ink); font:700 14.5px/1 var(--ui);
@@ -388,41 +420,52 @@ const CH_CSS = `
 .ch-btn.outline{ background:transparent; color:var(--paper) !important; border-color:rgba(247,244,238,.8); }
 .ch-btn.outline:hover{ background:rgba(247,244,238,.12); }
 
-/* ---------- hero over the loop ---------- */
-.ch-hero{ position:relative; overflow:hidden; background:#140B2B; color:var(--paper); min-height:min(860px,100vh); display:flex; flex-direction:column; }
-.ch-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; filter:saturate(1.05); }
-/* The veil keeps every line of hero text above 4.5:1 wherever the bright blob
-   drifts: a flat darkening plus a heavier wash on the reading side. */
-.ch-veil{ position:absolute; inset:0; z-index:1;
-  background:linear-gradient(90deg, rgba(14,8,32,.72) 0%, rgba(14,8,32,.45) 55%, rgba(14,8,32,.15) 100%),
-             linear-gradient(180deg, rgba(14,8,32,.35) 0%, rgba(14,8,32,0) 30%, rgba(14,8,32,.45) 100%); }
-.ch-navin{ position:relative; z-index:2; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:16px;
-  padding-top:22px; padding-bottom:22px; width:100%; }
-.ch-logo{ font-family:var(--ui); font-weight:800; font-size:23px; letter-spacing:-.03em; justify-self:start; color:var(--paper); }
-.ch-logo span{ color:#C7B6F0; }
-.ch-links{ display:flex; gap:36px; font-size:15.5px; font-weight:600; }
-.ch-links a{ opacity:.9; }
-.ch-links a:hover{ opacity:1; color:var(--sun); }
-.ch-navcta{ display:flex; gap:10px; justify-self:end; }
-@media (max-width:860px){ .ch-navin{ grid-template-columns:1fr auto; } .ch-links{ grid-column:1 / -1; grid-row:2; justify-content:center; } }
-@media (max-width:520px){ .ch-navcta .outline{ display:none; } }
+/* ---------- nav: transparent over the hero, a floating bar after ---------- */
+.ch-nav{ position:fixed; top:14px; left:0; right:0; z-index:60; padding:0 16px; pointer-events:none; }
+.ch-navbar{ pointer-events:auto; max-width:940px; margin:0 auto; display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+  gap:12px; padding:12px 14px 12px 28px; border-radius:16px; color:var(--paper);
+  transition:background .3s, color .3s, box-shadow .3s; }
+.ch-nav.floating .ch-navbar, .ch-nav:has(.ch-menu.open) .ch-navbar{ background:rgba(236,231,222,.82); color:var(--ink);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 8px 30px rgba(22,18,31,.10); }
+.ch-links{ display:flex; gap:40px; font-size:16px; font-weight:500; justify-self:start; }
+.ch-links a:hover{ color:var(--sun); }
+.ch-nav.floating .ch-links a:hover{ color:var(--purple); }
+.ch-logo{ font-family:var(--ui); font-weight:800; font-size:26px; letter-spacing:-.035em; justify-self:center; }
+.ch-logo span{ color:#C7B6F0; transition:color .3s; }
+.ch-nav.floating .ch-logo span, .ch-nav:has(.ch-menu.open) .ch-logo span{ color:var(--purple); }
+.ch-menubtn{ justify-self:end; width:48px; height:48px; border-radius:10px; border:1px solid currentColor; background:transparent; color:inherit;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; cursor:pointer; opacity:.85; }
+.ch-menubtn span{ display:block; width:12px; height:1.5px; background:currentColor; transition:transform .25s, opacity .25s; }
+.ch-menubtn[aria-expanded="true"] span:nth-child(1){ transform:translateY(5.5px) rotate(45deg); }
+.ch-menubtn[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+.ch-menubtn[aria-expanded="true"] span:nth-child(3){ transform:translateY(-5.5px) rotate(-45deg); }
+.ch-menu{ pointer-events:auto; max-width:940px; margin:8px auto 0; padding:32px; border-radius:16px; background:var(--paper); color:var(--ink);
+  box-shadow:0 20px 50px rgba(22,18,31,.18); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:28px;
+  animation:chIn .3s cubic-bezier(.2,.9,.25,1); }
+.ch-menu[hidden]{ display:none; }
+.ch-menucols{ display:flex; flex-wrap:wrap; gap:56px; }
+.ch-menucols div{ display:flex; flex-direction:column; align-items:flex-start; gap:8px; }
+.ch-menucols .ch-kicker{ margin-bottom:6px; }
+.ch-menucols a, .ch-menucols button{ font-family:var(--cond); font-size:28px; line-height:1.15; background:none; border:0; padding:0; color:inherit; cursor:pointer; text-align:left; }
+.ch-menucols a:hover, .ch-menucols button:hover{ color:var(--purple); }
+@media (max-width:720px){ .ch-links{ display:none; } .ch-navbar{ grid-template-columns:1fr auto; padding-left:20px; } .ch-logo{ justify-self:start; } }
 
-.ch-herobody{ position:relative; z-index:2; flex:1; width:100%; display:flex; flex-wrap:wrap; align-items:center; gap:56px;
-  padding-top:72px; padding-bottom:96px; }
-.ch-herotext{ flex:999 1 560px; min-width:0; }
-.ch-hero h1{ font-size:clamp(46px,6.4vw,92px); line-height:1.02; letter-spacing:-.03em; text-wrap:balance; }
-.ch-hero h1 em{ color:#E3D6FF; }
-.ch-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:44px; }
-.ch-heroart{ flex:1 1 340px; min-width:0; max-width:420px; padding:28px; border-radius:24px;
-  background:rgba(20,11,43,.55); border:1px solid rgba(227,214,255,.18); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
-.ch-artlabel{ margin-bottom:16px !important; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#C7B6F0; }
-.ch-mandates{ list-style:none; padding:0; display:flex; flex-direction:column; gap:10px; }
-.ch-mandates li{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:15px 18px; border-radius:14px;
-  background:rgba(247,244,238,.08); font-size:15.5px; font-weight:600; transition:background .45s, color .45s, transform .45s; }
-.ch-mandates small{ font-size:12px; color:#D9CCF7; text-align:right; transition:color .45s; }
-.ch-mandates li.on{ background:var(--paper); color:var(--ink); transform:translateX(-6px); }
-.ch-mandates li.on small{ color:var(--purple); font-weight:700; }
-@media (max-width:640px){ .ch-herobody{ padding-top:40px; padding-bottom:64px; gap:36px; } .ch-heroart{ padding:22px; } }
+/* ---------- hero over the loop ---------- */
+.ch-hero{ position:relative; overflow:hidden; background:#140B2B; color:var(--paper); min-height:max(640px,min(900px,100vh)); display:flex; flex-direction:column; }
+.ch-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; filter:saturate(1.05); }
+/* the veil keeps the type readable wherever the bright blob drifts */
+.ch-veil{ position:absolute; inset:0; z-index:1;
+  background:linear-gradient(90deg, rgba(14,8,32,.62) 0%, rgba(14,8,32,.40) 60%, rgba(14,8,32,.18) 100%),
+             linear-gradient(180deg, rgba(14,8,32,.40) 0%, rgba(14,8,32,0) 30%, rgba(14,8,32,.50) 100%); }
+.ch-herobody{ position:relative; z-index:2; flex:1; width:100%; max-width:1440px; display:flex; flex-direction:column; justify-content:flex-end;
+  padding-top:150px; padding-bottom:64px; }
+.ch-hero h1{ display:flex; flex-direction:column; text-transform:uppercase; font-size:clamp(40px,6.6vw,108px); line-height:.98; letter-spacing:-.01em; }
+.ch-hero h1 .l2{ align-self:flex-end; font-style:italic; font-weight:400; color:#E3D6FF; }
+.ch-herofoot{ display:flex; flex-wrap:wrap; align-items:flex-end; gap:24px 40px; margin-top:56px; padding-left:clamp(0px,14vw,200px); }
+.ch-herofoot p{ max-width:440px; font-size:20px; line-height:1.45; color:#ECE6F7; }
+@media (max-width:640px){ .ch-herobody{ padding-top:120px; padding-bottom:48px; } .ch-herofoot{ margin-top:36px; padding-left:0; } .ch-herofoot p{ font-size:17px; } }
+
+.ch-btn.sm{ min-height:40px; padding:0 18px; font-size:14px; }
 
 /* ---------- clients ---------- */
 .ch-band{ border-bottom:1px solid var(--line); }
@@ -440,8 +483,8 @@ const CH_CSS = `
 .ch-logos .tile.square img{ object-fit:contain; }
 .ch-logos figcaption{ font-size:14px; font-weight:600; color:var(--body); }
 
-.ch-statement{ padding-top:120px; padding-bottom:40px; }
-.ch-statement p{ max-width:980px; font-size:clamp(28px,3.4vw,46px); line-height:1.22; letter-spacing:-.02em; }
+.ch-statement{ padding-top:140px; padding-bottom:60px; text-align:center; }
+.ch-statement p{ max-width:1180px; margin:0 auto !important; font-size:clamp(34px,4.6vw,68px); line-height:1.08; letter-spacing:-.01em; text-wrap:balance; }
 .ch-statement em{ color:var(--purple); }
 
 /* ---------- results ---------- */
@@ -457,7 +500,7 @@ const CH_CSS = `
 /* ---------- services, interactive ---------- */
 .ch-sand{ background:var(--sand); }
 .ch-split{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:48px; }
-.ch-h2{ max-width:680px; font-size:clamp(34px,4vw,56px); line-height:1.08; letter-spacing:-.025em; }
+.ch-h2{ max-width:720px; font-size:clamp(40px,4.8vw,68px); line-height:1.02; letter-spacing:-.01em; }
 .ch-h2 em{ color:var(--purple); }
 .ch-lede{ max-width:400px; font-size:17px; color:var(--body); }
 .ch-tabs{ display:grid; grid-template-columns:minmax(260px,360px) 1fr; gap:24px; align-items:stretch; }
@@ -466,7 +509,7 @@ const CH_CSS = `
   border-radius:18px; border:1px solid var(--line); background:var(--paper); color:var(--ink); font:inherit;
   transition:background .25s, color .25s, border-color .25s, transform .25s; }
 .ch-tab .no{ font-size:13px; font-weight:800; letter-spacing:.1em; color:var(--purple); }
-.ch-tab .t{ flex:1; font-family:var(--display); font-weight:500; font-size:22px; letter-spacing:-.01em; }
+.ch-tab .t{ flex:1; font-size:26px; letter-spacing:0; }
 .ch-tab .arrow{ opacity:0; transform:translateX(-6px); transition:opacity .25s, transform .25s; font-size:20px; }
 .ch-tab:hover{ border-color:var(--ink); }
 .ch-tab[aria-selected="true"]{ background:var(--deep); color:var(--paper); border-color:var(--deep); transform:translateX(6px); }
@@ -508,10 +551,23 @@ const CH_CSS = `
 .ch-steps .t{ margin:12px 0 8px !important; font-size:24px; line-height:1.15; letter-spacing:-.015em; }
 .ch-steps .b{ font-size:16px; color:var(--body); }
 
+/* ---------- wordmark moment ---------- */
+.ch-mark{ position:relative; overflow:hidden; background:var(--paper); padding:120px 16px 40px; text-align:center; }
+.ch-mark .glow{ position:absolute; inset:18% -10% -30% -10%;
+  background:radial-gradient(40% 55% at 30% 60%, #8856F2 0%, rgba(136,86,242,0) 70%),
+             radial-gradient(35% 50% at 70% 70%, #6A2FD4 0%, rgba(106,47,212,0) 70%),
+             radial-gradient(30% 40% at 52% 45%, #E3D6FF 0%, rgba(227,214,255,0) 70%);
+  filter:blur(40px); opacity:.85; animation:chDrift 14s ease-in-out infinite alternate; }
+@keyframes chDrift{ from{ transform:translate3d(-3%,0,0) scale(1); } to{ transform:translate3d(3%,-4%,0) scale(1.08); } }
+.ch-markkick{ position:relative; font-size:13px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+.ch-markword{ position:relative; font-size:clamp(90px,21vw,330px); line-height:.9; letter-spacing:-.04em; color:#FBF9F5; margin-top:24px !important;
+  text-shadow:0 1px 0 rgba(22,18,31,.04); }
+.ch-markword i{ font-style:italic; font-weight:400; }
+
 /* ---------- closing band ---------- */
 .ch-cta{ background:var(--deep); color:var(--paper); }
 .ch-ctain{ padding-top:120px; padding-bottom:120px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:40px; }
-.ch-cta h2{ max-width:780px; font-size:clamp(38px,5vw,72px); line-height:1.04; letter-spacing:-.03em; }
+.ch-cta h2{ max-width:820px; font-size:clamp(44px,5.6vw,84px); line-height:1; letter-spacing:-.01em; }
 .ch-cta h2 em{ color:var(--sun); }
 .ch-cta .ch-actions{ margin-top:0; }
 @media (max-width:640px){ .ch-ctain{ padding-top:80px; padding-bottom:80px; } }

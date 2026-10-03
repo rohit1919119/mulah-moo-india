@@ -28,7 +28,7 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       ...FONT_LINKS,
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Sofia+Sans+Condensed:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" },
     ],
   }),
   // The consultancy layout. The v4 home is ClientHome in @/comic/ClientHome;
