@@ -47,10 +47,12 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
+      # A fresh custom domain can take a few minutes to get its certificate after
+      # the first deploy, so connection errors are retried for about three minutes.
       - name: Check the site answers
         run: |
           for url in https://mulahmoo.in/ https://mulahmoo.in/moo-talent; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 --retry 3 --retry-delay 10 "$url")
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 --retry 12 --retry-delay 15 --retry-all-errors "$url" || true)
             echo "$url -> $code"
             [ "$code" = "200" ] || exit 1
           done
