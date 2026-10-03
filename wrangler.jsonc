@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mulahmoo-india",
+  "compatibility_date": "2025-09-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "src/server.ts",
+
+  // Keep the *.workers.dev URL alive as a fallback that does not depend on
+  // DNS. Wrangler disables it by default once this key is absent, which took
+  // the site offline entirely while the custom domain was still failing.
+  "workers_dev": true,
+
+  // Custom domains (not routes): wrangler creates the DNS records and
+  // provisions the certs on deploy, and every path is served - unlike a
+  // Workers Route pattern, which without a trailing /* matches only "/".
+  "routes": [
+    { "pattern": "mulahmoo.in", "custom_domain": true },
+    { "pattern": "www.mulahmoo.in", "custom_domain": true },
+  ],
+}

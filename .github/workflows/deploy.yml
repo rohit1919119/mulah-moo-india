@@ -1,0 +1,56 @@
+name: Deploy to Cloudflare
+
+# Every push to main goes straight to mulahmoo.in, the India site. It deploys
+# its own Worker (mulahmoo-india), so nothing here can touch mulahmoo.com.
+# Work on a branch and open a
+# pull request; merging is what publishes.
+on:
+  push:
+    branches: [main]
+  # lets you re-run a deploy from the Actions tab without pushing a commit
+  workflow_dispatch:
+
+# If two pushes land close together, cancel the older run rather than racing it
+# to the same Worker.
+concurrency:
+  group: deploy-production-india
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # ci, not install: installs exactly what package-lock.json pins, so a
+      # transitive update can never change what ships without a committed diff
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit -p tsconfig.json
+
+      # Runs the same script used locally: vite build, then wrangler deploy
+      # against the config vite generates into dist/server. That file carries
+      # machine specific absolute paths, which is why it is generated here
+      # rather than committed.
+      - name: Build and deploy
+        run: npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Check the site answers
+        run: |
+          for url in https://mulahmoo.in/ https://mulahmoo.in/moo-talent; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 --retry 3 --retry-delay 10 "$url")
+            echo "$url -> $code"
+            [ "$code" = "200" ] || exit 1
+          done
