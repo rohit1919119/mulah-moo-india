@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ClientHome } from "@/comic/ClientHome";
+import { ConsultHome } from "@/comic/ConsultHome";
 import { FONT_LINKS } from "@/comic/data";
 
 // "/" is the client-facing home page. The talent landing lives at /moo-talent,
@@ -13,20 +13,25 @@ import { FONT_LINKS } from "@/comic/data";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Mulah Moo - Creative Hiring Partner for Elites" },
+      { title: "Mulah Moo - Marketing recruitment consultants, India" },
       {
         name: "description",
         content:
           "We build marketing teams for top internet brands. Editors, designers, producers, writers, strategists and marketing leaders for creators, agencies and brands across India.",
       },
-      { property: "og:title", content: "Mulah Moo - Creative Hiring Partner for Elites" },
+      { property: "og:title", content: "Mulah Moo - Marketing recruitment consultants, India" },
       {
         property: "og:description",
         content: "Top 1% creative talent for content first brands, creators and studios across India",
       },
       { property: "og:type", content: "website" },
     ],
-    links: FONT_LINKS,
+    links: [
+      ...FONT_LINKS,
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" },
+    ],
   }),
-  component: ClientHome,
+  // The consultancy layout. The v4 home is ClientHome in @/comic/ClientHome;
+  // swap it back here to restore it.
+  component: ConsultHome,
 });
