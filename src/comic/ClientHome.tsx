@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { V4_CSS } from "@/comic/v4";
-import { ClientRail, Stamp, Footer, SectionCta, Nav, SlotBand, useReveal } from "@/comic/v4parts";
+import { ClientRail, Ticker, Stamp, Footer, SectionCta, Nav, SlotBand, useReveal } from "@/comic/v4parts";
 import { PricingForm } from "@/comic/PricingForm";
 import { ENGAGEMENTS, STATS } from "@/comic/clients";
 import { ArtTeam, ArtLeader, ArtRetainer } from "@/comic/v4art";
 import { CLIENT_CALL_URL } from "@/comic/data";
 
 const MODEL_ART = [ArtTeam, ArtLeader, ArtRetainer];
+
+// The running strip under the hero: the seats we hire for, leadership first.
+const ROLE_TICKER = [
+  "Leadership hiring", "Marketing manager", "Brand manager", "Content strategist", "YouTube producer",
+  "Instagram strategist", "Content IP lead", "Creative strategist", "Content lead", "Marketing lead", "And more",
+];
 
 /**
  * The client-facing home page at "/".
@@ -67,17 +73,19 @@ export function ClientHome() {
         </div>
       </section>
 
+      <Ticker words={ROLE_TICKER} />
+
       <section className="rail-sec">
         <div className="in">
           <div className="shead">
             <span className="sno">01</span>
             <h2>
-              The people who<br />
-              <span className="it">trust us</span>.
+              Brands and studios<br />
+              who <span className="it">trust us</span>.
             </h2>
           </div>
           <p className="slede">
-            Creators, agencies and brands across India.
+            Across India, from listed companies to funded startups.
           </p>
         </div>
         <ClientRail />
