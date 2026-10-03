@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { V4_CSS } from "@/comic/v4";
-import { ClientRail, Ticker, Stamp, Footer, SectionCta, Nav, SlotBand, useReveal } from "@/comic/v4parts";
+import { ClientRail, Stamp, Footer, SectionCta, Nav, SlotBand, useReveal } from "@/comic/v4parts";
 import { PricingForm } from "@/comic/PricingForm";
 import { ENGAGEMENTS, STATS } from "@/comic/clients";
 import { ArtTeam, ArtLeader, ArtRetainer } from "@/comic/v4art";
@@ -35,7 +35,7 @@ export function ClientHome() {
         <Nav
           links={[
             { label: "What we do", href: "#what" },
-            { label: "Our numbers", href: "#numbers" },
+            { label: "Results", href: "#numbers" },
             { label: "For creatives ↗", to: "/moo-talent", grad: true },
           ]}
           cta="Book a call"
@@ -66,8 +66,6 @@ export function ClientHome() {
           </div>
         </div>
       </section>
-
-      <Ticker />
 
       <section className="rail-sec">
         <div className="in">
