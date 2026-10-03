@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "We build the creative teams behind India's best content IPs. Editors, designers, producers, writers and strategists for creators, agencies and brands.",
+          "We build marketing teams for top internet brands. Editors, designers, producers, writers, strategists and marketing leaders for creators, agencies and brands across India.",
       },
       { property: "og:title", content: "Mulah Moo - Creative Hiring Partner for Elites" },
       {

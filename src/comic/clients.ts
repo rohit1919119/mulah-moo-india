@@ -113,6 +113,19 @@ export const DUMMY_QUOTES: [string, string, string, string | null][] = [
     "Sixth slot", "Swap in a real quote", null],
 ];
 
+/** The numbers band on "/". `fill` picks the card ground from the five brand
+ *  colours; the text colour follows from it in v4.ts. */
+export type Stat = { big: string; label: string; fill: "sun" | "purple" | "paper" };
+
+export const STATS: Stat[] = [
+  { big: "50+", label: "Teams worked with in the last 18 months", fill: "sun" },
+  { big: "5+", label: "Publicly listed companies", fill: "purple" },
+  { big: "20+", label: "Leadership marketing positions hired", fill: "paper" },
+  { big: "93%", label: "Of our talents are still killing it at their company", fill: "purple" },
+  { big: "10,000+", label: "Creative talents letting us decide their next role", fill: "paper" },
+  { big: "2 to 9 yrs", label: "Of experience. The only talent our database holds", fill: "sun" },
+];
+
 export type Engagement = {
   no: string;
   title: string;

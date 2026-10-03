@@ -403,6 +403,33 @@ body:has(.v4){ background:#FFFCF7; }
   font-size:12px; font-weight:700; border-radius:999px; }
 @media (max-width:760px){ .v4 .model{ transform:none !important; align-self:stretch !important; padding:24px 22px; } }
 
+/* ---------- numbers band ----------
+   Sits on the deep ground the case studies used. Cards take the brand fills in
+   turn (sun, purple, paper) so the six read as one set without a new hue. */
+.v4 .statgrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:56px; }
+.v4 .stat{ border:3.5px solid var(--ink); border-radius:22px; padding:30px 28px 28px;
+  display:flex; flex-direction:column; gap:14px; min-height:200px; justify-content:space-between;
+  box-shadow:7px 7px 0 #120826; }
+.v4 .stat.sun{ background:var(--sun); color:var(--ink); }
+.v4 .stat.purple{ background:var(--purple); color:#fff; }
+.v4 .stat.paper{ background:var(--paper); color:var(--ink); }
+.v4 .statbig{ font-family:var(--f-display); font-variation-settings:'SOFT' 60,'WONK' 1; font-weight:800;
+  font-size:clamp(46px,5.6vw,68px); line-height:.95; letter-spacing:-.02em; }
+.v4 .stat.paper .statbig{ color:var(--purple-ink); }
+.v4 .statlabel{ font-size:16.5px; line-height:1.42; font-weight:600; max-width:24ch; }
+.v4 .reveal-armed:not(.is-in) .stat{ opacity:0; }
+.v4 .statgrid.is-in .stat{ animation:v4statUp .5s cubic-bezier(.2,.9,.25,1) backwards; }
+.v4 .statgrid.is-in .stat:nth-child(2){ animation-delay:.06s; }
+.v4 .statgrid.is-in .stat:nth-child(3){ animation-delay:.12s; }
+.v4 .statgrid.is-in .stat:nth-child(4){ animation-delay:.18s; }
+.v4 .statgrid.is-in .stat:nth-child(5){ animation-delay:.24s; }
+.v4 .statgrid.is-in .stat:nth-child(6){ animation-delay:.30s; }
+@keyframes v4statUp{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:none; } }
+@media (prefers-reduced-motion: reduce){ .v4 .statgrid.is-in .stat{ animation:none; } }
+@media (max-width:960px){ .v4 .statgrid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:600px){ .v4 .statgrid{ grid-template-columns:1fr; gap:16px; }
+  .v4 .stat{ min-height:0; padding:24px 22px; } }
+
 /* ---------- case studies ---------- */
 .v4 .cases{ background:var(--deep); color:var(--paper); }
 .v4 .cases .shead h2{ color:var(--paper); }

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { V4_CSS } from "@/comic/v4";
-import { ClientRail, Ticker, CaseStudies, Stamp, Footer, SectionCta, Nav, SlotBand, useReveal } from "@/comic/v4parts";
+import { ClientRail, Ticker, Stamp, Footer, SectionCta, Nav, SlotBand, useReveal } from "@/comic/v4parts";
 import { PricingForm } from "@/comic/PricingForm";
-import { ENGAGEMENTS } from "@/comic/clients";
+import { ENGAGEMENTS, STATS } from "@/comic/clients";
 import { ArtTeam, ArtLeader, ArtRetainer } from "@/comic/v4art";
 import { CLIENT_CALL_URL } from "@/comic/data";
 
@@ -20,6 +20,7 @@ const MODEL_ART = [ArtTeam, ArtLeader, ArtRetainer];
 export function ClientHome() {
   const [pricing, setPricing] = useState(false);
   const artRef = useReveal<HTMLDivElement>();
+  const statRef = useReveal<HTMLDivElement>();
 
   return (
     <div className="v4">
@@ -34,7 +35,7 @@ export function ClientHome() {
         <Nav
           links={[
             { label: "What we do", href: "#what" },
-            { label: "Case studies", href: "#cases" },
+            { label: "Our numbers", href: "#numbers" },
             { label: "For creatives ↗", to: "/moo-talent", grad: true },
           ]}
           cta="Book a call"
@@ -46,12 +47,14 @@ export function ClientHome() {
         <div className="hero-in">
           {/* breaks are explicit so "internet's" always rides with "behind the",
               and the marker only ever wraps around "best content IPs" */}
-          <h1 className="disp">
-            We build teams
+          {/* max-width lifted so "for" rides on the marker line on desktop; on a
+              phone the marker is nowrap, so "for" drops to its own line */}
+          <h1 className="disp" style={{ maxWidth: "none" }}>
+            We build
             <br />
-            behind the internet&rsquo;s
+            marketing teams
             <br />
-            <span className="mark">best content IPs</span>
+            for <span className="mark">top internet brands</span>
           </h1>
           <div className="hero-actions">
             <a className="btn" href={CLIENT_CALL_URL} target="_blank" rel="noopener noreferrer">
@@ -128,19 +131,30 @@ export function ClientHome() {
         </div>
       </section>
 
-      <section className="cases" id="cases">
+      {/* Case studies are hidden for now. The CaseStudies component and the CASES
+          data in clients.ts are untouched, so bringing the section back is one
+          block placed here. */}
+
+      <section className="cases nums" id="numbers">
         <div className="in">
           <div className="shead">
             <span className="sno">03</span>
             <h2>
-              Pick a client. See<br />
-              <span className="it">exactly what we did</span>.
+              The numbers<br />
+              <span className="it">behind the work</span>.
             </h2>
           </div>
-          <p className="slede">An engagement, start to finish, with the numbers that came out of it.</p>
-          <CaseStudies />
+          <p className="slede">Eighteen months of building marketing teams, counted.</p>
+          <div className="statgrid" data-reveal ref={statRef}>
+            {STATS.map((s) => (
+              <div className={`stat ${s.fill}`} key={s.big}>
+                <span className="statbig">{s.big}</span>
+                <span className="statlabel">{s.label}</span>
+              </div>
+            ))}
+          </div>
           <SectionCta
-            line="Every one of these began with a single thirty minute conversation."
+            line="Every one of these teams began with a single thirty minute conversation."
             cta="Start yours"
           />
         </div>
