@@ -100,11 +100,9 @@ export const SHEET_URL =
 export const CIRCLE_SHEET_URL = SHEET_URL;
 
 // mulahmoo.in report and BCC forms (form_type "comp-report" and "bcc-request")
-// post to their own Apps Script and sheet; the script is apps-script/Code.gs.
-// Paste its web app URL here once it is deployed. Until then these two forms
-// fall back to SHEET_URL so a submission still lands somewhere.
-export const FORMS_URL = "";
-export const IN_FORMS_URL = FORMS_URL || SHEET_URL;
+// post to the same Apps Script as every other form; the script routes them to
+// their own tabs and emails an alert. Source: apps-script/Code.gs.
+export const IN_FORMS_URL = SHEET_URL;
 
 // Where /talent-feedbacks responses go: the same spreadsheet again, this time
 // the "talent-feedbacks" tab. Rows are tagged form_type: "talent-feedback" and

@@ -1,26 +1,24 @@
-# Set up the mulahmoo.in forms backend (about 5 minutes)
+# Updating the forms Apps Script (about 3 minutes)
 
-This saves the **Compensation report** form and the **Backstage Creators Club**
-form into one Google Sheet, emails you each one, and sends the person a
-confirmation. The **Send a mandate** form keeps using your existing sheet and
-needs nothing here.
+`Code.gs` is the complete script behind every form on mulahmoo.com and
+mulahmoo.in. It is your existing script plus:
 
-1. Go to sheets.google.com and create a blank sheet. Name it `mulahmoo.in leads`.
-2. In that sheet: **Extensions > Apps Script**.
-3. Delete everything in `Code.gs`, paste the whole of `apps-script/Code.gs`, and click **Save**.
-4. Optional: in the settings at the top of the file, paste a link to the full
-   compensation report PDF into `REPORT_URL`. With a link, people get the report
-   by email straight away. Without one, they are told it follows within one
-   working day.
-5. Choose `setup` in the function dropdown and click **Run**. Google asks for
-   permission: pick your account, then **Advanced > Go to project > Allow**. Two
-   tabs appear in the sheet: *Compensation report* and *BCC requests*.
-6. Click **Deploy > New deployment**. Click the gear and choose **Web app**.
-   - Execute as: **Me**
-   - Who has access: **Anyone**
-   Click **Deploy** and copy the **Web app URL** (it ends in `/exec`).
-7. Send that URL to Claude, or paste it into `FORMS_URL` in
-   `src/comic/data.ts` and push. That is the only change the site needs.
+- two new tabs, `comp-report` and `bcc-request`, created automatically
+- an email to aeerohit@gmail.com for each new mandate, report request and BCC request
+- a short confirmation email to people who request the report or a BCC seat
+- phone numbers starting with + no longer show as #ERROR! in the sheet
 
-To change the script later, use **Deploy > Manage deployments > Edit > New
-version**. That keeps the same URL.
+1. Open the "Inbound talents" spreadsheet, then **Extensions > Apps Script**.
+2. Select everything in `Code.gs`, delete it, paste the whole new `Code.gs`, and click **Save**.
+3. In the function dropdown next to **Run**, pick `setupMooIn` and click **Run**.
+   Google asks for permission to send email: choose aeerohit@gmail.com,
+   **Advanced > Go to project (unsafe) > Allow**. You get a test email and two
+   new tabs appear in the sheet.
+4. **Deploy > Manage deployments**, click the pencil (Edit) on the existing
+   deployment, set **Version** to **New version**, click **Deploy**.
+   Do not use "New deployment": that would create a new URL and both websites
+   would stop saving forms.
+
+Optional: paste a Google Drive link to the compensation report PDF into
+`REPORT_URL` (step 2) and requesters get it by email straight away.
+To get alerts for more forms, add their names to `NOTIFY_FORMS`.
