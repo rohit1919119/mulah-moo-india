@@ -238,13 +238,13 @@ function Hero({ onMandate }: { onMandate: () => void }) {
   );
 }
 
-function Strip() {
+export function Strip({ items = ROLE_TICKER, label = "Roles we hire for" }: { items?: string[]; label?: string }) {
   return (
-    <div className="pm-strip" aria-label="Roles we hire for">
+    <div className="pm-strip" aria-label={label}>
       <div className="pm-striptrack">
         {[0, 1].map((k) => (
           <span key={k} aria-hidden={k === 1 ? true : undefined}>
-            {ROLE_TICKER.map((r) => <span key={r} className="it">{r}<i>&#10022;</i></span>)}
+            {items.map((r) => <span key={r} className="it">{r}<i>&#10022;</i></span>)}
           </span>
         ))}
       </div>
@@ -256,7 +256,7 @@ function Strip() {
 
 /** Two rows drifting in opposite directions, each a different order of the
  *  roster repeated, so the eye reads a field of brands rather than a count. */
-function Clients() {
+export function Clients({ title }: { title?: React.ReactNode }) {
   const a = RAIL_CLIENTS;
   const b = [...a.slice(4), ...a.slice(0, 4)].reverse();
   const row = (list: typeof a, dir: "l" | "r", k: string) => (
@@ -277,7 +277,7 @@ function Clients() {
   );
   return (
     <section className="pm-clients" aria-label="Clients">
-      <h2 className="pm-wrap pm-cltitle" data-r>Retained by India&rsquo;s leading <em>internet brands.</em></h2>
+      <h2 className="pm-wrap pm-cltitle" data-r>{title ?? <>Retained by India&rsquo;s leading <em>internet brands.</em></>}</h2>
       {row(a, "l", "a")}
       {row(b, "r", "b")}
     </section>

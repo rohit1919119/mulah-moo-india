@@ -27,7 +27,7 @@ async function post(body: Record<string, unknown>, url = SHEET_URL) {
 
 /* ------------------------------------------------------------ modal shell */
 
-function Modal({ open, onClose, label, children }: { open: boolean; onClose: () => void; label: string; children: React.ReactNode }) {
+export function Modal({ open, onClose, label, children }: { open: boolean; onClose: () => void; label: string; children: React.ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;
@@ -64,7 +64,7 @@ function Done({ title, body, onClose, extra }: { title: string; body: string; on
   );
 }
 
-function Chips({ options, value, onPick, multi }: { options: string[]; value: string | string[]; onPick: (v: string) => void; multi?: boolean }) {
+export function Chips({ options, value, onPick, multi }: { options: string[]; value: string | string[]; onPick: (v: string) => void; multi?: boolean }) {
   return (
     <div className="chips">
       {options.map((o) => (

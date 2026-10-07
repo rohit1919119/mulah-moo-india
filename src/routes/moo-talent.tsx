@@ -1,43 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Landing } from "@/comic/Landing";
-import { CreativeLoader } from "@/comic/Loader";
+import { MooTalentPage } from "@/comic/TalentPremium";
 import { getContent } from "@/comic/content";
-import { FONT_LINKS } from "@/comic/data";
+import { PREMIUM_FONT_LINKS } from "@/comic/premiumData";
 
-// The talent-facing landing. "/" is now the client home, which links here as
-// "For talents".
-//
-// Briefs and clients load from the Google Sheet at request time, cached sixty
-// seconds, falling back to the constants in data.ts if the sheet is
-// unreachable. See src/comic/content.ts.
+// The talent network landing, in the premium design. Live roles load from the
+// Google Sheet at request time (cached sixty seconds) and fall back to the
+// constants in data.ts. See src/comic/content.ts.
 export const Route = createFileRoute("/moo-talent")({
   loader: () => getContent(),
   head: () => ({
     meta: [
-      { title: "Join the Moo Talent Network" },
+      { title: "Mulah Moo Talent · Creative and marketing roles that never reach a job board" },
       {
         name: "description",
         content:
-          "Apply for hidden creative gigs. We place elite content creatives with creator-led brands across the US, UK and UAE.",
+          "Join a network of 10,000+ creatives and marketers. Mulah Moo places talent with India's internet brands and global creators.",
       },
-      { property: "og:title", content: "Join the Moo Talent Network" },
-      { property: "og:description", content: "Apply for hidden creative gigs." },
+      { property: "og:title", content: "Mulah Moo Talent" },
+      { property: "og:description", content: "The roles that never reach a job board." },
       { property: "og:type", content: "website" },
     ],
-    links: FONT_LINKS,
+    links: [{ rel: "stylesheet", href: PREMIUM_FONT_LINKS[0] }],
   }),
-  // The loader hits the Google Sheet, so a cold navigation can sit for a second
-  // or two. pendingMs is short enough that the wait never feels dead, and
-  // pendingMinMs keeps the screen from flashing on a warm cache hit.
-  pendingComponent: CreativeLoader,
+  pendingComponent: TalentPending,
   pendingMs: 180,
-  pendingMinMs: 600,
+  pendingMinMs: 400,
   component: MooTalent,
 });
 
-// The sheet still supplies `clients`, but the page now renders the real client
-// roster from clients.ts instead, so only briefs are passed through.
+function TalentPending() {
+  return (
+    <div style={{ minHeight: "100vh", background: "#140A2B", display: "grid", placeItems: "center" }} aria-busy="true">
+      <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#F5C542", boxShadow: "0 0 0 10px rgba(245,197,66,.15)" }} />
+    </div>
+  );
+}
+
 function MooTalent() {
   const { briefs } = Route.useLoaderData();
-  return <Landing briefs={briefs} />;
+  return <MooTalentPage briefs={briefs} />;
 }
