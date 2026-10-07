@@ -11,7 +11,7 @@
 //   Why us .......... BCC referrals, hearing first, 20+ data points,
 //                     1 to 1.5 years of following, career partners
 //   Terms ........... 72 hrs, 14 days, 25 days, ₹8 LPA, fees after hire
-//   Community ....... WhatsApp first, editions, invite only
+//   Community ....... invite only, editions
 //
 // Anything still to be confirmed or replaced is marked PLACEHOLDER.
 

@@ -10,7 +10,7 @@ export const Route = createFileRoute("/bcc")({
       {
         name: "description",
         content:
-          "A WhatsApp first, invite only community for content heads, brand and marketing leads, studio founders and video leads. Closed door evenings, one city at a time.",
+          "An invite only community for content heads, brand and marketing leads, studio founders and video leads. Closed door evenings, one city at a time.",
       },
       { property: "og:title", content: "Backstage Creators Club" },
       { property: "og:description", content: "Invite only evenings for India's content leaders." },

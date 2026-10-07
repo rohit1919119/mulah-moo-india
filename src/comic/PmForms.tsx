@@ -176,7 +176,7 @@ const BCC_CITIES = ["Delhi NCR", "Mumbai", "Bengaluru", "Other"];
 const BCC_EXP = ["2 to 4 yrs", "4 to 7 yrs", "7 yrs+"];
 
 const BCC_COPY: Record<BccIntent, { h: string; done: string; btn: string }> = {
-  "Attend": { h: "Request your seat.", done: "We review every request by hand and reply on WhatsApp when the next room opens.", btn: "Request invite" },
+  "Attend": { h: "Request your seat.", done: "We review every request by hand and reach out when the next room opens in your city.", btn: "Request invite" },
   "Partner": { h: "Partner with the club.", done: "We will send the partner deck and next edition dates within two working days.", btn: "Send" },
   "Host a city": { h: "Bring the club to your city.", done: "We will reach out to plan a first room in your city.", btn: "Send" },
 };
@@ -195,7 +195,7 @@ export function BccForm({ open, onClose, intent: start }: { open: boolean; onClo
     e.preventDefault();
     if (!f.name.trim()) return setErr("Please add your name.");
     if (!EMAIL.test(f.email.trim())) return setErr("Please add a valid email.");
-    if (f.phone.replace(/\D/g, "").length < 10) return setErr("Please add a WhatsApp number. That is where the club runs.");
+    if (f.phone.replace(/\D/g, "").length < 10) return setErr("Please add a phone number.");
     if (!f.role.trim() || !f.company.trim()) return setErr("Please add your role and company.");
     if (attend && !f.link.trim()) return setErr("Please add your LinkedIn or Instagram.");
     setState("sending");
@@ -222,7 +222,7 @@ export function BccForm({ open, onClose, intent: start }: { open: boolean; onClo
             <label><span>Email</span><input id="bf-email" type="email" value={f.email} onChange={(e) => set("email", e.target.value)} autoComplete="email" /></label>
           </div>
           <div className="two">
-            <label><span>WhatsApp number</span><input id="bf-phone" type="tel" value={f.phone} onChange={(e) => set("phone", e.target.value)} autoComplete="tel" placeholder="+91" /></label>
+            <label><span>Phone number</span><input id="bf-phone" type="tel" value={f.phone} onChange={(e) => set("phone", e.target.value)} autoComplete="tel" placeholder="+91" /></label>
             <label><span>{attend ? "LinkedIn or Instagram" : "Website or LinkedIn"} {attend ? null : <i>optional</i>}</span><input id="bf-link" value={f.link} onChange={(e) => set("link", e.target.value)} /></label>
           </div>
           <div className="two">

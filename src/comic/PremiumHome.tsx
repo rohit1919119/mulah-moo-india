@@ -731,7 +731,7 @@ function Community() {
         <div className="pm-commtext" data-r>
           <h2 className="pm-h">Backstage <em>Creators Club.</em></h2>
           <p className="pm-body light">
-            A WhatsApp first, invite only community for the people behind India&rsquo;s content. City
+            An invite only community for the people behind India&rsquo;s content. City
             editions, closed door evenings and honest shop talk.
           </p>
           <div className="pm-actions center">

@@ -21,7 +21,7 @@ const HERO_STATS: { big: string; to?: number; label: string }[] = [
   { big: "3", to: 3, label: "Editions so far" },
 ];
 
-const STRIP = ["Invite only", "WhatsApp first", "Content heads", "Brand and marketing leads", "Studio founders", "Video and YouTube leads", "One partner per edition", "City by city"];
+const STRIP = ["Invite only", "Content heads", "Brand and marketing leads", "Studio founders", "Video and YouTube leads", "One partner per edition", "City by city"];
 
 const WHO = [
   { t: "Content heads", b: "Who run teams and set the slate." },
@@ -32,7 +32,7 @@ const WHO = [
 
 const PASSES = [
   { tag: "Attend", seats: "20 seats", name: "Member seat", tone: "dark", cta: "Request an invite", intent: "Attend" as BccIntent,
-    points: ["A closed door evening with senior leads", "Coffee, food and real conversation", "Access to the private WhatsApp circle"] },
+    points: ["A closed door evening with senior leads", "Coffee, food and real conversation", "Access to the private member circle"] },
   { tag: "Partner", seats: "1 per edition", name: "Founding partner", tone: "purple", cta: "Become a partner", intent: "Partner" as BccIntent,
     points: ["Personal intros to 20 decision makers", "A warm brand mention on the night", "Featured in recaps across socials"] },
   { tag: "Host", seats: "New cities", name: "Host a city", tone: "light", cta: "Get in touch", intent: "Host a city" as BccIntent,
@@ -42,7 +42,7 @@ const PASSES = [
 const PERKS = [
   { t: "Direct room access", b: "A personal intro to around 20 leads who approve tools, vendors and content budgets." },
   { t: "An organic mention", b: "A genuine, warm introduction of your brand during the evening." },
-  { t: "Community presence", b: "Featured in the WhatsApp circle and in Instagram and LinkedIn recaps." },
+  { t: "Community presence", b: "Featured in member updates and in Instagram and LinkedIn recaps." },
   { t: "First mover position", b: "Be the founding partner of a leadership circuit going city by city." },
 ];
 
@@ -57,7 +57,7 @@ const FAQS = [
   { q: "How do I get an invite?", a: "Request one with a line on what you run and who you make it for. Every request is read by a person, and invites go out city by city." },
   { q: "Does it cost anything to attend?", a: "No. Seats are by invite only. Each edition is supported by a single partner brand." },
   { q: "How many people are in the room?", a: "Around 20 per edition. Small enough that everyone actually talks to everyone." },
-  { q: "Which cities do you host in?", a: "Delhi and Mumbai so far, with more cities on the way. Members hear about the next room first, on WhatsApp." },
+  { q: "Which cities do you host in?", a: "Delhi and Mumbai so far, with more cities on the way. Members hear about the next room first." },
   { q: "How can my brand partner with the club?", a: "There is one partner per edition. Use the partner form on this page and we will send the current partner deck." },
 ];
 
@@ -98,7 +98,7 @@ export function BccPage() {
       <header className={scrolled ? "pm-nav solid" : "pm-nav"}>
         <div className="pm-navpill">
           <a href="#top" className="bc-brand" aria-label="Backstage Creators Club home">
-            <img src="/bcc/logo.jpg" alt="" width="28" height="28" /><span>Backstage Creators Club</span>
+            <img src="/bcc/logo.jpg" alt="" width="32" height="32" />
           </a>
           <nav className="pm-links" aria-label="Main">
             <a href="#about">About</a>
@@ -115,12 +115,11 @@ export function BccPage() {
         <div className="bc-heroveil" aria-hidden="true" />
         <div className="pm-posbg" aria-hidden="true"><span className="b1" /><span className="b2" /><span className="b3" /></div>
         <div className="pm-wrap bc-herobody">
-          <p className="bc-chip"><i />WhatsApp first · Invite only</p>
+          <p className="bc-chip"><i />Invite only · City by city</p>
           <h1>Backstage<br /><em>Creators Club.</em></h1>
           <p className="bc-lede">The most senior room in Indian content.</p>
           <div className="pm-actions center">
             <button type="button" onClick={() => ask("Attend")} className="pm-btn sun lg" data-mag>Request an invite</button>
-            <a href="#partner" className="pm-btn outline lg" data-mag>Partner with us</a>
           </div>
           <div className="pm-impact bc-stats" ref={statRef}>
             {HERO_STATS.map((s) => (
@@ -216,10 +215,9 @@ export function BccPage() {
           <div className="bc-wall" data-r>
             <img className="w1" src="/bcc/mumbai-2.jpg" alt="A Mumbai edition table" loading="lazy" />
             <div className="w2 stat">
-              <span className="k">After Delhi 2.0</span>
-              <b>33.4K</b>
-              <span>views on meetup posts in one month</span>
-              <small>917 interactions · 82 new followers</small>
+              <span className="k">Community reach</span>
+              <b>100K+</b>
+              <span>talents reached online through organic community updates</span>
             </div>
             <img className="w3" src="/bcc/members.jpg" alt="Members in conversation" loading="lazy" />
             <img className="w4" src="/bcc/delhi-2.jpg" alt="Delhi 2.0 group photo" loading="lazy" />
@@ -372,6 +370,8 @@ const BC_CSS = `
 .bc-wall img{ width:100%; height:100%; object-fit:cover; border-radius:24px; display:block; }
 .bc-wall .w1{ grid-column:span 2; grid-row:span 2; }
 .bc-wall .w3{ grid-column:span 2; }
+.bc-wall{ grid-auto-flow:row dense; }
+.bc-wall .w4{ grid-column:span 4; }
 .bc-wall .stat{ border-radius:24px; background:var(--purple); color:#fff; padding:26px; display:flex; flex-direction:column; justify-content:flex-end; gap:6px; }
 .bc-wall .stat .k{ font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; opacity:.8; margin-bottom:auto; }
 .bc-wall .stat b{ font-family:var(--display); font-weight:var(--dw); font-size:64px; line-height:.9; }
@@ -380,7 +380,7 @@ const BC_CSS = `
 .bc-wall .follow:hover{ background:#33196A; }
 .bc-wall .follow span{ font-size:13px; color:#BBAEDD; } .bc-wall .follow b{ font-family:var(--display); font-weight:var(--dw); font-size:24px; }
 .bc-wall .follow i{ position:absolute; top:22px; right:24px; font-style:normal; font-size:22px; color:var(--sun); }
-@media (max-width:900px){ .bc-wall{ grid-template-columns:repeat(2,minmax(0,1fr)); grid-auto-rows:200px; } .bc-wall .w1{ grid-column:span 2; } .bc-wall .w3{ grid-column:span 2; } }
+@media (max-width:900px){ .bc-wall{ grid-template-columns:repeat(2,minmax(0,1fr)); grid-auto-rows:200px; } .bc-wall .w1{ grid-column:span 2; } .bc-wall .w3{ grid-column:span 2; } .bc-wall .w4{ grid-column:span 2; } }
 @media (max-width:600px){ .bc-wall .stat, .bc-wall .follow{ grid-column:span 2; } .bc-wall .w4{ grid-column:span 2; } .bc-wall .stat b{ font-size:52px; } .bc-wall .follow b{ font-size:22px; overflow-wrap:anywhere; } }
 
 /* faq */

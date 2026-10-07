@@ -183,7 +183,7 @@ function confirm(d) {
     subject = 'Backstage Creators Club: we have your request';
     const intent = d.intent || 'Attend';
     const next = intent === 'Attend'
-      ? 'Every request is read by a person. When the next room opens in your city, we will reach out on WhatsApp.'
+      ? 'Every request is read by a person. When the next room opens in your city, we will reach out to you.'
       : intent === 'Partner'
         ? 'We will send the partner deck and the next edition dates within two working days.'
         : 'We will reach out to plan a first room in your city.';
