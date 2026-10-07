@@ -16,6 +16,7 @@ const PRICING_TAB = 'client-pricing';
 const MOO_VERIFIED_TAB = 'moo-verified';
 const REPORT_TAB = 'comp-report';      // mulahmoo.in compensation report requests
 const BCC_TAB    = 'bcc-request';      // mulahmoo.in Backstage Creators Club requests
+const WORK_TAB   = 'work-clicks';      // views and clicks on mulahmoo.in/work (outreach tracking)
 
 // ---------------------------------------------------------------- emails
 
@@ -37,6 +38,7 @@ const BCC_INSTAGRAM = 'https://www.instagram.com/backstagecreatorsclub/';
 // field name the website sends, so writeRow() puts every value in its column.
 const NEW_TABS = {};
 NEW_TABS[REPORT_TAB] = ['Submitted At', 'Name', 'Email', 'Company', 'Role', 'Hiring', 'Market', 'Source'];
+NEW_TABS[WORK_TAB]   = ['Submitted At', 'Event', 'Label', 'Section', 'Ref', 'Campaign', 'Source', 'Medium', 'Session', 'Page', 'Href', 'Referrer', 'Query'];
 NEW_TABS[BCC_TAB]    = ['Submitted At', 'Intent', 'Name', 'Email', 'Phone', 'City', 'Role', 'Company', 'Experience', 'Link', 'Note', 'Source'];
 
 // Sheet header -> payload field, for columns whose name differs from the field.
@@ -113,6 +115,7 @@ function doPost(e) {
       'moo-verified':    MOO_VERIFIED_TAB,
       'comp-report':     REPORT_TAB,
       'bcc-request':     BCC_TAB,
+      'work-click':      WORK_TAB,
     };
     const tab = TABS[d.form_type] || TALENT_TAB;
 
@@ -196,6 +199,7 @@ function setupMooIn() {
   const ss = SpreadsheetApp.openById(SHEET_ID);
   getTab(ss, REPORT_TAB);
   getTab(ss, BCC_TAB);
+  getTab(ss, WORK_TAB);
   MailApp.sendEmail(NOTIFY_EMAIL, 'Mulah Moo forms: alerts are on',
     'This is a test. New mandates, compensation report requests and BCC requests will now email you here.');
 }
@@ -218,7 +222,7 @@ function readTab(ss, name) {
 }
 
 // Open the web app URL with ?check=1 in a browser to see which version is live.
-const SCRIPT_VERSION = 'mulah-moo-forms v2 (comp-report, bcc-request, email alerts)';
+const SCRIPT_VERSION = 'mulah-moo-forms v3 (comp-report, bcc-request, work-clicks, email alerts)';
 
 function doGet(e) {
   if (e && e.parameter && e.parameter.check) {

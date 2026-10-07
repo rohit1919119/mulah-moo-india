@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Logo } from "@/comic/Logo";
 import { MandateForm, PMF_CSS } from "@/comic/PmForms";
+import { useClickTracking } from "@/comic/tracking";
 import { RAIL_CLIENTS, companyLogo } from "@/comic/clients";
 import { CLIENT_CALL_URL, IN_FORMS_URL, LEGAL_NAME, SOCIALS } from "@/comic/data";
 import { MOCKS, STEPS, HM_CSS } from "@/comic/HeliumMock";
@@ -90,13 +91,16 @@ const counted = (big: string, to: number | undefined, p: number) =>
 
 /* ------------------------------------------------------------------ page */
 
-export function PremiumHome() {
+/** `track` turns on click tracking for outreach copies of this page, such as
+ *  /work. The home page itself passes nothing and sends nothing. */
+export function PremiumHome({ track = null }: { track?: string | null } = {}) {
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
   const [mandate, setMandate] = useState(false);
   const openMandate = () => setMandate(true);
   useReveals();
   useMagnetic();
+  useClickTracking(track);
 
   useEffect(() => {
     const on = () => {

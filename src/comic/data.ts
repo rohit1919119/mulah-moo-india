@@ -104,6 +104,11 @@ export const CIRCLE_SHEET_URL = SHEET_URL;
 // their own tabs and emails an alert. Source: apps-script/Code.gs.
 export const IN_FORMS_URL = SHEET_URL;
 
+// Google Analytics 4 for tracked outreach pages such as /work. Paste the
+// Measurement ID (it looks like "G-XXXXXXXXXX") to turn it on; empty is off.
+// Clicks are logged to the sheet's "work-clicks" tab either way.
+export const GA_MEASUREMENT_ID = "";
+
 // Where /talent-feedbacks responses go: the same spreadsheet again, this time
 // the "talent-feedbacks" tab. Rows are tagged form_type: "talent-feedback" and
 // the Apps Script branches on that tag, writing the columns in this order:

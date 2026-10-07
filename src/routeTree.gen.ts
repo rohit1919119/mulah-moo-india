@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WorkRouteImport } from './routes/work'
 import { Route as TalentFeedbacksRouteImport } from './routes/talent-feedbacks'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OnboardingFormRouteImport } from './routes/onboarding-form'
@@ -21,6 +22,11 @@ import { Route as ClientFeedbacksRouteImport } from './routes/client-feedbacks'
 import { Route as BccRouteImport } from './routes/bcc'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TalentFeedbacksRoute = TalentFeedbacksRouteImport.update({
   id: '/talent-feedbacks',
   path: '/talent-feedbacks',
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/onboarding-form': typeof OnboardingFormRoute
   '/privacy': typeof PrivacyRoute
   '/talent-feedbacks': typeof TalentFeedbacksRoute
+  '/work': typeof WorkRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/onboarding-form': typeof OnboardingFormRoute
   '/privacy': typeof PrivacyRoute
   '/talent-feedbacks': typeof TalentFeedbacksRoute
+  '/work': typeof WorkRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/onboarding-form': typeof OnboardingFormRoute
   '/privacy': typeof PrivacyRoute
   '/talent-feedbacks': typeof TalentFeedbacksRoute
+  '/work': typeof WorkRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/onboarding-form'
     | '/privacy'
     | '/talent-feedbacks'
+    | '/work'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/onboarding-form'
     | '/privacy'
     | '/talent-feedbacks'
+    | '/work'
   id:
     | '__root__'
     | '/'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/onboarding-form'
     | '/privacy'
     | '/talent-feedbacks'
+    | '/work'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -171,10 +183,18 @@ export interface RootRouteChildren {
   OnboardingFormRoute: typeof OnboardingFormRoute
   PrivacyRoute: typeof PrivacyRoute
   TalentFeedbacksRoute: typeof TalentFeedbacksRoute
+  WorkRoute: typeof WorkRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/work': {
+      id: '/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof WorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/talent-feedbacks': {
       id: '/talent-feedbacks'
       path: '/talent-feedbacks'
@@ -267,6 +287,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingFormRoute: OnboardingFormRoute,
   PrivacyRoute: PrivacyRoute,
   TalentFeedbacksRoute: TalentFeedbacksRoute,
+  WorkRoute: WorkRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

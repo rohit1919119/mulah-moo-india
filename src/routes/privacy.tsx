@@ -28,6 +28,7 @@ const SECTIONS: { h: string; p: string[] }[] = [
     p: [
       "Only what you type into our forms: your name, email, phone or WhatsApp number, company, role, city, links to your public profiles, and your answers about hiring or the club.",
       "If you register as talent, we also keep the work details you choose to share with us.",
+      "On some pages we send out in outreach, such as mulahmoo.in/work, we also record which buttons are clicked and the campaign link you arrived from. This is not linked to your name unless you fill in a form.",
     ],
   },
   {

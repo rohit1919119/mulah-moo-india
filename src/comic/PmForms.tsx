@@ -21,7 +21,14 @@ async function post(body: Record<string, unknown>, url = SHEET_URL) {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...body, source: "mulahmoo.in", submitted_at: new Date().toISOString() }),
+    // page and ref tell you which page and outreach link a lead came from
+    body: JSON.stringify({
+      ...body,
+      source: "mulahmoo.in",
+      page: window.location.pathname,
+      ref: new URLSearchParams(window.location.search).get("ref") ?? "",
+      submitted_at: new Date().toISOString(),
+    }),
   });
 }
 
