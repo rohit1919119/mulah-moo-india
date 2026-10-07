@@ -8,10 +8,10 @@
 
 export const STEPS = [
   { title: "Send a mandate", body: "Brief the role on Helium in a few minutes: scope, level, budget and who it reports to." },
-  { title: "Applications in 48 hours", body: "Pre vetted professionals apply within 48 hours. Send your assignment to the ones you like in one click." },
-  { title: "Review the work", body: "Compare assignments, portfolios and our notes side by side, with 20+ data points on every profile." },
-  { title: "Bring in your team", body: "Add co founders and team leads. Everyone reviews, comments and votes in the same place." },
-  { title: "Hire", body: "Make the offer. We handle the close, and you pay only once the hire is done." },
+  { title: "Applications in 48 hours", body: "Vetted professionals apply within two days. Send your assignment to the ones you like in one click." },
+  { title: "Review the work", body: "Assignments, portfolios and our notes on each person, side by side." },
+  { title: "Bring in your team", body: "Add co founders and team leads to review, comment and vote in one place." },
+  { title: "Hire", body: "Make the offer. We manage the close and stay with the hire through joining." },
 ];
 
 function Frame({ label, children }: { label: string; children: React.ReactNode }) {
@@ -46,7 +46,7 @@ function Mandate() {
       <div className="hm-chips">
         <i>Long form</i><i>Team lead</i><i>Brand storytelling</i><i>Mumbai or remote</i>
       </div>
-      <div className="hm-actions"><span className="hm-btn">Send mandate</span><small>Shortlist promised in 72 hours</small></div>
+      <div className="hm-actions"><span className="hm-btn">Send mandate</span><small>Saved as draft</small></div>
     </Frame>
   );
 }
@@ -79,7 +79,7 @@ function Applications() {
 }
 
 function Review() {
-  const points = ["Team size led: 6", "Owned a ₹2 Cr content budget", "Grew a channel 0 to 400K", "Tracked by us for 16 months", "Notice period: 60 days", "Wants: P&L ownership"];
+  const points = ["Team size led: 6", "Owned a ₹2 Cr content budget", "Grew a channel 0 to 400K", "Notice period: 60 days", "Wants: P&L ownership"];
   return (
     <Frame label="review">
       <div className="hm-row">
@@ -91,7 +91,7 @@ function Review() {
         <div className="hm-meter"><span>Assignment</span><b>9.1</b><i style={{ width: "91%" }} /></div>
         <div className="hm-meter"><span>Portfolio</span><b>8.7</b><i style={{ width: "87%" }} /></div>
       </div>
-      <p className="hm-sub">From our notes · 23 data points</p>
+      <p className="hm-sub">From our notes</p>
       <div className="hm-chips dense">{points.map((p) => <i key={p}>{p}</i>)}</div>
     </Frame>
   );
@@ -131,8 +131,8 @@ function Hired() {
         <div><i /><span>Placed</span><small>Day 25</small></div>
       </div>
       <div className="hm-grid2 tight">
-        <div className="hm-field"><span>Fee tranche 1</span><b>On hiring</b></div>
-        <div className="hm-field"><span>Fee tranche 2</span><b>On placement</b></div>
+        <div className="hm-field"><span>Reporting to</span><b>Chief Marketing Officer</b></div>
+        <div className="hm-field"><span>Onboarding check in</span><b>Week 2 and week 6</b></div>
       </div>
     </Frame>
   );

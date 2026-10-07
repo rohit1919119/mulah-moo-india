@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PremiumHome } from "@/comic/PremiumHome";
 import { FONT_LINKS } from "@/comic/data";
+import { PREMIUM_FONT_LINKS } from "@/comic/premiumData";
 
 // "/" is the client-facing home page. The talent landing lives at /moo-talent,
 // linked from the nav as "For talents".
@@ -26,7 +27,7 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:type", content: "website" },
     ],
-    links: FONT_LINKS,
+    links: [...FONT_LINKS, ...PREMIUM_FONT_LINKS.map((href) => ({ rel: "stylesheet", href }))],
   }),
   // The premium layout. The previous home is ClientHome in @/comic/ClientHome;
   // swap it back here to restore it.
