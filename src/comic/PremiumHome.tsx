@@ -28,7 +28,7 @@ const reduced = () =>
 
 /* ------------------------------------------------------------------ hooks */
 
-function useReveals() {
+export function useReveals() {
   useEffect(() => {
     if (reduced() || typeof IntersectionObserver === "undefined") return;
     const els = Array.from(document.querySelectorAll<HTMLElement>(".pm [data-r]"))
@@ -43,7 +43,7 @@ function useReveals() {
   }, []);
 }
 
-function useCountUp(ref: React.RefObject<HTMLElement | null>, ms = 1500) {
+export function useCountUp(ref: React.RefObject<HTMLElement | null>, ms = 1500) {
   const [p, setP] = useState(1);
   useEffect(() => {
     const el = ref.current;
@@ -68,7 +68,7 @@ function useCountUp(ref: React.RefObject<HTMLElement | null>, ms = 1500) {
 }
 
 /** Buttons marked data-mag lean toward the cursor. */
-function useMagnetic() {
+export function useMagnetic() {
   useEffect(() => {
     if (reduced() || window.matchMedia("(hover: none)").matches) return;
     const els = Array.from(document.querySelectorAll<HTMLElement>(".pm [data-mag]"));
@@ -350,21 +350,11 @@ function Ecosystem() {
 
 /* ------------------------------------------------------------ positioning */
 
-/** Who the team has been: label, left %, top %, drift delay. */
-const POS_CHIPS: [string, number, number, number][] = [
-  ["Ex video editor", 7, 16, 0], ["Ex content strategist", 76, 12, 1.4], ["Ex producer", 84, 70, 0.6],
-  ["Ex scriptwriter", 5, 74, 2.1], ["Business operator", 62, 86, 1], ["Ex brand manager", 22, 88, 2.8],
-];
 
 function Positioning() {
   return (
     <section className="pm-pos" id="approach">
       <div className="pm-posbg" aria-hidden="true"><span className="b1" /><span className="b2" /><span className="b3" /><span className="lines" /></div>
-      <div className="pm-poschips" aria-hidden="true">
-        {POS_CHIPS.map(([label, x, y, d], i) => (
-          <span key={label} className={`chip c${i % 3}`} style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${d}s` }}><i />{label}</span>
-        ))}
-      </div>
       <div className="pm-wrap pm-posin">
         <h2 data-r>
           <span className="not">We are not <s>HR</s>.</span>
@@ -410,7 +400,7 @@ function HeliumIntro() {
       <div className="pm-helstage">
         <div className="rings" aria-hidden="true" style={{ opacity: 1 - k(0.5, 0.9) * 0.6 }}><i /><i /><i /></div>
         <p className="tag" style={fade(0.32, 0.48)}>Our innovation</p>
-        <span className="he" aria-hidden="true" style={{ transform: `scale(${1.9 - settle * 0.9})` }}>
+        <span className="he" aria-hidden="true" style={{ transform: `scale(${1 - settle * 0.47})` }}>
           <small>2</small>He<i>4.0026</i>
         </span>
         <h2 className="name" style={fade(0.42, 0.6)}>Helium</h2>
@@ -792,7 +782,7 @@ function FontTester({ value, onChange }: { value: string; onChange: (id: string)
 
 /* -------------------------------------------------------------------- css */
 
-const PM_CSS = `
+export const PM_CSS = `
 .pm{ --paper:#FFFCF7; --sand:#F4EFE7; --ink:#1A1614; --body:#3B342E; --muted:#6B6258; --line:rgba(26,22,20,.11);
   --purple:#8856F2; --pink:#6A2FD4; --deep:#241247; --deeper:#140A2B; --sun:#F5C542; --lav:#E3D6FF; --cream:#F1E7FF;
   background:var(--paper); color:var(--ink); font-family:var(--ui); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
@@ -935,11 +925,11 @@ const PM_CSS = `
 .pm-pos h2 s::after{ content:''; position:absolute; left:-6%; right:-6%; top:54%; height:.09em; border-radius:1em; background:var(--sun);
   transform:rotate(-4deg) scaleX(1); transform-origin:0 50%; transition:transform .9s cubic-bezier(.7,0,.2,1) .55s; }
 .pm-pos [data-r].arm:not(.in) s::after{ transform:rotate(-4deg) scaleX(0); }
-.pm-quote{ position:relative; margin:72px auto 0 !important; max-width:22ch; font-family:var(--ui); font-weight:650; font-size:clamp(28px,3.3vw,50px);
-  line-height:1.22; letter-spacing:-.025em; color:#F1EBFF; text-wrap:balance; }
+.pm-quote{ position:relative; margin:64px auto 0 !important; max-width:1120px; font-family:var(--ui); font-weight:300; font-size:clamp(20px,2.35vw,35px);
+  line-height:1.4; letter-spacing:-.015em; color:#EDE6FF; text-wrap:balance; }
 .pm-quote .qm{ font-family:var(--display); font-weight:400; color:var(--sun); font-size:1.6em; line-height:0; vertical-align:-.35em; margin-right:.06em; }
 .pm-quote .qm.end{ margin:0 0 0 .04em; }
-.pm-quote mark{ background:none; color:#fff; font-family:var(--display); font-style:italic; font-weight:400; font-size:1.12em; letter-spacing:-.01em;
+.pm-quote mark{ background:none; color:#fff; font-family:var(--display); font-style:italic; font-weight:400; font-size:1.14em; letter-spacing:-.01em;
   background-image:linear-gradient(transparent 62%, rgba(245,197,66,.55) 62%, rgba(245,197,66,.55) 90%, transparent 90%);
   background-repeat:no-repeat; background-size:100% 100%; transition:background-size 1.1s cubic-bezier(.7,0,.2,1) .4s; padding:0 .06em; }
 .pm-pos [data-r].arm:not(.in) mark{ background-size:0% 100%; }
@@ -976,11 +966,11 @@ const PM_CSS = `
 @keyframes pmRing{ from{ transform:scale(.25); opacity:1; } to{ transform:scale(1.4); opacity:0; } }
 .pm-helstage::before{ content:''; position:absolute; left:50%; top:50%; width:900px; height:900px; transform:translate(-50%,-50%); border-radius:50%;
   background:radial-gradient(circle, rgba(136,86,242,.35), transparent 60%); pointer-events:none; }
-.pm-helstage .he{ position:relative; width:128px; height:128px; border-radius:26px; background:linear-gradient(150deg,#3B1F7A,#241247);
-  display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:var(--dw); font-size:60px; letter-spacing:-.02em;
-  box-shadow:0 30px 80px -20px rgba(136,86,242,.7), inset 0 0 0 1px rgba(255,255,255,.14); will-change:transform; margin:26px 0; }
-.pm-helstage .he small{ position:absolute; left:14px; top:11px; font:600 14px var(--ui); color:var(--sun); }
-.pm-helstage .he i{ position:absolute; left:0; right:0; bottom:11px; text-align:center; font:500 11px var(--ui); font-style:normal; color:#BBAEDD; }
+.pm-helstage .he{ position:relative; width:240px; height:240px; border-radius:48px; background:linear-gradient(150deg,#3B1F7A,#241247);
+  display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:var(--dw); font-size:112px; letter-spacing:-.02em;
+  box-shadow:0 40px 100px -24px rgba(136,86,242,.7), inset 0 0 0 1.5px rgba(255,255,255,.14); margin:-40px 0; flex:none; }
+.pm-helstage .he small{ position:absolute; left:24px; top:18px; font:600 24px var(--ui); color:var(--sun); }
+.pm-helstage .he i{ position:absolute; left:0; right:0; bottom:20px; text-align:center; font:500 19px var(--ui); font-style:normal; color:#BBAEDD; }
 .pm-helstage .tag{ position:relative; font-size:12px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--sun); }
 .pm-helstage .name{ position:relative; font-size:clamp(64px,9vw,140px) !important; line-height:.95 !important; }
 .pm-helstage .sub{ position:relative; font-size:clamp(20px,2vw,28px); color:#D8CCF2; max-width:24ch; line-height:1.35; }

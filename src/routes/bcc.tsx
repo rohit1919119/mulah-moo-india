@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { BCC_CSS, BCC_HTML } from "@/comic/bccPage";
+import { BccPage } from "@/comic/BccPage";
+import { PREMIUM_FONT_LINKS } from "@/comic/premiumData";
 
-// mulahmoo.in/bcc: the Backstage Creators Club page, ported from its Claude
-// design. The markup is static (FAQ uses <details>), so it renders on the
-// server with no client script.
+// mulahmoo.in/bcc: Backstage Creators Club, in the premium home page's design.
 export const Route = createFileRoute("/bcc")({
   head: () => ({
     meta: [
@@ -15,22 +14,13 @@ export const Route = createFileRoute("/bcc")({
       },
       { property: "og:title", content: "Backstage Creators Club" },
       { property: "og:description", content: "Invite only evenings for India's content leaders." },
-      { property: "og:image", content: "https://mulahmoo.in/bcc/hero.jpg" },
+      { property: "og:image", content: "https://mulahmoo.in/bcc/mumbai-1.jpg" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" },
+      { rel: "stylesheet", href: PREMIUM_FONT_LINKS[0] },
       { rel: "icon", href: "/bcc/logo.jpg" },
     ],
   }),
-  component: Bcc,
+  component: BccPage,
 });
-
-function Bcc() {
-  return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: BCC_CSS + "html{scroll-behavior:smooth}" }} />
-      <div dangerouslySetInnerHTML={{ __html: BCC_HTML }} />
-    </>
-  );
-}

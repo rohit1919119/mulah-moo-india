@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
  *  centred, so they sit in the side gutters; on the right half the label opens
  *  to the left of its point. */
 const SPOTS: [number, number][] = [
-  [0.07, 0.24], [0.9, 0.3], [0.1, 0.56], [0.88, 0.62], [0.06, 0.4], [0.92, 0.46],
+  [0.03, 0.18], [0.97, 0.18], [0.03, 0.84], [0.97, 0.84],
 ];
 
 type P = { x: number; y: number; vx: number; vy: number; r: number; c: string; a: number; tw: number };
@@ -163,13 +163,13 @@ export function Constellation({ signals }: { signals: { role: string; ctx: strin
 
 export const CN_CSS = `
 .cn-canvas{ position:absolute; inset:0; display:block; }
-.cn-signal{ position:absolute; display:flex; flex-direction:column; gap:4px; white-space:nowrap; pointer-events:none;
-  padding:11px 15px 12px; border-radius:14px; color:#FFF6DE;
+.cn-signal{ position:absolute; display:flex; flex-direction:column; gap:7px; white-space:nowrap; pointer-events:none;
+  padding:16px 20px 17px; border-radius:18px; color:#FFF6DE;
   background:rgba(23,11,48,.74); border:1px solid rgba(245,197,66,.42); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-  --x:16px; animation:cnSig 3.2s ease both; }
-.cn-signal.flip{ --x:calc(-100% - 16px); }
-.cn-signal b{ font:600 13px/1 var(--ui); color:#fff; }
-.cn-signal small{ font:500 12px/1.2 var(--ui); color:#F5C542; }
+  --x:30px; animation:cnSig 3.2s ease both; }
+.cn-signal.flip{ --x:calc(-100% - 30px); }
+.cn-signal b{ font:600 17px/1 var(--ui); color:#fff; }
+.cn-signal small{ font:500 15px/1.2 var(--ui); color:#F5C542; }
 @keyframes cnSig{ 0%{ opacity:0; transform:translate(var(--x),-40%); } 12%,78%{ opacity:1; transform:translate(var(--x),-50%); } 100%{ opacity:0; transform:translate(var(--x),-60%); } }
 @media (max-width:1180px){ .cn-signal{ display:none; } }
 `;
