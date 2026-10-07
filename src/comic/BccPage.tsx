@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { PM_CSS, useCountUp, useMagnetic, useReveals } from "@/comic/PremiumHome";
 import { FONT } from "@/comic/premiumData";
+import { usePageTracking } from "@/comic/tracking";
 import { BccForm, PMF_CSS, type BccIntent } from "@/comic/PmForms";
 
 /**
@@ -70,6 +71,7 @@ export function BccPage() {
   const statRef = useRef<HTMLDivElement>(null);
   const p = useCountUp(statRef, 1600);
   useReveals();
+  usePageTracking();
   useMagnetic();
 
   useEffect(() => {

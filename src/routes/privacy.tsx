@@ -3,6 +3,7 @@ import { Logo } from "@/comic/Logo";
 import { PM_CSS } from "@/comic/PremiumHome";
 import { FONT, PREMIUM_FONT_LINKS } from "@/comic/premiumData";
 import { LEGAL_NAME } from "@/comic/data";
+import { usePageTracking } from "@/comic/tracking";
 
 // mulahmoo.in/privacy: plain language notice for the site's forms.
 export const Route = createFileRoute("/privacy")({
@@ -28,7 +29,7 @@ const SECTIONS: { h: string; p: string[] }[] = [
     p: [
       "Only what you type into our forms: your name, email, phone or WhatsApp number, company, role, city, links to your public profiles, and your answers about hiring or the club.",
       "If you register as talent, we also keep the work details you choose to share with us.",
-      "On some pages we send out in outreach, such as mulahmoo.in/work, we also record which buttons are clicked and the campaign link you arrived from. This is not linked to your name unless you fill in a form.",
+      "When you use this website we record which pages are viewed, which buttons are clicked and, if you arrived from a link we sent, the campaign tags on that link. This is not linked to your name unless you fill in a form.",
     ],
   },
   {
@@ -59,6 +60,7 @@ const SECTIONS: { h: string; p: string[] }[] = [
 ];
 
 function Privacy() {
+  usePageTracking();
   const vars = { "--display": FONT.display, "--ui": FONT.ui, "--dw": 400 } as React.CSSProperties;
   return (
     <div className="pm" style={vars}>

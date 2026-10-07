@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { GA_MEASUREMENT_ID, SHEET_URL } from "@/comic/data";
 
 /**
- * Click tracking for outreach pages such as /work.
+ * View and click tracking for every page of mulahmoo.in.
  *
  * Every page view and every click on a link or button is sent to the forms
  * Apps Script as form_type "work-click", which writes one row per event to the
@@ -94,6 +94,9 @@ export function useClickTracking(page: string | null) {
     const onClick = (e: MouseEvent) => {
       const el = (e.target as HTMLElement | null)?.closest<HTMLElement>("a, button");
       if (!el) return;
+      // picking an option inside a form (a role, a city, a budget) is not a
+      // click worth a row; buttons that open, send or leave still are
+      if (el.closest(".chips, .tf-tiles, .tf-chips, [data-notrack]")) return;
       const label = labelOf(el);
       const href = el.getAttribute("href") ?? "";
       const section = el.closest("section, header, footer, [role=dialog]");
@@ -104,4 +107,9 @@ export function useClickTracking(page: string | null) {
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);
   }, [page]);
+}
+
+/** Tracks the current page, named by its path. */
+export function usePageTracking() {
+  useClickTracking(typeof window === "undefined" ? null : window.location.pathname);
 }

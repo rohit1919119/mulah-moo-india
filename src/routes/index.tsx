@@ -31,5 +31,9 @@ export const Route = createFileRoute("/")({
   }),
   // The premium layout. The previous home is ClientHome in @/comic/ClientHome;
   // swap it back here to restore it.
-  component: PremiumHome,
+  component: Home,
 });
+
+function Home() {
+  return <PremiumHome track="/" />;
+}

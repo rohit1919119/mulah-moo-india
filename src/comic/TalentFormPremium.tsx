@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Logo } from "@/comic/Logo";
 import { PM_CSS, useMagnetic } from "@/comic/PremiumHome";
 import { PMF_CSS } from "@/comic/PmForms";
+import { usePageTracking } from "@/comic/tracking";
 import { FONT } from "@/comic/premiumData";
 import { EXPERIENCE, OPPORTUNITY, SHEET_URL, TOTAL_STEPS } from "@/comic/data";
 import {
@@ -64,6 +65,7 @@ type Resume =
 
 export function TalentFormPremium() {
   useMagnetic();
+  usePageTracking();
   const [step, setStep] = useState(0);
   // The résumé is uploaded the moment it is picked — straight to storage, on
   // a URL Helium signs — so only its path travels with the application.

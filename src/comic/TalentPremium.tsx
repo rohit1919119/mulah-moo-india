@@ -4,6 +4,7 @@ import { Logo } from "@/comic/Logo";
 import { Constellation, CN_CSS } from "@/comic/Constellation";
 import { Clients, CompanyLogo, PM_CSS, Strip, useCountUp, useMagnetic, useReveals } from "@/comic/PremiumHome";
 import { Chips, Modal, PMF_CSS } from "@/comic/PmForms";
+import { usePageTracking } from "@/comic/tracking";
 import { FONT } from "@/comic/premiumData";
 import { BRIEFS, CONSULT, LEGAL_NAME, SHEET_URL, SOCIALS, TALENT_CALL_URL } from "@/comic/data";
 import { CREATORS } from "@/comic/onboardingData";
@@ -172,6 +173,7 @@ const TALENT_STEPS = [
 
 export function MooTalentPage({ briefs = BRIEFS as unknown as Brief[] }: { briefs?: Brief[] }) {
   useReveals();
+  usePageTracking();
   useMagnetic();
   const signals = briefs.slice(0, 8).map((b) => ({ role: b.role, ctx: `${b.client} · ${b.pay}/mo` }));
   const named = MV_TESTIMONIALS.filter((q) => q.named);
@@ -372,6 +374,7 @@ function CreatorCard({ c }: { c: (typeof CREATORS)[number] }) {
 
 export function MooVerifiedPage() {
   useReveals();
+  usePageTracking();
   useMagnetic();
   const [apply, setApply] = useState<null | "plain" | "arena">(null);
   const open = () => setApply("plain");
