@@ -29,16 +29,22 @@ async function post(body: Record<string, unknown>, url = SHEET_URL) {
 
 export function Modal({ open, onClose, label, children }: { open: boolean; onClose: () => void; label: string; children: React.ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
+  // onClose is a new function on every render of the parent (every keystroke),
+  // so it is read through a ref. With it in the effect's dependencies the
+  // effect re-ran on each keystroke and re-focused the first field, which made
+  // typing jump out of whatever box you were in.
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeRef.current(); };
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
     // focus the first field so keyboard users land inside the dialog
     const t = window.setTimeout(() => box.current?.querySelector<HTMLElement>("input,button.pmf-x")?.focus(), 60);
     return () => { document.body.style.overflow = prev; window.removeEventListener("keydown", onKey); window.clearTimeout(t); };
-  }, [open, onClose]);
+  }, [open]);
   if (!open) return null;
   return (
     <div className="pmf" onClick={onClose}>

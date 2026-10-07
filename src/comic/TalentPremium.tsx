@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Logo } from "@/comic/Logo";
 import { Constellation, CN_CSS } from "@/comic/Constellation";
-import { Clients, PM_CSS, Strip, useCountUp, useMagnetic, useReveals } from "@/comic/PremiumHome";
+import { Clients, CompanyLogo, PM_CSS, Strip, useCountUp, useMagnetic, useReveals } from "@/comic/PremiumHome";
 import { Chips, Modal, PMF_CSS } from "@/comic/PmForms";
 import { FONT } from "@/comic/premiumData";
 import { BRIEFS, CONSULT, LEGAL_NAME, SHEET_URL, SOCIALS, TALENT_CALL_URL } from "@/comic/data";
@@ -127,6 +127,7 @@ function Voices({ id, title, items }: { id?: string; title: React.ReactNode; ite
       <div className="pm-voices tp-voices" ref={ref} tabIndex={0} aria-label="Testimonials">
         {items.map((q, i) => (
           <figure key={q.slug || `anon-${i}`} className={i % 3 === 1 ? "dark" : undefined}>
+            <CompanyLogo company={q.company} />
             <blockquote>&ldquo;{q.quote}&rdquo;</blockquote>
             <figcaption>
               {q.named && q.slug

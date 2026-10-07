@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Logo } from "@/comic/Logo";
 import { MandateForm, PMF_CSS } from "@/comic/PmForms";
-import { RAIL_CLIENTS } from "@/comic/clients";
+import { RAIL_CLIENTS, companyLogo } from "@/comic/clients";
 import { CLIENT_CALL_URL, IN_FORMS_URL, LEGAL_NAME, SOCIALS } from "@/comic/data";
 import { MOCKS, STEPS, HM_CSS } from "@/comic/HeliumMock";
 import { Constellation, CN_CSS } from "@/comic/Constellation";
@@ -664,6 +664,17 @@ function Reach() {
 
 /* ----------------------------------------------------------- testimonials */
 
+/** The company's logo on a small white tile, shown at the top of a quote. */
+export function CompanyLogo({ company }: { company: string }) {
+  const l = companyLogo(company);
+  if (!l) return null;
+  return (
+    <span className={l.shape === "square" ? "pm-qlogo sq" : "pm-qlogo"}>
+      <img src={l.img} alt={company} loading="lazy" />
+    </span>
+  );
+}
+
 function Voices() {
   const ref = useRef<HTMLDivElement>(null);
   const go = (d: number) => {
@@ -682,6 +693,7 @@ function Voices() {
       <div className="pm-voices" ref={ref} tabIndex={0} aria-label="Testimonials">
         {VOICES.map((v, i) => (
           <figure key={i} className={i % 3 === 1 ? "dark" : undefined}>
+            <CompanyLogo company={v.role} />
             <blockquote>&ldquo;{v.quote}&rdquo;</blockquote>
             <figcaption><b>{v.name}</b><span>{v.role}</span></figcaption>
           </figure>
@@ -715,7 +727,7 @@ function Community() {
         <div className="pm-commtext" data-r>
           <h2 className="pm-h">Backstage <em>Creators Club.</em></h2>
           <p className="pm-body light">
-            A WhatsApp first, invite only community for the people who make India&rsquo;s content. City
+            A WhatsApp first, invite only community for the people behind India&rsquo;s content. City
             editions, closed door evenings and honest shop talk.
           </p>
           <div className="pm-actions center">
@@ -1066,6 +1078,12 @@ export const PM_CSS = `
   background:var(--sand); display:flex; flex-direction:column; justify-content:space-between; gap:40px; min-height:380px; transition:transform .4s cubic-bezier(.2,.9,.25,1); }
 .pm-voices figure:hover{ transform:translateY(-6px); }
 .pm-voices figure.dark{ background:var(--deep); color:#fff; }
+.pm-voices figure{ justify-content:flex-start !important; }
+.pm-voices figure figcaption{ margin-top:auto; }
+.pm-qlogo{ align-self:flex-start; display:flex; align-items:center; justify-content:center; height:52px; min-width:52px; max-width:150px; padding:8px 14px; border-radius:14px; background:#fff; box-shadow:0 0 0 1px var(--line); overflow:hidden; }
+.pm-qlogo img{ display:block; max-height:36px; max-width:122px; width:auto; height:auto; object-fit:contain; }
+.pm-qlogo.sq{ padding:0; width:64px; height:64px; }
+.pm-qlogo.sq img{ max-height:none; max-width:none; width:100%; height:100%; object-fit:cover; transform:scale(1.2); }
 .pm-voices blockquote{ font-size:clamp(23px,2vw,28px); line-height:1.28; letter-spacing:-.01em; }
 .pm-voices figcaption{ display:flex; flex-direction:column; gap:2px; }
 .pm-voices figcaption b{ font-size:15px; font-weight:600; } .pm-voices figcaption span{ font-size:14px; color:var(--muted); }

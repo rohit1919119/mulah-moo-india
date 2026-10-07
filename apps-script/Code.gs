@@ -217,7 +217,13 @@ function readTab(ss, name) {
     });
 }
 
-function doGet() {
+// Open the web app URL with ?check=1 in a browser to see which version is live.
+const SCRIPT_VERSION = 'mulah-moo-forms v2 (comp-report, bcc-request, email alerts)';
+
+function doGet(e) {
+  if (e && e.parameter && e.parameter.check) {
+    return ContentService.createTextOutput(SCRIPT_VERSION);
+  }
   const ss = SpreadsheetApp.openById(SHEET_ID);
   return ContentService
     .createTextOutput(JSON.stringify({

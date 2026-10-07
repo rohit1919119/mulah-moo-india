@@ -165,3 +165,25 @@ export const TICKER_WORDS = [
   "Video editors", "Thumbnail strategists", "Content managers", "Producers", "Scriptwriters",
   "Motion designers", "Growth marketers", "Creative leads", "D2C marketers", "Content strategists",
 ];
+
+/** Company logos for testimonial cards, matched loosely on the company name
+ *  the quote is attributed to. `square` logos fill a square tile edge to edge
+ *  (their files carry their own padding); `wide` wordmarks sit inside a pill. */
+type LogoShape = "wide" | "square";
+const COMPANY_LOGOS: [RegExp, string, LogoShape][] = [
+  [/leap\s*scholar/i, "/clients/leap-scholar.png", "wide"],
+  [/traya/i, "/clients/traya-health.jpeg", "square"],
+  [/dailyhunt|verse/i, "/clients/verse-innovations.png", "wide"],
+  [/trackk/i, "/clients/trackk.jpg", "square"],
+  [/binge\s*labs/i, "/clients/binge-labs.jpeg", "square"],
+  [/creator\s*engine/i, "/clients/creator-engine.png", "wide"],
+  [/talking\s*heads/i, "/clients/talking-heads.jpeg", "square"],
+  [/wakefit/i, "/clients/wakefit.jpeg", "square"],
+  [/groww/i, "/clients/groww.png", "wide"],
+  [/sahi/i, "/clients/sahi.jpg", "square"],
+];
+
+export function companyLogo(company: string): { img: string; shape: LogoShape } | null {
+  const hit = COMPANY_LOGOS.find(([re]) => re.test(company));
+  return hit ? { img: hit[1], shape: hit[2] } : null;
+}

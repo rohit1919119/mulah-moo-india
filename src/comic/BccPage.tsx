@@ -21,12 +21,13 @@ const HERO_STATS: { big: string; to?: number; label: string }[] = [
   { big: "3", to: 3, label: "Editions so far" },
 ];
 
-const STRIP = ["Invite only", "WhatsApp first", "Content heads", "Studio founders", "Video and YouTube leads", "One partner per edition", "City by city"];
+const STRIP = ["Invite only", "WhatsApp first", "Content heads", "Brand and marketing leads", "Studio founders", "Video and YouTube leads", "One partner per edition", "City by city"];
 
 const WHO = [
   { t: "Content heads", b: "Who run teams and set the slate." },
   { t: "Studio founders", b: "Who build the shows India watches." },
   { t: "Video and YouTube leads", b: "Who greenlight budgets and vendors." },
+  { t: "Brand and marketing leads", b: "Who own the brand and the media plan." },
 ];
 
 const PASSES = [
@@ -52,7 +53,7 @@ const EDITIONS = [
 ];
 
 const FAQS = [
-  { q: "Who is the club for?", a: "Content heads, YouTube and video leads, branded content producers and studio founders. People who run content teams, not just accounts." },
+  { q: "Who is the club for?", a: "Content heads, brand and marketing leads, YouTube and video leads, branded content producers and studio founders. People who run teams and budgets, not just accounts." },
   { q: "How do I get an invite?", a: "Request one with a line on what you run and who you make it for. Every request is read by a person, and invites go out city by city." },
   { q: "Does it cost anything to attend?", a: "No. Seats are by invite only. Each edition is supported by a single partner brand." },
   { q: "How many people are in the room?", a: "Around 20 per edition. Small enough that everyone actually talks to everyone." },
@@ -141,7 +142,7 @@ export function BccPage() {
 
       <section className="pm-sec" id="about">
         <div className="pm-wrap">
-          <h2 className="pm-h" data-r>Built for the people who <em>make the content.</em></h2>
+          <h2 className="pm-h" data-r>Built for the people behind <em>India&rsquo;s content.</em></h2>
           <p className="bc-body" data-r>
             A city by city circuit of closed door evenings for the leads who run teams and greenlight budgets. No
             panels and no pitches: twenty people, one long table, and the conversations that do not happen anywhere else.
@@ -261,7 +262,7 @@ export function BccPage() {
         <div className="pm-wrap pm-footin">
           <div className="brand">
             <span className="bc-brand"><img src="/bcc/logo.jpg" alt="" width="32" height="32" /><span>Backstage Creators Club</span></span>
-            <p>India&rsquo;s room for the people who make the content. Closed door evenings, one city at a time.</p>
+            <p>India&rsquo;s room for the people behind the content. Closed door evenings, one city at a time.</p>
           </div>
           <div className="cols">
             <div>
@@ -315,16 +316,17 @@ const BC_CSS = `
 
 /* about */
 .bc-body{ max-width:640px; margin:-48px auto 0 !important; text-align:center; font-size:19px; font-weight:300; line-height:1.65; color:var(--body); }
-.bc-who{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; margin-top:88px; border-top:1px solid var(--line); }
+.bc-who{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; margin-top:88px; border-top:1px solid var(--line); }
 .bc-who div{ padding:34px 28px 0; border-left:1px solid var(--line); text-align:center; }
 .bc-who div:first-child{ border-left:0; }
 .bc-who span{ font-size:13px; font-weight:600; color:var(--purple); }
-.bc-who h3{ font-family:var(--display); font-weight:var(--dw); font-size:clamp(26px,2.4vw,34px); letter-spacing:-.015em; margin:10px 0 8px !important; }
+.bc-who h3{ font-family:var(--display); font-weight:var(--dw); line-height:1.12; font-size:clamp(26px,2.4vw,34px); letter-spacing:-.015em; margin:10px 0 8px !important; }
 .bc-who p{ font-size:16px; color:var(--muted); }
 .bc-wide{ position:relative; margin-top:96px !important; border-radius:32px; overflow:hidden; aspect-ratio:16/8; }
 .bc-wide img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform 1.2s cubic-bezier(.2,.9,.25,1); }
 .bc-wide:hover img{ transform:scale(1.03); }
 .bc-wide figcaption{ position:absolute; left:24px; bottom:22px; padding:8px 14px; border-radius:999px; background:rgba(20,10,43,.7); color:#fff; font-size:13px; font-weight:600; backdrop-filter:blur(8px); }
+@media (max-width:1000px){ .bc-who{ grid-template-columns:repeat(2,minmax(0,1fr)); row-gap:40px; } .bc-who div:nth-child(3){ border-left:0; } }
 @media (max-width:760px){ .bc-who{ grid-template-columns:1fr; } .bc-who div{ border-left:0; border-bottom:1px solid var(--line); padding:28px 0; } .bc-wide{ aspect-ratio:4/3; } }
 
 /* ways in */

@@ -89,12 +89,12 @@ export function Constellation({ signals }: { signals: { role: string; ctx: strin
         const bx = b.x * w, by = b.y * h, age = (t - b.t) / 1000;
         for (let k = 0; k < 3; k++) {
           const ph = (age * 0.8 + k / 3) % 1;
-          ctx.strokeStyle = `rgba(245,197,66,${(1 - ph) * 0.55})`;
-          ctx.lineWidth = 1.2;
-          ctx.beginPath(); ctx.arc(bx, by, 6 + ph * 46, 0, Math.PI * 2); ctx.stroke();
+          ctx.strokeStyle = `rgba(245,197,66,${(1 - ph) * 0.3})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.arc(bx, by, 3 + ph * 18, 0, Math.PI * 2); ctx.stroke();
         }
-        ctx.fillStyle = "rgba(245,197,66,1)";
-        ctx.beginPath(); ctx.arc(bx, by, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = "rgba(245,197,66,.85)";
+        ctx.beginPath(); ctx.arc(bx, by, 2.5, 0, Math.PI * 2); ctx.fill();
       }
     };
 
@@ -163,13 +163,13 @@ export function Constellation({ signals }: { signals: { role: string; ctx: strin
 
 export const CN_CSS = `
 .cn-canvas{ position:absolute; inset:0; display:block; }
-.cn-signal{ position:absolute; display:flex; flex-direction:column; gap:7px; white-space:nowrap; pointer-events:none;
-  padding:16px 20px 17px; border-radius:18px; color:#FFF6DE;
-  background:rgba(23,11,48,.74); border:1px solid rgba(245,197,66,.42); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-  --x:30px; animation:cnSig 3.2s ease both; }
-.cn-signal.flip{ --x:calc(-100% - 30px); }
-.cn-signal b{ font:600 17px/1 var(--ui); color:#fff; }
-.cn-signal small{ font:500 15px/1.2 var(--ui); color:#F5C542; }
-@keyframes cnSig{ 0%{ opacity:0; transform:translate(var(--x),-40%); } 12%,78%{ opacity:1; transform:translate(var(--x),-50%); } 100%{ opacity:0; transform:translate(var(--x),-60%); } }
+.cn-signal{ position:absolute; display:flex; flex-direction:column; gap:3px; white-space:nowrap; pointer-events:none;
+  padding:6px 10px 7px; border-radius:9px; color:#FFF6DE; opacity:.8;
+  background:rgba(23,11,48,.5); border:1px solid rgba(245,197,66,.2); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  --x:14px; animation:cnSig 3.2s ease both; }
+.cn-signal.flip{ --x:calc(-100% - 14px); }
+.cn-signal b{ font:600 11.5px/1 var(--ui); color:#fff; }
+.cn-signal small{ font:500 10.5px/1.2 var(--ui); color:rgba(245,197,66,.85); }
+@keyframes cnSig{ 0%{ opacity:0; transform:translate(var(--x),-40%); } 12%,78%{ opacity:.8; transform:translate(var(--x),-50%); } 100%{ opacity:0; transform:translate(var(--x),-60%); } }
 @media (max-width:1180px){ .cn-signal{ display:none; } }
 `;

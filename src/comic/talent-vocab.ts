@@ -146,6 +146,42 @@ export const VOCAB_SNAPSHOT: VocabDiscipline[] = [
       { slug: "campaign_lines", label: "Taglines & campaign lines" },
     ],
   },
+  {
+    // In Helium's live list already; listed here so loadVocabulary() keeps it.
+    slug: "brand_manager",
+    label: "Brand Manager / Brand Lead",
+    desc: "Own the brand: positioning, launches, campaigns and partnerships",
+    icon: "target",
+    specialisations: [
+      { slug: "brand_strategy", label: "Brand strategy & positioning" },
+      { slug: "launches_rebrands", label: "Launches & rebrands" },
+      { slug: "integrated_campaigns", label: "Integrated campaigns" },
+      { slug: "consumer_insights", label: "Consumer insights & research" },
+      { slug: "brand_partnerships", label: "Partnerships & sponsorships" },
+      { slug: "brand_guidelines", label: "Brand identity & guidelines" },
+      { slug: "d2c_brand_building", label: "D2C brand building" },
+      { slug: "trade_retail", label: "Trade & retail marketing" },
+    ],
+  },
+  {
+    // In Helium's live list already; listed here so loadVocabulary() keeps it.
+    slug: "marketing_manager",
+    label: "Marketing Manager / Marketing Lead",
+    desc: "Run growth: performance, CRM, content, influencer and media",
+    icon: "chart",
+    specialisations: [
+      { slug: "performance", label: "Performance marketing" },
+      { slug: "seo", label: "SEO" },
+      { slug: "crm_lifecycle", label: "CRM & lifecycle" },
+      { slug: "influencer", label: "Influencer marketing" },
+      { slug: "content_marketing", label: "Content marketing" },
+      { slug: "product_marketing", label: "Product marketing" },
+      { slug: "growth", label: "Growth & experiments" },
+      { slug: "events_btl", label: "Events & BTL" },
+      { slug: "atl_media", label: "ATL & media planning" },
+      { slug: "affiliate", label: "Affiliate & partnerships" },
+    ],
+  },
 ];
 
 // 2026-10-01: clean non-overlapping steps with a 3–4 option, matching Helium's
