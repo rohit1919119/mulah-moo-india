@@ -3,12 +3,12 @@ import { Link } from "@tanstack/react-router";
 import { Logo } from "@/comic/Logo";
 import { MandateForm, PMF_CSS } from "@/comic/PmForms";
 import { RAIL_CLIENTS } from "@/comic/clients";
-import { CLIENT_CALL_URL, LEGAL_NAME, SHEET_URL, SOCIALS } from "@/comic/data";
+import { CLIENT_CALL_URL, IN_FORMS_URL, LEGAL_NAME, SOCIALS } from "@/comic/data";
 import { MOCKS, STEPS, HM_CSS } from "@/comic/HeliumMock";
 import { Constellation, CN_CSS } from "@/comic/Constellation";
 import { MAP_AE, MAP_CA, MAP_H, MAP_IN, MAP_LAND, MAP_UK, MAP_US, MAP_W, PINS } from "@/comic/worldmap";
 import {
-  COMP_ROWS, COMPARE, ECOSYSTEM, FONT_PAIRS, HERO_SIGNALS, HIRING_FOR, IMPACT, REACH,
+  COMP_ROWS, COMPARE, ECOSYSTEM, FONT, HERO_SIGNALS, HIRING_FOR, IMPACT, REACH,
   ROLE_TICKER, TERMS, VOICES, type Country,
 } from "@/comic/premiumData";
 
@@ -20,7 +20,6 @@ import {
  */
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
-const DISPLAY_WEIGHT: Record<string, number> = { instrument: 400, clash: 500, zodiak: 400, gloock: 400, bricolage: 600 };
 
 const reduced = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -96,7 +95,6 @@ export function PremiumHome() {
   const [progress, setProgress] = useState(0);
   const [mandate, setMandate] = useState(false);
   const openMandate = () => setMandate(true);
-  const [font, setFont] = useState(FONT_PAIRS[0].id);
   useReveals();
   useMagnetic();
 
@@ -111,8 +109,7 @@ export function PremiumHome() {
     return () => window.removeEventListener("scroll", on);
   }, []);
 
-  const pair = FONT_PAIRS.find((f) => f.id === font) ?? FONT_PAIRS[0];
-  const vars = { "--display": pair.display, "--ui": pair.ui, "--dw": DISPLAY_WEIGHT[pair.id] ?? 400 } as React.CSSProperties;
+  const vars = { "--display": FONT.display, "--ui": FONT.ui, "--dw": 400 } as React.CSSProperties;
 
   return (
     <div className="pm" style={vars}>
@@ -185,10 +182,9 @@ export function PremiumHome() {
             </div>
           </div>
         </div>
-        <div className="pm-wrap pm-legal">&copy; 2026 {LEGAL_NAME} &middot; mulahmoo.in</div>
+        <div className="pm-wrap pm-legal">&copy; 2026 {LEGAL_NAME} &middot; mulahmoo.in &middot; <Link to="/privacy">Privacy</Link></div>
       </footer>
 
-      <FontTester value={font} onChange={setFont} />
 
       <MandateForm open={mandate} onClose={() => setMandate(false)} />
     </div>
@@ -546,8 +542,8 @@ function Report() {
   );
 }
 
-/** Posts to the shared Apps Script tagged form_type "comp-report"; the script
- *  needs a branch and a tab for that tag. */
+/** Posts form_type "comp-report" to the mulahmoo.in forms script
+ *  (apps-script/Code.gs). */
 function ReportForm() {
   const [f, setF] = useState({ name: "", email: "", company: "", role: "", hiring: "", market: [] as string[] });
   const [err, setErr] = useState("");
@@ -562,7 +558,7 @@ function ReportForm() {
     if (!f.company.trim()) return setErr("Please add your company.");
     setState("sending");
     try {
-      await fetch(SHEET_URL, {
+      await fetch(IN_FORMS_URL, {
         method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ form_type: "comp-report", ...f, market: f.market.join(", "), source: "mulahmoo.in", submitted_at: new Date().toISOString() }),
       });
@@ -607,6 +603,7 @@ function ReportForm() {
       </fieldset>
       {err && <p className="err" role="alert">{err}</p>}
       <button type="submit" className="pm-btn lg block" disabled={state === "sending"}>{state === "sending" ? "Sending..." : "Email me the report"}</button>
+      <p className="pmf-consent">By sending this you agree to our <a href="/privacy" {...ext}>privacy policy</a>.</p>
     </form>
   );
 }
@@ -685,7 +682,6 @@ function Voices() {
       <div className="pm-voices" ref={ref} tabIndex={0} aria-label="Testimonials">
         {VOICES.map((v, i) => (
           <figure key={i} className={i % 3 === 1 ? "dark" : undefined}>
-            <span className="pm-sample">Sample</span>
             <blockquote>&ldquo;{v.quote}&rdquo;</blockquote>
             <figcaption><b>{v.name}</b><span>{v.role}</span></figcaption>
           </figure>
@@ -739,45 +735,6 @@ function Community() {
         </div>
       </div>
     </section>
-  );
-}
-
-/* ------------------------------------------------------------ font tester */
-
-/** Shown in local development, or on any URL with ?fonts. Never shows to a
- *  normal visitor. The choice is remembered on this browser only. */
-function FontTester({ value, onChange }: { value: string; onChange: (id: string) => void }) {
-  const [show, setShow] = useState(false);
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    const on = import.meta.env.DEV || new URLSearchParams(window.location.search).has("fonts");
-    setShow(on);
-    if (!on) return;
-    try {
-      const saved = window.localStorage.getItem("mm-font");
-      if (saved && FONT_PAIRS.some((f) => f.id === saved)) onChange(saved);
-    } catch { /* storage unavailable: keep the default */ }
-  }, [onChange]);
-  if (!show) return null;
-  const pick = (id: string) => {
-    onChange(id);
-    try { window.localStorage.setItem("mm-font", id); } catch { /* ignore */ }
-  };
-  return (
-    <div className="pm-fonts">
-      {open && (
-        <div className="panel" role="dialog" aria-label="Try fonts">
-          <p className="pm-kicker">Try a font pairing</p>
-          {FONT_PAIRS.map((f) => (
-            <button key={f.id} type="button" aria-pressed={f.id === value} onClick={() => pick(f.id)}>
-              <span className="aa" style={{ fontFamily: f.display, fontWeight: DISPLAY_WEIGHT[f.id] }}>Aa</span>
-              <span className="nm"><b style={{ fontFamily: f.ui }}>{f.name}</b><small>{f.note}</small></span>
-            </button>
-          ))}
-        </div>
-      )}
-      <button type="button" className="toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>Aa Fonts</button>
-    </div>
   );
 }
 
@@ -1113,7 +1070,6 @@ export const PM_CSS = `
 .pm-voices figcaption{ display:flex; flex-direction:column; gap:2px; }
 .pm-voices figcaption b{ font-size:15px; font-weight:600; } .pm-voices figcaption span{ font-size:14px; color:var(--muted); }
 .pm-voices figure.dark figcaption span{ color:#BBAEDD; }
-.pm-sample{ position:absolute; top:20px; right:20px; font-size:10.5px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:4px 9px; border-radius:999px; border:1px dashed currentColor; opacity:.5; }
 
 /* community */
 .pm-comm{ background:#0E0A1A; color:#fff; overflow:hidden; position:relative; }
@@ -1152,15 +1108,6 @@ export const PM_CSS = `
 .pm-legal{ padding-top:22px; padding-bottom:32px; border-top:1px solid rgba(255,255,255,.08); font-size:13px; color:#9F92C2; }
 
 /* font tester */
-.pm-fonts{ position:fixed; right:16px; bottom:16px; z-index:80; display:flex; flex-direction:column; align-items:flex-end; gap:10px; font-family:'Geist',system-ui,sans-serif; }
-.pm-fonts .toggle{ min-height:44px; padding:0 18px; border-radius:999px; border:1px solid rgba(255,255,255,.2); background:#140A2B; color:#fff; font:600 13px 'Geist',system-ui,sans-serif; cursor:pointer; box-shadow:0 12px 30px -10px rgba(0,0,0,.5); }
-.pm-fonts .panel{ width:300px; padding:16px; border-radius:20px; background:#fff; color:var(--ink); box-shadow:0 24px 60px -20px rgba(20,10,43,.5); display:flex; flex-direction:column; gap:6px; }
-.pm-fonts .panel .pm-kicker{ padding:2px 6px 8px; }
-.pm-fonts .panel button{ display:flex; align-items:center; gap:14px; text-align:left; padding:10px; border-radius:14px; border:1px solid transparent; background:none; cursor:pointer; color:var(--ink); }
-.pm-fonts .panel button:hover{ background:#F6F3EE; }
-.pm-fonts .panel button[aria-pressed="true"]{ border-color:var(--purple); background:#FBF8FF; }
-.pm-fonts .aa{ font-size:30px; width:44px; line-height:1; }
-.pm-fonts .nm{ display:flex; flex-direction:column; } .pm-fonts .nm b{ font-size:14px; font-weight:600; } .pm-fonts .nm small{ font-size:12px; color:var(--muted); }
 
 /* reveal, armed from script only */
 .pm [data-r].arm{ opacity:0; transform:translateY(40px); transition:opacity 1s ease, transform 1.1s cubic-bezier(.2,.9,.25,1); }

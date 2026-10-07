@@ -99,31 +99,18 @@ export const REACH: { key: Country; country: string; role: string }[] = [
   { key: "ca", country: "Canada", role: "Creators and studios" },
 ];
 
-/** PLACEHOLDER testimonials. Every card renders a "Sample" tag until these are
- *  swapped for real, attributable quotes. Do not ship them as they are. */
+/** Real client testimonials, as given by Rohit. Attributed by role and
+ *  company, without personal names. */
 export const VOICES: { quote: string; name: string; role: string }[] = [
-  { quote: "They briefed us better than we briefed them. The shortlist read like they had sat in our content meetings.", name: "[Name]", role: "Head of Marketing, listed consumer brand" },
-  { quote: "Our Head of Content was hired in under four weeks, and she was not on any job board.", name: "[Name]", role: "Founder, D2C brand" },
-  { quote: "Three candidates, all worth the call. We hired two of them.", name: "[Name]", role: "Content Lead, fintech" },
-  { quote: "They knew what our editors were paid elsewhere before we asked. That saved us a bad offer.", name: "[Name]", role: "Studio founder" },
-  { quote: "Paying after the hire made it an easy yes. The process made it an easy second mandate.", name: "[Name]", role: "Growth Lead, edtech" },
-  { quote: "It felt like working with former creatives, because it was. They spoke our team's language.", name: "[Name]", role: "Creative Director, agency" },
-  { quote: "Helium kept the whole team in one place. We reviewed assignments together and closed in days.", name: "[Name]", role: "Brand Manager, consumer brand" },
+  { quote: "Mulah Moo closed our senior YouTube roles from a single set of profiles, with a smooth interview process.", name: "Senior HR", role: "Leap Scholar" },
+  { quote: "We closed long pending content and product design roles at a fast pace. Replacements were closed within a two week window too.", name: "Senior HR", role: "Traya Health" },
+  { quote: "We hired our overall social team through Mulah Moo. A rare match for us, where we got enough space to make our own decisions while closing every hire.", name: "BU Head", role: "Dailyhunt" },
+  { quote: "We closed 4 roles within a month for the new YouTube and Instagram team we set up. Highly recommended for content roles.", name: "Founder", role: "Trackk" },
 ];
 
-/** Font pairings for the on page tester (shown with ?fonts in the URL, and
- *  always in local development). The first one is the default. */
-export const FONT_PAIRS: { id: string; name: string; display: string; ui: string; note: string }[] = [
-  { id: "instrument", name: "Instrument Serif + Geist", display: "'Instrument Serif', Georgia, serif", ui: "'Geist', system-ui, sans-serif", note: "Editorial, quiet luxury" },
-  { id: "clash", name: "Clash Display + Satoshi", display: "'Clash Display', 'Geist', sans-serif", ui: "'Satoshi', 'Geist', sans-serif", note: "Studio grotesk, confident" },
-  { id: "zodiak", name: "Zodiak + General Sans", display: "'Zodiak', Georgia, serif", ui: "'General Sans', 'Geist', sans-serif", note: "Sharp serif, magazine" },
-  { id: "gloock", name: "Gloock + Geist", display: "'Gloock', Georgia, serif", ui: "'Geist', system-ui, sans-serif", note: "High contrast, couture" },
-  { id: "bricolage", name: "Bricolage Grotesque + Geist", display: "'Bricolage Grotesque', 'Geist', sans-serif", ui: "'Geist', system-ui, sans-serif", note: "Characterful, modern" },
-];
+/** The locked type pairing: Instrument Serif for display, Geist for UI. */
+export const FONT = { display: "'Instrument Serif', Georgia, serif", ui: "'Geist', system-ui, sans-serif" };
 
-/** Every family the tester can switch to, in one Google and one Fontshare
- *  request. Trim to the chosen pair before launch. */
 export const PREMIUM_FONT_LINKS = [
-  "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300..700&family=Gloock&family=Bricolage+Grotesque:opsz,wght@12..96,400..700&display=swap",
-  "https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600&f[]=satoshi@400,500,700&f[]=zodiak@400,500&f[]=general-sans@400,500,600&display=swap",
+  "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300..700&display=swap",
 ];

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { PM_CSS, useCountUp, useMagnetic, useReveals } from "@/comic/PremiumHome";
-import { FONT_PAIRS } from "@/comic/premiumData";
+import { FONT } from "@/comic/premiumData";
 import { BccForm, PMF_CSS, type BccIntent } from "@/comic/PmForms";
 
 /**
@@ -10,8 +10,6 @@ import { BccForm, PMF_CSS, type BccIntent } from "@/comic/PmForms";
  *
  * Every invite, partner and host CTA opens BccForm (form_type "bcc-request").
  * Landing on /bcc#invite opens the invite form straight away.
- *
- * PLACEHOLDER: the Mumbai edition's attendee count is not filled in.
  */
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
@@ -50,7 +48,7 @@ const PERKS = [
 const EDITIONS = [
   { name: "Delhi 1.0", meta: "12 leads", d: "Where it started. One long table, twelve content leaders.", img: "/bcc/delhi-1.jpg" },
   { name: "Delhi 2.0", meta: "37 attended · 100+ registered", d: "Pickleball courts, coffee and a lot of shop talk.", img: "/bcc/delhi-2.jpg" },
-  { name: "Mumbai", meta: "Content heads and studio founders", d: "The club's first room outside Delhi.", img: "/bcc/mumbai-1.jpg" },
+  { name: "Mumbai", meta: "15 brand content heads and studio founders", d: "The club's first room outside Delhi.", img: "/bcc/mumbai-1.jpg" },
 ];
 
 const FAQS = [
@@ -88,8 +86,7 @@ export function BccPage() {
     return () => window.removeEventListener("hashchange", check);
   }, []);
 
-  const pair = FONT_PAIRS[0];
-  const vars = { "--display": pair.display, "--ui": pair.ui, "--dw": 400 } as React.CSSProperties;
+  const vars = { "--display": FONT.display, "--ui": FONT.ui, "--dw": 400 } as React.CSSProperties;
   const count = (big: string, to: number | undefined) =>
     to === undefined || p >= 1 ? big : big.replace(/\d+/, String(Math.round(to * p)));
 
@@ -282,12 +279,12 @@ export function BccPage() {
             <div>
               <p className="pm-kicker">Follow</p>
               <a href="https://www.instagram.com/backstagecreatorsclub/" {...ext}>Instagram</a>
-              <a href="https://www.linkedin.com/company/backstage-creators-club" {...ext}>LinkedIn</a>
+              <a href="https://www.linkedin.com/company/backstage-creators-club/" {...ext}>LinkedIn</a>
               <a href="mailto:Rohit@mulahmoo.com">Rohit@mulahmoo.com</a>
             </div>
           </div>
         </div>
-        <div className="pm-wrap pm-legal">&copy; 2026 Backstage Creators Club &middot; <Link to="/">A Mulah Moo community</Link></div>
+        <div className="pm-wrap pm-legal">&copy; 2026 Backstage Creators Club &middot; <Link to="/">A Mulah Moo community</Link> &middot; <Link to="/privacy">Privacy</Link></div>
       </footer>
       <BccForm open={form !== null} intent={intent} onClose={() => { setForm(null); if (window.location.hash === "#invite") history.replaceState(null, "", window.location.pathname); }} />
     </div>

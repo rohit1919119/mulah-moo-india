@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TalentFeedbacksRouteImport } from './routes/talent-feedbacks'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OnboardingFormRouteImport } from './routes/onboarding-form'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MooVerifiedRouteImport } from './routes/moo-verified'
@@ -23,6 +24,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const TalentFeedbacksRoute = TalentFeedbacksRouteImport.update({
   id: '/talent-feedbacks',
   path: '/talent-feedbacks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingFormRoute = OnboardingFormRouteImport.update({
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/moo-verified': typeof MooVerifiedRoute
   '/onboarding': typeof OnboardingRoute
   '/onboarding-form': typeof OnboardingFormRoute
+  '/privacy': typeof PrivacyRoute
   '/talent-feedbacks': typeof TalentFeedbacksRoute
 }
 export interface FileRoutesByTo {
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/moo-verified': typeof MooVerifiedRoute
   '/onboarding': typeof OnboardingRoute
   '/onboarding-form': typeof OnboardingFormRoute
+  '/privacy': typeof PrivacyRoute
   '/talent-feedbacks': typeof TalentFeedbacksRoute
 }
 export interface FileRoutesById {
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/moo-verified': typeof MooVerifiedRoute
   '/onboarding': typeof OnboardingRoute
   '/onboarding-form': typeof OnboardingFormRoute
+  '/privacy': typeof PrivacyRoute
   '/talent-feedbacks': typeof TalentFeedbacksRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/moo-verified'
     | '/onboarding'
     | '/onboarding-form'
+    | '/privacy'
     | '/talent-feedbacks'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/moo-verified'
     | '/onboarding'
     | '/onboarding-form'
+    | '/privacy'
     | '/talent-feedbacks'
   id:
     | '__root__'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/moo-verified'
     | '/onboarding'
     | '/onboarding-form'
+    | '/privacy'
     | '/talent-feedbacks'
   fileRoutesById: FileRoutesById
 }
@@ -157,6 +169,7 @@ export interface RootRouteChildren {
   MooVerifiedRoute: typeof MooVerifiedRoute
   OnboardingRoute: typeof OnboardingRoute
   OnboardingFormRoute: typeof OnboardingFormRoute
+  PrivacyRoute: typeof PrivacyRoute
   TalentFeedbacksRoute: typeof TalentFeedbacksRoute
 }
 
@@ -167,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/talent-feedbacks'
       fullPath: '/talent-feedbacks'
       preLoaderRoute: typeof TalentFeedbacksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding-form': {
@@ -245,6 +265,7 @@ const rootRouteChildren: RootRouteChildren = {
   MooVerifiedRoute: MooVerifiedRoute,
   OnboardingRoute: OnboardingRoute,
   OnboardingFormRoute: OnboardingFormRoute,
+  PrivacyRoute: PrivacyRoute,
   TalentFeedbacksRoute: TalentFeedbacksRoute,
 }
 export const routeTree = rootRouteImport

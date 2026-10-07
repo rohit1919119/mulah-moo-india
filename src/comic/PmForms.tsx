@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { CLIENT_CALL_URL, SHEET_URL } from "@/comic/data";
+import { CLIENT_CALL_URL, IN_FORMS_URL, SHEET_URL } from "@/comic/data";
 
 /**
  * The premium site's pop up forms, styled with the same .pm-form look as the
@@ -8,16 +8,16 @@ import { CLIENT_CALL_URL, SHEET_URL } from "@/comic/data";
  *   MandateForm .. "Send a mandate" / "Hire with us"   form_type "client-pricing"
  *   BccForm ...... every BCC invite, partner and host CTA  form_type "bcc-request"
  *
- * Both post to the shared Apps Script (SHEET_URL) with mode "no-cors", tagged
- * with form_type and source "mulahmoo.in". See docs/apps-script-forms.md for
- * the script branches and tab columns.
+ * The mandate form posts to the shared Apps Script (SHEET_URL). The BCC form
+ * posts to the mulahmoo.in forms script (IN_FORMS_URL, apps-script/Code.gs).
+ * All use mode "no-cors" and carry form_type and source "mulahmoo.in".
  */
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
-async function post(body: Record<string, unknown>) {
-  await fetch(SHEET_URL, {
+async function post(body: Record<string, unknown>, url = SHEET_URL) {
+  await fetch(url, {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
@@ -147,6 +147,7 @@ export function MandateForm({ open, onClose }: { open: boolean; onClose: () => v
           <label><span>Anything else <i>optional</i></span><textarea id="mf-notes" rows={2} value={f.notes} onChange={(e) => set("notes", e.target.value)} /></label>
           {err && <p className="err" role="alert">{err}</p>}
           <button type="submit" className="pm-btn lg block" disabled={state === "sending"}>{state === "sending" ? "Sending..." : "Send mandate"}</button>
+          <p className="pmf-consent">By sending this you agree to our <a href="/privacy" {...ext}>privacy policy</a>.</p>
           <p className="pmf-alt">Prefer to talk first? <a href={CLIENT_CALL_URL} {...ext}>Book a 30 min call</a></p>
         </form>
       )}
@@ -186,7 +187,7 @@ export function BccForm({ open, onClose, intent: start }: { open: boolean; onClo
     if (attend && !f.link.trim()) return setErr("Please add your LinkedIn or Instagram.");
     setState("sending");
     try {
-      await post({ form_type: "bcc-request", ...f });
+      await post({ form_type: "bcc-request", ...f }, IN_FORMS_URL);
       setState("done");
     } catch {
       setState("idle");
@@ -220,6 +221,7 @@ export function BccForm({ open, onClose, intent: start }: { open: boolean; onClo
           <label><span>{attend ? "What would you bring to the room" : "Tell us a little more"} <i>optional</i></span><textarea id="bf-note" rows={2} value={f.note} onChange={(e) => set("note", e.target.value)} /></label>
           {err && <p className="err" role="alert">{err}</p>}
           <button type="submit" className="pm-btn lg block" disabled={state === "sending"}>{state === "sending" ? "Sending..." : BCC_COPY[f.intent].btn}</button>
+          <p className="pmf-consent">By sending this you agree to our <a href="/privacy" {...ext}>privacy policy</a>.</p>
         </form>
       )}
     </Modal>
@@ -246,6 +248,8 @@ export const PMF_CSS = `
 .pmf-alt{ font-size:14px; color:#D8CCF2; text-align:center; margin:0 !important; }
 .pmf-alt a{ color:var(--sun); text-decoration:underline; text-underline-offset:3px; }
 .pm-form .pm-btn.outline{ background:transparent; color:#fff !important; border-color:rgba(255,255,255,.35); }
+.pmf-consent{ font-size:12.5px; color:#A897D0; text-align:center; margin:-4px 0 0 !important; }
+.pmf-consent a{ color:#D8CCF2; text-decoration:underline; text-underline-offset:2px; }
 .pmf-doneact{ display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
 @keyframes pmfIn{ from{ opacity:0; } }
 @keyframes pmfUp{ from{ opacity:0; transform:translateY(24px) scale(.98); } }
