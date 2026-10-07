@@ -17,6 +17,7 @@ import { Route as MooTalentFormRouteImport } from './routes/moo-talent-form'
 import { Route as MooTalentRouteImport } from './routes/moo-talent'
 import { Route as MooCircleRouteImport } from './routes/moo-circle'
 import { Route as ClientFeedbacksRouteImport } from './routes/client-feedbacks'
+import { Route as BccRouteImport } from './routes/bcc'
 import { Route as IndexRouteImport } from './routes/index'
 
 const TalentFeedbacksRoute = TalentFeedbacksRouteImport.update({
@@ -59,6 +60,11 @@ const ClientFeedbacksRoute = ClientFeedbacksRouteImport.update({
   path: '/client-feedbacks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BccRoute = BccRouteImport.update({
+  id: '/bcc',
+  path: '/bcc',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -67,6 +73,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bcc': typeof BccRoute
   '/client-feedbacks': typeof ClientFeedbacksRoute
   '/moo-circle': typeof MooCircleRoute
   '/moo-talent': typeof MooTalentRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bcc': typeof BccRoute
   '/client-feedbacks': typeof ClientFeedbacksRoute
   '/moo-circle': typeof MooCircleRoute
   '/moo-talent': typeof MooTalentRoute
@@ -90,6 +98,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bcc': typeof BccRoute
   '/client-feedbacks': typeof ClientFeedbacksRoute
   '/moo-circle': typeof MooCircleRoute
   '/moo-talent': typeof MooTalentRoute
@@ -103,6 +112,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/bcc'
     | '/client-feedbacks'
     | '/moo-circle'
     | '/moo-talent'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/bcc'
     | '/client-feedbacks'
     | '/moo-circle'
     | '/moo-talent'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/bcc'
     | '/client-feedbacks'
     | '/moo-circle'
     | '/moo-talent'
@@ -137,6 +149,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BccRoute: typeof BccRoute
   ClientFeedbacksRoute: typeof ClientFeedbacksRoute
   MooCircleRoute: typeof MooCircleRoute
   MooTalentRoute: typeof MooTalentRoute
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientFeedbacksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bcc': {
+      id: '/bcc'
+      path: '/bcc'
+      fullPath: '/bcc'
+      preLoaderRoute: typeof BccRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -217,6 +237,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BccRoute: BccRoute,
   ClientFeedbacksRoute: ClientFeedbacksRoute,
   MooCircleRoute: MooCircleRoute,
   MooTalentRoute: MooTalentRoute,

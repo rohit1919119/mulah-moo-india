@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ClientHome } from "@/comic/ClientHome";
+import { PremiumHome } from "@/comic/PremiumHome";
 import { FONT_LINKS } from "@/comic/data";
 
 // "/" is the client-facing home page. The talent landing lives at /moo-talent,
@@ -13,13 +13,13 @@ import { FONT_LINKS } from "@/comic/data";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Mulah Moo - Creative Hiring Partner for Elites" },
+      { title: "Mulah Moo · Marketing teams for top internet brands" },
       {
         name: "description",
         content:
           "We build marketing teams for top internet brands. Editors, designers, producers, writers, strategists and marketing leaders for creators, agencies and brands across India.",
       },
-      { property: "og:title", content: "Mulah Moo - Creative Hiring Partner for Elites" },
+      { property: "og:title", content: "Mulah Moo · Marketing teams for top internet brands" },
       {
         property: "og:description",
         content: "Top 1% creative talent for content first brands, creators and studios across India",
@@ -28,5 +28,7 @@ export const Route = createFileRoute("/")({
     ],
     links: FONT_LINKS,
   }),
-  component: ClientHome,
+  // The premium layout. The previous home is ClientHome in @/comic/ClientHome;
+  // swap it back here to restore it.
+  component: PremiumHome,
 });
