@@ -160,13 +160,13 @@ export const CONSULT = {
 
 // Discovery call for clients who want to hire creatives. Separate tool and
 // separate audience from CONSULT, which is the paid talent-side session.
-export const CLIENT_CALL_URL = "https://calendly.com/aeerohit/30min";
+export const CLIENT_CALL_URL = "https://calendly.com/rohit-mulahmoo/30min";
 
 // The talent-side call, used by /moo-verified. Same calendar as the client one
 // today, but a separate constant so the two can diverge without hunting through
 // components - and so a talent call never accidentally points at CONSULT, which
 // is the paid Topmate session and a different thing entirely.
-export const TALENT_CALL_URL = "https://calendly.com/aeerohit/30min";
+export const TALENT_CALL_URL = "https://calendly.com/rohit-mulahmoo/30min";
 
 /**
  * Monthly intake for engagement 01, building a core content team from scratch.

@@ -2,17 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { PM_CSS, useCountUp, useMagnetic, useReveals } from "@/comic/PremiumHome";
 import { FONT_PAIRS } from "@/comic/premiumData";
+import { BccForm, PMF_CSS, type BccIntent } from "@/comic/PmForms";
 
 /**
  * mulahmoo.in/bcc: Backstage Creators Club, in the same design language as
  * the home page (shared PM_CSS, fonts and motion), with its own accents.
  *
- * PLACEHOLDERS: the invite link is an email until a form or WhatsApp invite
- * link exists, and the Mumbai edition's attendee count is not filled in.
+ * Every invite, partner and host CTA opens BccForm (form_type "bcc-request").
+ * Landing on /bcc#invite opens the invite form straight away.
+ *
+ * PLACEHOLDER: the Mumbai edition's attendee count is not filled in.
  */
 
-const INVITE = "mailto:Rohit@mulahmoo.com?subject=BCC%20Invite%20Request";
-const PARTNER = "mailto:Rohit@mulahmoo.com?subject=BCC%20Partnership";
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 
 const HERO_STATS: { big: string; to?: number; label: string }[] = [
@@ -31,11 +32,11 @@ const WHO = [
 ];
 
 const PASSES = [
-  { tag: "Attend", seats: "20 seats", name: "Member seat", tone: "dark", cta: "Request an invite", href: INVITE,
+  { tag: "Attend", seats: "20 seats", name: "Member seat", tone: "dark", cta: "Request an invite", intent: "Attend" as BccIntent,
     points: ["A closed door evening with senior leads", "Coffee, food and real conversation", "Access to the private WhatsApp circle"] },
-  { tag: "Partner", seats: "1 per edition", name: "Founding partner", tone: "purple", cta: "Become a partner", href: PARTNER,
+  { tag: "Partner", seats: "1 per edition", name: "Founding partner", tone: "purple", cta: "Become a partner", intent: "Partner" as BccIntent,
     points: ["Personal intros to 20 decision makers", "A warm brand mention on the night", "Featured in recaps across socials"] },
-  { tag: "Host", seats: "New cities", name: "Host a city", tone: "light", cta: "Get in touch", href: "mailto:Rohit@mulahmoo.com?subject=Host%20BCC",
+  { tag: "Host", seats: "New cities", name: "Host a city", tone: "light", cta: "Get in touch", intent: "Host a city" as BccIntent,
     points: ["Bring the club to your city", "We curate the room with you", "A co branded edition"] },
 ];
 
@@ -58,12 +59,15 @@ const FAQS = [
   { q: "Does it cost anything to attend?", a: "No. Seats are by invite only. Each edition is supported by a single partner brand." },
   { q: "How many people are in the room?", a: "Around 20 per edition. Small enough that everyone actually talks to everyone." },
   { q: "Which cities do you host in?", a: "Delhi and Mumbai so far, with more cities on the way. Members hear about the next room first, on WhatsApp." },
-  { q: "How can my brand partner with the club?", a: "There is one partner per edition. Write to Rohit@mulahmoo.com and we will send the current partner deck." },
+  { q: "How can my brand partner with the club?", a: "There is one partner per edition. Use the partner form on this page and we will send the current partner deck." },
 ];
 
 export function BccPage() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(0);
+  const [form, setForm] = useState<BccIntent | null>(null);
+  const [intent, setIntent] = useState<BccIntent>("Attend");
+  const ask = (i: BccIntent) => { setIntent(i); setForm(i); };
   const statRef = useRef<HTMLDivElement>(null);
   const p = useCountUp(statRef, 1600);
   useReveals();
@@ -76,6 +80,14 @@ export function BccPage() {
     return () => window.removeEventListener("scroll", on);
   }, []);
 
+  // /bcc#invite, linked from the home page, opens the invite form directly
+  useEffect(() => {
+    const check = () => { if (window.location.hash === "#invite") ask("Attend"); };
+    check();
+    window.addEventListener("hashchange", check);
+    return () => window.removeEventListener("hashchange", check);
+  }, []);
+
   const pair = FONT_PAIRS[0];
   const vars = { "--display": pair.display, "--ui": pair.ui, "--dw": 400 } as React.CSSProperties;
   const count = (big: string, to: number | undefined) =>
@@ -83,7 +95,7 @@ export function BccPage() {
 
   return (
     <div className="pm bc" style={vars}>
-      <style dangerouslySetInnerHTML={{ __html: PM_CSS + BC_CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: PM_CSS + BC_CSS + PMF_CSS }} />
 
       <header className={scrolled ? "pm-nav solid" : "pm-nav"}>
         <div className="pm-navpill">
@@ -96,7 +108,7 @@ export function BccPage() {
             <a href="#partner">Partner</a>
             <a href="#faq">FAQ</a>
           </nav>
-          <a href={INVITE} className="pm-btn sm" data-mag>Request invite</a>
+          <button type="button" onClick={() => ask("Attend")} className="pm-btn sm" data-mag>Request invite</button>
         </div>
       </header>
 
@@ -109,7 +121,7 @@ export function BccPage() {
           <h1>Backstage<br /><em>Creators Club.</em></h1>
           <p className="bc-lede">The most senior room in Indian content.</p>
           <div className="pm-actions center">
-            <a href={INVITE} className="pm-btn sun lg" data-mag>Request an invite</a>
+            <button type="button" onClick={() => ask("Attend")} className="pm-btn sun lg" data-mag>Request an invite</button>
             <a href="#partner" className="pm-btn outline lg" data-mag>Partner with us</a>
           </div>
           <div className="pm-impact bc-stats" ref={statRef}>
@@ -158,7 +170,7 @@ export function BccPage() {
                 <div className="top"><span>{x.tag}</span><span>{x.seats}</span></div>
                 <h3>{x.name}</h3>
                 <ul>{x.points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
-                <a href={x.href} className={x.tone === "purple" ? "pm-btn light" : x.tone === "dark" ? "pm-btn sun" : "pm-btn"} data-mag>{x.cta}</a>
+                <button type="button" onClick={() => ask(x.intent)} className={x.tone === "purple" ? "pm-btn light" : x.tone === "dark" ? "pm-btn sun" : "pm-btn"} data-mag>{x.cta}</button>
               </article>
             ))}
           </div>
@@ -174,8 +186,8 @@ export function BccPage() {
             ))}
           </div>
           <div className="pm-actions center" data-r>
-            <a href={PARTNER} className="pm-btn lg" data-mag>Partner with the club</a>
-            <a href="mailto:Rohit@mulahmoo.com?subject=BCC%20Partner%20Deck" className="pm-btn ghost lg" data-mag>Request the deck</a>
+            <button type="button" onClick={() => ask("Partner")} className="pm-btn lg" data-mag>Partner with the club</button>
+            <button type="button" onClick={() => ask("Partner")} className="pm-btn ghost lg" data-mag>Request the deck</button>
           </div>
         </div>
       </section>
@@ -243,7 +255,7 @@ export function BccPage() {
           <h2>Join the<br /><em>next room.</em></h2>
           <p className="bc-lede">Tell us what you run and who you make it for. Every request is read by a person.</p>
           <div className="pm-actions center">
-            <a href={INVITE} className="pm-btn sun lg" data-mag>Request an invite</a>
+            <button type="button" onClick={() => ask("Attend")} className="pm-btn sun lg" data-mag>Request an invite</button>
           </div>
         </div>
       </section>
@@ -263,9 +275,9 @@ export function BccPage() {
             </div>
             <div>
               <p className="pm-kicker">Get involved</p>
-              <a href={INVITE}>Request an invite</a>
-              <a href={PARTNER}>Partner with us</a>
-              <a href="mailto:Rohit@mulahmoo.com?subject=Host%20BCC">Host a city</a>
+              <button type="button" className="pm-footlink" onClick={() => ask("Attend")}>Request an invite</button>
+              <button type="button" className="pm-footlink" onClick={() => ask("Partner")}>Partner with us</button>
+              <button type="button" className="pm-footlink" onClick={() => ask("Host a city")}>Host a city</button>
             </div>
             <div>
               <p className="pm-kicker">Follow</p>
@@ -277,6 +289,7 @@ export function BccPage() {
         </div>
         <div className="pm-wrap pm-legal">&copy; 2026 Backstage Creators Club &middot; <Link to="/">A Mulah Moo community</Link></div>
       </footer>
+      <BccForm open={form !== null} intent={intent} onClose={() => { setForm(null); if (window.location.hash === "#invite") history.replaceState(null, "", window.location.pathname); }} />
     </div>
   );
 }

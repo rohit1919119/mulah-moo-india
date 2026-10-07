@@ -15,12 +15,6 @@
 //
 // Anything still to be confirmed or replaced is marked PLACEHOLDER.
 
-import { CLIENT_CALL_URL } from "@/comic/data";
-
-/** PLACEHOLDER: point at the Helium client mandate form once it has a public
- *  URL; until then it books a call. */
-export const MANDATE_URL = CLIENT_CALL_URL;
-
 export const IMPACT: { big: string; to: number; label: string }[] = [
   { big: "50+", to: 50, label: "Teams built in 18 months" },
   { big: "20+", to: 20, label: "Leadership roles closed" },

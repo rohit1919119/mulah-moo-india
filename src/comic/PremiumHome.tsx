@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Logo } from "@/comic/Logo";
-import { V4_CSS } from "@/comic/v4";
-import { PricingForm } from "@/comic/PricingForm";
+import { MandateForm, PMF_CSS } from "@/comic/PmForms";
 import { RAIL_CLIENTS } from "@/comic/clients";
-import { LEGAL_NAME, SHEET_URL, SOCIALS } from "@/comic/data";
+import { CLIENT_CALL_URL, LEGAL_NAME, SHEET_URL, SOCIALS } from "@/comic/data";
 import { MOCKS, STEPS, HM_CSS } from "@/comic/HeliumMock";
 import { Constellation, CN_CSS } from "@/comic/Constellation";
 import { MAP_AE, MAP_CA, MAP_H, MAP_IN, MAP_LAND, MAP_UK, MAP_US, MAP_W, PINS } from "@/comic/worldmap";
 import {
-  COMP_ROWS, COMPARE, ECOSYSTEM, FONT_PAIRS, HERO_SIGNALS, HIRING_FOR, IMPACT, MANDATE_URL, REACH,
+  COMP_ROWS, COMPARE, ECOSYSTEM, FONT_PAIRS, HERO_SIGNALS, HIRING_FOR, IMPACT, REACH,
   ROLE_TICKER, TERMS, VOICES, type Country,
 } from "@/comic/premiumData";
 
@@ -95,7 +94,8 @@ const counted = (big: string, to: number | undefined, p: number) =>
 export function PremiumHome() {
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [pricing, setPricing] = useState(false);
+  const [mandate, setMandate] = useState(false);
+  const openMandate = () => setMandate(true);
   const [font, setFont] = useState(FONT_PAIRS[0].id);
   useReveals();
   useMagnetic();
@@ -116,7 +116,7 @@ export function PremiumHome() {
 
   return (
     <div className="pm" style={vars}>
-      <style dangerouslySetInnerHTML={{ __html: PM_CSS + HM_CSS + CN_CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: PM_CSS + HM_CSS + CN_CSS + PMF_CSS }} />
       <div className="pm-progress" style={{ transform: `scaleX(${progress})` }} aria-hidden="true" />
 
       <header className={scrolled ? "pm-nav solid" : "pm-nav"}>
@@ -127,11 +127,14 @@ export function PremiumHome() {
             <a href="#why">Why us</a>
             <a href="#report">Report</a>
           </nav>
-          <a href={MANDATE_URL} {...ext} className="pm-btn sm" data-mag>Hire with us</a>
+          <div className="pm-navcta">
+            <Link to="/moo-talent" className="pm-btn sm talent" data-mag>For talent</Link>
+            <button type="button" onClick={openMandate} className="pm-btn sm" data-mag>Hire with us</button>
+          </div>
         </div>
       </header>
 
-      <Hero />
+      <Hero onMandate={openMandate} />
       <Strip />
       <Clients />
       <Ecosystem />
@@ -149,8 +152,8 @@ export function PremiumHome() {
         <div className="pm-wrap" data-r>
           <h2>Have a marketing mandate?<br /><em>Let&rsquo;s build the team.</em></h2>
           <div className="pm-actions center">
-            <a href={MANDATE_URL} {...ext} className="pm-btn lg" data-mag>Send a mandate</a>
-            <button type="button" className="pm-btn ghost lg" onClick={() => setPricing(true)} data-mag>Request our fees</button>
+            <button type="button" onClick={openMandate} className="pm-btn lg" data-mag>Send a mandate</button>
+            <a href={CLIENT_CALL_URL} {...ext} className="pm-btn ghost lg" data-mag>Book a 30 min call</a>
           </div>
         </div>
       </section>
@@ -164,7 +167,8 @@ export function PremiumHome() {
           <div className="cols">
             <div>
               <p className="pm-kicker">Clients</p>
-              <a href={MANDATE_URL} {...ext}>Send a mandate</a>
+              <button type="button" className="pm-footlink" onClick={openMandate}>Send a mandate</button>
+              <a href={CLIENT_CALL_URL} {...ext}>Book a call</a>
               <a href="#how">How it works</a>
               <a href="#report">Compensation report</a>
             </div>
@@ -186,17 +190,14 @@ export function PremiumHome() {
 
       <FontTester value={font} onChange={setFont} />
 
-      <div className="v4 pm-v4host">
-        <style dangerouslySetInnerHTML={{ __html: V4_CSS }} />
-        <PricingForm open={pricing} onClose={() => setPricing(false)} />
-      </div>
+      <MandateForm open={mandate} onClose={() => setMandate(false)} />
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ hero */
 
-function Hero() {
+function Hero({ onMandate }: { onMandate: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const p = useCountUp(ref, 1800);
   // Line breaks are explicit: two lines on a laptop, three on a phone.
@@ -224,7 +225,7 @@ function Hero() {
         </h1>
         <div className="pm-herofoot">
           <div className="pm-actions">
-            <a href={MANDATE_URL} {...ext} className="pm-btn light lg" data-mag>Send a mandate</a>
+            <button type="button" onClick={onMandate} className="pm-btn light lg" data-mag>Send a mandate</button>
             <a href="#how" className="pm-btn outline lg" data-mag>See how it works</a>
           </div>
           <div className="pm-impact" ref={ref}>
@@ -1165,6 +1166,12 @@ export const PM_CSS = `
 .pm [data-r].arm{ opacity:0; transform:translateY(40px); transition:opacity 1s ease, transform 1.1s cubic-bezier(.2,.9,.25,1); }
 .pm [data-r].arm.in{ opacity:1; transform:none; }
 .pm a:focus-visible, .pm button:focus-visible, .pm [tabindex]:focus-visible{ outline:2px solid var(--purple); outline-offset:3px; }
-.pm .pm-v4host{ background:none; min-height:0; }
+.pm-navcta{ display:flex; gap:8px; }
+.pm-btn.talent{ background:transparent; color:inherit !important; border-color:currentColor; border-color:rgba(127,110,160,.45); }
+.pm-btn.talent:hover{ background:rgba(127,110,160,.12); box-shadow:none; }
+.pm-footlink{ all:unset; cursor:pointer; }
+.pm-navcta .pm-btn{ white-space:nowrap; }
+.pm-nav:not(.solid) .pm-btn.talent{ background:transparent; color:#fff !important; border-color:rgba(255,255,255,.4); }
+@media (max-width:420px){ .pm-navcta{ gap:6px; } .pm-navcta .pm-btn.sm{ padding:0 12px; font-size:13px; min-height:36px; } .pm-navpill{ padding-left:16px; } }
 @media (prefers-reduced-motion: reduce){ .pm *, .pm *::before{ animation:none !important; transition:none !important; } }
 `;
