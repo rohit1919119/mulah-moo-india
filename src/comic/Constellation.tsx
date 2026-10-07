@@ -9,15 +9,16 @@ import { useEffect, useRef, useState } from "react";
  * hidden, and renders one still frame for readers who prefer reduced motion.
  */
 
-/** Where signals may appear, as fractions of the hero. Kept to the right so
- *  they never sit on the headline. */
+/** Where signals may appear, as fractions of the hero. The headline is
+ *  centred, so they sit in the side gutters; on the right half the label opens
+ *  to the left of its point. */
 const SPOTS: [number, number][] = [
-  [0.7, 0.22], [0.8, 0.36], [0.66, 0.48], [0.78, 0.58], [0.6, 0.3], [0.74, 0.68],
+  [0.07, 0.24], [0.9, 0.3], [0.1, 0.56], [0.88, 0.62], [0.06, 0.4], [0.92, 0.46],
 ];
 
 type P = { x: number; y: number; vx: number; vy: number; r: number; c: string; a: number; tw: number };
 
-export function Constellation({ signals }: { signals: string[] }) {
+export function Constellation({ signals }: { signals: { role: string; ctx: string }[] }) {
   const ref = useRef<HTMLCanvasElement>(null);
   const beacon = useRef<{ x: number; y: number; t: number } | null>(null);
   const [sig, setSig] = useState<{ i: number; spot: number } | null>(null);
@@ -148,11 +149,12 @@ export function Constellation({ signals }: { signals: string[] }) {
       {sig && (
         <span
           key={`${sig.i}-${sig.spot}`}
-          className="cn-signal"
+          className={SPOTS[sig.spot][0] > 0.5 ? "cn-signal flip" : "cn-signal"}
           aria-hidden="true"
           style={{ left: `${SPOTS[sig.spot][0] * 100}%`, top: `${SPOTS[sig.spot][1] * 100}%` }}
         >
-          {signals[sig.i]}
+          <b>{signals[sig.i].role}</b>
+          <small>{signals[sig.i].ctx}</small>
         </span>
       )}
     </>
@@ -161,10 +163,13 @@ export function Constellation({ signals }: { signals: string[] }) {
 
 export const CN_CSS = `
 .cn-canvas{ position:absolute; inset:0; display:block; }
-.cn-signal{ position:absolute; transform:translate(14px,-50%); white-space:nowrap; pointer-events:none;
-  font:600 12.5px/1 var(--ui); letter-spacing:.01em; color:#FFF6DE; padding:9px 13px; border-radius:999px;
-  background:rgba(23,11,48,.72); border:1px solid rgba(245,197,66,.45); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  animation:cnSig 3.2s ease both; }
-@keyframes cnSig{ 0%{ opacity:0; transform:translate(4px,-50%); } 12%,78%{ opacity:1; transform:translate(14px,-50%); } 100%{ opacity:0; transform:translate(20px,-50%); } }
-@media (max-width:820px){ .cn-signal{ display:none; } }
+.cn-signal{ position:absolute; display:flex; flex-direction:column; gap:4px; white-space:nowrap; pointer-events:none;
+  padding:11px 15px 12px; border-radius:14px; color:#FFF6DE;
+  background:rgba(23,11,48,.74); border:1px solid rgba(245,197,66,.42); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  --x:16px; animation:cnSig 3.2s ease both; }
+.cn-signal.flip{ --x:calc(-100% - 16px); }
+.cn-signal b{ font:600 13px/1 var(--ui); color:#fff; }
+.cn-signal small{ font:500 12px/1.2 var(--ui); color:#F5C542; }
+@keyframes cnSig{ 0%{ opacity:0; transform:translate(var(--x),-40%); } 12%,78%{ opacity:1; transform:translate(var(--x),-50%); } 100%{ opacity:0; transform:translate(var(--x),-60%); } }
+@media (max-width:1180px){ .cn-signal{ display:none; } }
 `;

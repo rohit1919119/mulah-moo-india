@@ -7,10 +7,10 @@ import { RAIL_CLIENTS } from "@/comic/clients";
 import { LEGAL_NAME, SHEET_URL, SOCIALS } from "@/comic/data";
 import { MOCKS, STEPS, HM_CSS } from "@/comic/HeliumMock";
 import { Constellation, CN_CSS } from "@/comic/Constellation";
-import { MAP_H, MAP_IN, MAP_LAND, MAP_UK, MAP_US, MAP_W, PINS } from "@/comic/worldmap";
+import { MAP_AE, MAP_CA, MAP_H, MAP_IN, MAP_LAND, MAP_UK, MAP_US, MAP_W, PINS } from "@/comic/worldmap";
 import {
   COMP_ROWS, COMPARE, ECOSYSTEM, FONT_PAIRS, HERO_SIGNALS, HIRING_FOR, IMPACT, MANDATE_URL, REACH,
-  ROLE_TICKER, TERMS, VOICES,
+  ROLE_TICKER, TERMS, VOICES, type Country,
 } from "@/comic/premiumData";
 
 /**
@@ -225,7 +225,6 @@ function Hero() {
           </div>
         </div>
       </div>
-      <p className="pm-hint" aria-hidden="true">Move your cursor through the network</p>
     </section>
   );
 }
@@ -337,12 +336,23 @@ function Ecosystem() {
 
 /* ------------------------------------------------------------ positioning */
 
+/** Who the team has been: label, left %, top %, drift delay. */
+const POS_CHIPS: [string, number, number, number][] = [
+  ["Ex video editor", 7, 16, 0], ["Ex content strategist", 76, 12, 1.4], ["Ex producer", 84, 70, 0.6],
+  ["Ex scriptwriter", 5, 74, 2.1], ["Business operator", 62, 86, 1], ["Ex brand manager", 22, 88, 2.8],
+];
+
 function Positioning() {
   return (
     <section className="pm-pos" id="approach">
+      <div className="pm-poschips" aria-hidden="true">
+        {POS_CHIPS.map(([label, x, y, d], i) => (
+          <span key={label} className={`chip c${i % 3}`} style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${d}s` }}><i />{label}</span>
+        ))}
+      </div>
       <div className="pm-wrap pm-posin">
         <h2 data-r>
-          We are not HR.{" "}
+          <span className="not">We are not <s>HR</s>.</span>
           <em>We are ex creatives and business professionals building the talent intelligence tool the creative
             ecosystem has been missing.</em>
         </h2>
@@ -368,7 +378,15 @@ function How() {
   return (
     <section className="pm-sec" id="how">
       <div className="pm-wrap">
-        <h2 className="pm-h" data-r>From mandate to hire, <em>on Helium.</em></h2>
+        <div className="pm-helium" data-r>
+          <span className="he" aria-hidden="true"><small>2</small>He<i>4.0026</i></span>
+          <div>
+            <p className="tag">Our innovation</p>
+            <p className="name">Helium</p>
+            <p className="sub">The talent intelligence platform for the creator economy.</p>
+          </div>
+        </div>
+        <h2 className="pm-h" data-r>From mandate <em>to hire.</em></h2>
         <div className="pm-how">
           <div className="pm-howsteps">
             {STEPS.map((s, i) => {
@@ -552,27 +570,34 @@ function ReportForm() {
 /* ------------------------------------------------------------------ reach */
 
 function Reach() {
-  const [on, setOn] = useState<"in" | "us" | "uk" | null>(null);
-  const dim = (k: "in" | "us" | "uk") => (on && on !== k ? " dim" : on === k ? " lit" : "");
+  const [on, setOn] = useState<Country | null>(null);
+  const cls = (k: Country, base: string) => `${base}${on && on !== k ? " dim" : on === k ? " lit" : ""}`;
+  const paths: [Country, string][] = [["us", MAP_US], ["ca", MAP_CA], ["uk", MAP_UK], ["ae", MAP_AE], ["in", MAP_IN]];
+  const home = PINS.in;
   return (
     <section className="pm-reach" id="reach">
       <div className="pm-wrap">
-        <h2 className="pm-h" data-r>Built in India. <em>Hired across three markets.</em></h2>
+        <h2 className="pm-h" data-r>Built in India. <em>Hired across five markets.</em></h2>
         <div className="pm-map" data-r>
-          <svg viewBox={`0 0 ${MAP_W} ${MAP_H}`} role="img" aria-label="World map highlighting India, the United States and the United Kingdom">
+          <svg viewBox={`0 0 ${MAP_W} ${MAP_H}`} role="img" aria-label="World map highlighting India, the United States, the United Kingdom, the UAE and Canada">
             <path d={MAP_LAND} className="land" />
-            <path d={MAP_US} className={`hi${dim("us")}`} />
-            <path d={MAP_UK} className={`hi${dim("uk")}`} />
-            <path d={MAP_IN} className={`home${dim("in")}`} />
-            <path className="arc" d={`M${PINS.delhi[0]} ${PINS.delhi[1]} Q ${(PINS.delhi[0] + PINS.london[0]) / 2} ${PINS.london[1] - 80} ${PINS.london[0]} ${PINS.london[1]}`} />
-            <path className="arc" d={`M${PINS.delhi[0]} ${PINS.delhi[1]} Q ${(PINS.delhi[0] + PINS.newyork[0]) / 2} ${PINS.newyork[1] - 170} ${PINS.newyork[0]} ${PINS.newyork[1]}`} />
-            {([["delhi", "Delhi", "in"], ["london", "London", "uk"], ["newyork", "New York", "us"]] as const).map(([k, label, c]) => (
-              <g key={k} transform={`translate(${PINS[k][0]} ${PINS[k][1]})`} className={`pinwrap${dim(c)}`}>
-                <circle r="16" className={c === "in" ? "pulse home" : "pulse"} />
-                <circle r="5" className={c === "in" ? "pin home" : "pin"} />
-                <text x="10" y="-10" className="lbl">{label}</text>
-              </g>
-            ))}
+            {paths.map(([k, d]) => <path key={k} d={d} className={cls(k, k === "in" ? "home" : "hi")} />)}
+            {(["us", "ca", "uk", "ae"] as const).map((k) => {
+              const [x, y] = PINS[k];
+              const lift = Math.max(40, Math.abs(home[0] - x) * 0.32);
+              return <path key={k} className={cls(k, "arc")} d={`M${home[0]} ${home[1]} Q ${(home[0] + x) / 2} ${Math.min(home[1], y) - lift} ${x} ${y}`} />;
+            })}
+            {REACH.map((r) => {
+              const [x, y] = PINS[r.key];
+              const left = r.key === "ae";
+              return (
+                <g key={r.key} transform={`translate(${x} ${y})`} className={cls(r.key, "pinwrap")}>
+                  <circle r="16" className={r.key === "in" ? "pulse home" : "pulse"} />
+                  <circle r="5" className={r.key === "in" ? "pin home" : "pin"} />
+                  <text x={left ? -10 : 10} y="-10" textAnchor={left ? "end" : "start"} className="lbl">{r.country}</text>
+                </g>
+              );
+            })}
           </svg>
         </div>
         <div className="pm-reachgrid" data-r>
@@ -588,7 +613,7 @@ function Reach() {
             >
               <span className="ctry"><i />{r.country}</span>
               <span className="role">{r.role}</span>
-              <span className="cl">{r.clients}</span>
+              {r.clients && <span className="cl">{r.clients}</span>}
             </button>
           ))}
         </div>
@@ -661,9 +686,12 @@ function Community() {
         </div>
         <div className="pm-arc" ref={ref} aria-hidden="true" data-r>
           <svg viewBox="0 0 520 300" className="arcline"><path d="M20 290 A240 240 0 0 1 500 290" /><path d="M80 290 A180 180 0 0 1 440 290" className="in2" /></svg>
-          <img src="/bcc/delhi-2.jpg" alt="" className="ph p1" data-depth="18" />
-          <img src="/bcc/members.jpg" alt="" className="ph p2" data-depth="34" />
-          <img src="/bcc/delhi-1.jpg" alt="" className="ph p3" data-depth="22" />
+          <img src="/bcc/delhi-2.jpg" alt="" className="ph p1" data-depth="16" />
+          <img src="/bcc/mumbai-1.jpg" alt="" className="ph p2" data-depth="34" />
+          <img src="/bcc/mumbai-2.jpg" alt="" className="ph p3" data-depth="20" />
+          <img src="/bcc/members.jpg" alt="" className="ph p4" data-depth="44" />
+          <img src="/bcc/delhi-1.jpg" alt="" className="ph p5" data-depth="40" />
+          <span className="tagm" data-depth="30">Mumbai</span>
           <span className="dot d1" data-depth="50" /><span className="dot d2" data-depth="42" /><span className="dot d3" data-depth="28" />
         </div>
       </div>
@@ -769,23 +797,23 @@ const PM_CSS = `
 .pm-hero{ position:relative; overflow:hidden; background:var(--deeper); color:#fff; min-height:max(720px,min(960px,100vh)); display:flex; }
 .pm-hero-glow{ position:absolute; inset:0; pointer-events:none;
   background:radial-gradient(60% 70% at 85% 10%, rgba(136,86,242,.38), transparent 70%), radial-gradient(40% 50% at 0% 100%, rgba(245,197,66,.10), transparent 70%); }
-.pm-herobody{ position:relative; z-index:2; width:100%; display:flex; flex-direction:column; justify-content:flex-end; padding-top:150px; padding-bottom:72px; pointer-events:none; }
+.pm-herobody{ position:relative; z-index:2; width:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding-top:150px; padding-bottom:72px; pointer-events:none; }
 .pm-herobody a, .pm-herobody button{ pointer-events:auto; }
-.pm-hero h1{ font-size:clamp(52px,7.4vw,120px); line-height:.98; letter-spacing:-.035em; max-width:13.5ch; }
-.pm-hero h1 .w{ display:inline-block; margin-right:.22em; animation:pmWord 1s cubic-bezier(.2,.9,.25,1) both; }
+.pm-hero h1{ font-size:clamp(52px,7.4vw,120px); line-height:.98; letter-spacing:-.035em; max-width:13.5ch; margin:0 auto !important; }
+.pm-hero h1 .w{ display:inline-block; margin:0 .11em; animation:pmWord 1s cubic-bezier(.2,.9,.25,1) both; }
 .pm-hero h1 em.w{ color:#D3C2FF; }
 @keyframes pmWord{ from{ opacity:0; transform:translateY(.45em); filter:blur(8px); } to{ opacity:1; transform:none; filter:none; } }
-.pm-herofoot{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:40px; margin-top:56px; }
+.pm-herofoot{ display:flex; flex-direction:column; align-items:center; gap:64px; margin-top:52px; }
 .pm-herofoot .pm-actions{ margin-top:0; }
 .pm-impact{ display:grid; grid-template-columns:repeat(4,auto); gap:0; }
-.pm-impact div{ padding:0 28px; border-left:1px solid rgba(255,255,255,.16); display:flex; flex-direction:column; gap:6px; }
+.pm-impact div{ padding:0 36px; border-left:1px solid rgba(255,255,255,.16); display:flex; flex-direction:column; align-items:center; gap:6px; }
+.pm-impact div:first-child{ border-left:0; }
 .pm-impact b{ font-size:clamp(36px,3.6vw,56px); line-height:1; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
 .pm-impact div:nth-child(4) b{ color:var(--sun); }
-.pm-impact span{ font-size:13px; color:#BBAEDD; max-width:13ch; line-height:1.4; }
-.pm-hint{ position:absolute; right:40px; top:110px; z-index:2; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.4); }
+.pm-impact span{ font-size:13px; color:#BBAEDD; max-width:14ch; line-height:1.4; }
 @media (max-width:1060px){ .pm-impact{ grid-template-columns:repeat(2,auto); row-gap:24px; } }
 @media (max-width:640px){ .pm-hero{ min-height:0; } .pm-herobody{ padding-top:130px; } .pm-impact{ width:100%; grid-template-columns:1fr 1fr; }
-  .pm-impact div{ padding:0 16px; } .pm-impact div:nth-child(odd){ border-left:0; padding-left:0; } .pm-hint{ display:none; } }
+  .pm-impact div{ padding:0 12px; } .pm-impact div:nth-child(odd){ border-left:0; } }
 
 /* roles strip */
 .pm-strip{ background:var(--deep); color:#fff; overflow:hidden; border-top:1px solid rgba(255,255,255,.08); }
@@ -846,13 +874,35 @@ const PM_CSS = `
 /* positioning */
 .pm-pos{ background:var(--deep); color:#fff; position:relative; overflow:hidden; }
 .pm-pos::before{ content:''; position:absolute; inset:0; background:radial-gradient(50% 80% at 100% 0%, rgba(136,86,242,.35), transparent 70%); }
-.pm-posin{ position:relative; padding-top:200px; padding-bottom:200px; }
-.pm-pos h2{ font-size:clamp(40px,5vw,80px); line-height:1.08; max-width:24ch; }
+.pm-posin{ position:relative; z-index:1; padding-top:220px; padding-bottom:220px; text-align:center; }
+.pm-pos h2{ font-size:clamp(38px,4.6vw,74px); line-height:1.1; max-width:22ch; margin:0 auto !important; }
+.pm-pos h2 .not{ display:block; margin-bottom:.35em; font-size:1.25em; }
+.pm-pos h2 s{ text-decoration:none; position:relative; display:inline-block; color:rgba(255,255,255,.55); }
+.pm-pos h2 s::after{ content:''; position:absolute; left:-6%; right:-6%; top:54%; height:.09em; border-radius:1em; background:var(--sun);
+  transform:rotate(-4deg) scaleX(1); transform-origin:0 50%; transition:transform .9s cubic-bezier(.7,0,.2,1) .55s; }
+.pm-pos [data-r].arm:not(.in) s::after{ transform:rotate(-4deg) scaleX(0); }
 .pm-pos h2 em{ color:#C9B6FF; }
+.pm-poschips{ position:absolute; inset:0; pointer-events:none; }
+.pm-poschips .chip{ position:absolute; display:inline-flex; align-items:center; gap:9px; padding:10px 16px; border-radius:999px; white-space:nowrap;
+  font:500 13.5px/1 var(--ui); color:#E8DEFF; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); animation:pmDrift 9s ease-in-out infinite alternate; }
+.pm-poschips .chip i{ width:7px; height:7px; border-radius:50%; background:var(--sun); }
+.pm-poschips .chip.c1 i{ background:#C9B6FF; } .pm-poschips .chip.c2 i{ background:#fff; }
+@keyframes pmDrift{ from{ transform:translate(0,0); } to{ transform:translate(14px,-18px); } }
+@media (max-width:1000px){ .pm-poschips{ display:none; } }
 @media (max-width:760px){ .pm-posin{ padding-top:120px; padding-bottom:120px; } }
 
 /* how it works: steps scroll, the product view stays */
 .pm-how{ display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:96px; }
+.pm-helium{ display:flex; align-items:center; gap:22px; margin-bottom:56px; }
+.pm-helium .he{ position:relative; width:96px; height:96px; flex:none; border-radius:20px; background:var(--deep); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:var(--dw); font-size:44px; letter-spacing:-.02em;
+  box-shadow:0 18px 40px -16px rgba(36,18,71,.6), inset 0 0 0 1px rgba(255,255,255,.08); }
+.pm-helium .he small{ position:absolute; left:12px; top:9px; font:600 12px var(--ui); color:var(--sun); }
+.pm-helium .he i{ position:absolute; left:0; right:0; bottom:9px; text-align:center; font:500 9.5px var(--ui); font-style:normal; color:#BBAEDD; letter-spacing:.04em; }
+.pm-helium .tag{ font-size:11.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--purple); }
+.pm-helium .name{ font-family:var(--display); font-weight:var(--dw); font-size:34px; line-height:1.1; letter-spacing:-.01em; }
+.pm-helium .sub{ font-size:16px; color:var(--body); }
 .pm-howsteps .step{ min-height:62vh; display:flex; flex-direction:column; justify-content:center; padding:24px 0; opacity:.28; transition:opacity .5s; }
 .pm-howsteps .step:first-child{ min-height:44vh; justify-content:flex-start; }
 .pm-howsteps .step.on{ opacity:1; }
@@ -882,12 +932,12 @@ const PM_CSS = `
 .pm-segthumb{ position:absolute; top:5px; bottom:5px; left:5px; width:calc(50% - 5px); border-radius:999px; background:var(--deep); transition:transform .45s cubic-bezier(.2,.9,.25,1); }
 .pm-segthumb.boards{ transform:translateX(100%); }
 .pm-why{ border-top:1px solid var(--ink); }
-.pm-whycols, .pm-whyrow{ display:grid; grid-template-columns:minmax(0,.7fr) minmax(0,1.2fr) minmax(0,1fr); gap:32px; }
+.pm-whycols, .pm-whyrow{ display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.2fr) minmax(0,.9fr); gap:32px; }
 .pm-whycols{ padding:22px 0; font-size:13px; font-weight:600; color:var(--muted); }
 .pm-whycols .us{ color:var(--deep); display:flex; align-items:center; }
 .pm-whyrow{ padding:30px 0; border-top:1px solid var(--line); transition:background .3s; }
 .pm-whyrow:hover{ background:rgba(255,255,255,.5); }
-.pm-whyrow .k{ font-size:14px; font-weight:600; color:var(--muted); display:flex; gap:14px; }
+.pm-whyrow .k{ font-size:16px; font-weight:600; color:var(--ink); display:flex; gap:14px; line-height:1.4; padding-top:3px; }
 .pm-whyrow .k span{ color:var(--purple); }
 .pm-whyrow .us{ font-family:var(--display); font-weight:var(--dw); font-size:clamp(22px,1.9vw,28px); line-height:1.2; color:var(--ink); }
 .pm-whyrow .them{ font-size:16px; color:var(--muted); animation:pmIn .45s ease; padding-top:4px; }
@@ -948,7 +998,8 @@ const PM_CSS = `
 .pm-map .home{ stroke:var(--sun); stroke-width:3.8; }
 .pm-map .dim{ opacity:.25; }
 .pm-map .hi.lit{ stroke:#fff; }
-.pm-map .arc{ fill:none; stroke:rgba(245,197,66,.65); stroke-width:1.5; stroke-dasharray:4 6; animation:pmDash 2.4s linear infinite; }
+.pm-map .arc{ fill:none; stroke:rgba(245,197,66,.6); stroke-width:1.5; stroke-dasharray:4 6; animation:pmDash 2.4s linear infinite; transition:opacity .4s, stroke .4s; }
+.pm-map .arc.lit{ stroke:var(--sun); }
 @keyframes pmDash{ to{ stroke-dashoffset:-20; } }
 .pm-map .pinwrap{ transition:opacity .4s; }
 .pm-map .pin{ fill:#C9B6FF; stroke:var(--deeper); stroke-width:2; } .pm-map .pin.home{ fill:var(--sun); }
@@ -956,17 +1007,18 @@ const PM_CSS = `
 .pm-map .pulse.home{ fill:rgba(245,197,66,.3); }
 @keyframes pmPulse{ from{ transform:scale(.3); opacity:1; } to{ transform:scale(1.5); opacity:0; } }
 .pm-map .lbl{ fill:#fff; font:600 13px var(--ui); paint-order:stroke; stroke:var(--deeper); stroke-width:4px; }
-.pm-reachgrid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-top:48px; }
+.pm-reachgrid{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; margin-top:48px; }
 .pm-reachgrid button{ text-align:left; font:inherit; color:#fff; cursor:default; display:flex; flex-direction:column; gap:10px; border:1px solid rgba(255,255,255,.12);
-  border-radius:24px; padding:30px; background:rgba(255,255,255,.03); transition:border-color .3s, background .3s, transform .3s; }
+  border-radius:22px; padding:24px; background:rgba(255,255,255,.03); transition:border-color .3s, background .3s, transform .3s; }
 .pm-reachgrid button.on{ border-color:rgba(201,182,255,.5); background:rgba(255,255,255,.06); transform:translateY(-4px); }
 .pm-reachgrid .home.on{ border-color:rgba(245,197,66,.6); }
 .pm-reachgrid .ctry{ display:flex; align-items:center; gap:10px; font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:#C9B6FF; }
 .pm-reachgrid .ctry i{ width:8px; height:8px; border-radius:50%; background:#C9B6FF; }
 .pm-reachgrid .home .ctry{ color:var(--sun); } .pm-reachgrid .home .ctry i{ background:var(--sun); }
-.pm-reachgrid .role{ font-size:28px; line-height:1.15; letter-spacing:-.01em; }
+.pm-reachgrid .role{ font-size:23px; line-height:1.15; letter-spacing:-.01em; }
 .pm-reachgrid .cl{ font-size:14.5px; color:#BBAEDD; }
-@media (max-width:900px){ .pm-reachgrid{ grid-template-columns:1fr; } .pm-reach{ padding:110px 0; } }
+@media (max-width:1100px){ .pm-reachgrid{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media (max-width:700px){ .pm-reachgrid{ grid-template-columns:1fr 1fr; } .pm-reach{ padding:110px 0; } }
 
 /* voices */
 .pm-voicehead{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:72px; }
@@ -996,7 +1048,12 @@ const PM_CSS = `
 .pm-arc .arcline path{ fill:none; stroke:rgba(201,182,255,.35); stroke-width:1.5; stroke-dasharray:2 8; }
 .pm-arc .arcline path.in2{ stroke:rgba(245,197,66,.4); }
 .pm-arc .ph{ position:absolute; border-radius:50%; object-fit:cover; border:3px solid #0E0A1A; box-shadow:0 0 0 1px rgba(201,182,255,.4), 0 24px 50px -12px rgba(0,0,0,.7); transition:transform .25s ease-out; }
-.pm-arc .p1{ width:30%; aspect-ratio:1; left:3%; top:38%; } .pm-arc .p2{ width:40%; aspect-ratio:1; left:30%; top:0; } .pm-arc .p3{ width:30%; aspect-ratio:1; right:3%; top:38%; }
+.pm-arc .p1{ width:24%; aspect-ratio:1; left:0; top:46%; }
+.pm-arc .p2{ width:40%; aspect-ratio:1; left:30%; top:4%; }
+.pm-arc .p3{ width:26%; aspect-ratio:1; right:0; top:44%; }
+.pm-arc .p4{ width:16%; aspect-ratio:1; left:12%; top:6%; }
+.pm-arc .p5{ width:16%; aspect-ratio:1; right:10%; top:2%; }
+.pm-arc .tagm{ position:absolute; left:56%; top:2%; padding:7px 12px; border-radius:999px; background:var(--sun); color:var(--deep); font:700 11px var(--ui); letter-spacing:.12em; text-transform:uppercase; transition:transform .25s ease-out; }
 .pm-arc .dot{ position:absolute; width:12px; height:12px; border-radius:50%; background:var(--sun); transition:transform .25s ease-out; }
 .pm-arc .d1{ left:20%; top:30%; } .pm-arc .d2{ right:22%; top:26%; background:#C9B6FF; } .pm-arc .d3{ left:48%; bottom:2%; }
 @media (max-width:900px){ .pm-commin{ grid-template-columns:1fr; padding-top:110px; padding-bottom:110px; } }

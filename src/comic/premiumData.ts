@@ -33,14 +33,14 @@ export const ROLE_TICKER = [
   "Instagram strategist", "Content IP lead", "Creative strategist", "Content lead", "Marketing lead", "And more",
 ];
 
-/** Short labels the hero constellation lights up, one at a time. */
-export const HERO_SIGNALS = [
-  "Head of Content · placed",
-  "Brand Manager · shortlisted",
-  "YouTube Producer · placed",
-  "Marketing Lead · in review",
-  "Content Strategist · placed",
-  "Creative Strategist · shortlisted",
+/** Profiles the hero constellation lights up, one at a time. Each is a
+ *  role plus the one detail that shows the calibre of the pool. Rohit's
+ *  examples; keep them true to real people in the network. */
+export const HERO_SIGNALS: { role: string; ctx: string }[] = [
+  { role: "Brand Manager", ctx: "₹40 Cr MRR brand" },
+  { role: "Marketing Lead", ctx: "Series A company" },
+  { role: "YouTube Head", ctx: "800K+ subscriber health brand" },
+  { role: "Instagram Writer", ctx: "10M+ views on brand reels" },
 ];
 
 export const ECOSYSTEM = [
@@ -63,11 +63,11 @@ export const ECOSYSTEM = [
 
 /** Why us, as a comparison. The Mulah Moo column is where these facts live. */
 export const COMPARE: { row: string; us: string; agency: string; boards: string }[] = [
-  { row: "Source", us: "Referred through Backstage Creators Club, around 50 people a week", agency: "Job ads and database searches", boards: "Whoever applies" },
-  { row: "Timing", us: "We hear before a move is even planned", agency: "Once the person starts looking", boards: "Once the person applies" },
-  { row: "Depth", us: "20+ data points on every profile", agency: "A CV and a screening call", boards: "A self written profile" },
-  { row: "History", us: "Followed for 1 to 1.5 years before an introduction", agency: "Searched in real time", boards: "None" },
-  { row: "Relationship", us: "Career growth partners for life, not a job forwarder", agency: "Ends at placement", boards: "None" },
+  { row: "Where talent comes from", us: "Referred through Backstage Creators Club, around 50 people a week", agency: "Job ads and database searches", boards: "Whoever applies" },
+  { row: "When we first hear from them", us: "We hear before a move is even planned", agency: "Once the person starts looking", boards: "Once the person applies" },
+  { row: "What we know about each person", us: "20+ data points on every profile", agency: "A CV and a screening call", boards: "A self written profile" },
+  { row: "How long we know them before an intro", us: "1 to 1.5 years on average", agency: "Searched in real time", boards: "None" },
+  { row: "Our relationship with talent", us: "Career growth partners for life, not a job forwarder", agency: "Ends at placement", boards: "None" },
 ];
 
 export const TERMS: { v: string; to?: number; suffix?: string; prefix?: string; k: string }[] = [
@@ -94,10 +94,15 @@ export const HIRING_FOR = [
   "Marketing leadership", "Content team", "Video and YouTube", "Brand and design", "Just benchmarking",
 ];
 
-export const REACH = [
-  { key: "in" as const, country: "India", role: "Home market", clients: "Groww, Wakefit, Traya Health, Leap Scholar, SAHI" },
-  { key: "us" as const, country: "United States", role: "Creators and creator led brands", clients: "Amy Wang, Glowie By Her, SEA" },
-  { key: "uk" as const, country: "United Kingdom", role: "YouTube studios", clients: "Talking Heads" },
+export type Country = "in" | "us" | "uk" | "ae" | "ca";
+
+/** Markets. UAE and Canada focus lines are PLACEHOLDERS to confirm. */
+export const REACH: { key: Country; country: string; role: string; clients?: string }[] = [
+  { key: "in", country: "India", role: "Home market", clients: "Groww, Wakefit, Traya Health, Leap Scholar, SAHI" },
+  { key: "us", country: "United States", role: "Creators and creator led brands", clients: "Amy Wang, Glowie By Her, SEA" },
+  { key: "uk", country: "United Kingdom", role: "YouTube studios", clients: "Talking Heads" },
+  { key: "ae", country: "UAE", role: "Fintech and D2C brands" },
+  { key: "ca", country: "Canada", role: "Creator teams" },
 ];
 
 /** PLACEHOLDER testimonials. Every card renders a "Sample" tag until these are
