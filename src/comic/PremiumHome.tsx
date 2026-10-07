@@ -136,6 +136,7 @@ export function PremiumHome() {
       <Clients />
       <Ecosystem />
       <Positioning />
+      <HeliumIntro />
       <How />
       <Why />
       <Terms />
@@ -146,7 +147,7 @@ export function PremiumHome() {
 
       <section className="pm-close">
         <div className="pm-wrap" data-r>
-          <h2>Have a marketing mandate? <em>Let&rsquo;s build the team.</em></h2>
+          <h2>Have a marketing mandate?<br /><em>Let&rsquo;s build the team.</em></h2>
           <div className="pm-actions center">
             <a href={MANDATE_URL} {...ext} className="pm-btn lg" data-mag>Send a mandate</a>
             <button type="button" className="pm-btn ghost lg" onClick={() => setPricing(true)} data-mag>Request our fees</button>
@@ -198,8 +199,12 @@ export function PremiumHome() {
 function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const p = useCountUp(ref, 1800);
-  const lead = "We build marketing teams for".split(" ");
-  const accent = "top internet brands.".split(" ");
+  // Line breaks are explicit: two lines on a laptop, three on a phone.
+  // `d` breaks only on wide screens, `m` only on narrow ones.
+  const words: [string, boolean, "d" | "m" | ""][] = [
+    ["We", false, ""], ["build", false, ""], ["marketing", false, "m"], ["teams", false, "d"],
+    ["for", false, ""], ["top", true, "m"], ["internet", true, ""], ["brands.", true, ""],
+  ];
   let n = 0;
   return (
     <section className="pm-hero" id="top">
@@ -207,8 +212,15 @@ function Hero() {
       <Constellation signals={HERO_SIGNALS} />
       <div className="pm-wrap pm-herobody">
         <h1 aria-label="We build marketing teams for top internet brands.">
-          {lead.map((w) => <span key={`a${w}`} className="w" style={{ animationDelay: `${0.08 * n++}s` }} aria-hidden="true">{w}</span>)}
-          {accent.map((w) => <em key={`b${w}`} className="w" style={{ animationDelay: `${0.08 * n++}s` }} aria-hidden="true">{w}</em>)}
+          {words.map(([w, accent, br]) => {
+            const style = { animationDelay: `${0.08 * n++}s` };
+            return (
+              <span key={w} aria-hidden="true">
+                {accent ? <em className="w" style={style}>{w}</em> : <span className="w" style={style}>{w}</span>}
+                {br && <br className={`br-${br}`} />}
+              </span>
+            );
+          })}
         </h1>
         <div className="pm-herofoot">
           <div className="pm-actions">
@@ -288,7 +300,9 @@ function Ecosystem() {
   const nodes: [number, number][] = [[200, 22], [354, 289], [46, 289]];
   return (
     <section className="pm-sec" id="ecosystem">
-      <div className="pm-wrap pm-eco">
+      <div className="pm-wrap">
+        <h2 className="pm-h" data-r>One network. <em>Every way to hire.</em></h2>
+        <div className="pm-eco">
         <div className="pm-orbit" data-r aria-hidden="true">
           <svg viewBox="0 0 400 400">
             <circle cx="200" cy="200" r="178" className="o3" />
@@ -311,7 +325,6 @@ function Ecosystem() {
           <div className="pm-orbitcore"><b>10,000+</b><span>professionals with 1 to 10 years of experience</span></div>
         </div>
         <div className="pm-ecotext">
-          <h2 data-r>One network. <em>Every way to hire.</em></h2>
           <div className="pm-ecolist" data-r>
             {ECOSYSTEM.map((e, i) => (
               <button
@@ -329,6 +342,7 @@ function Ecosystem() {
             ))}
           </div>
         </div>
+        </div>
       </div>
     </section>
   );
@@ -345,6 +359,7 @@ const POS_CHIPS: [string, number, number, number][] = [
 function Positioning() {
   return (
     <section className="pm-pos" id="approach">
+      <div className="pm-posbg" aria-hidden="true"><span className="b1" /><span className="b2" /><span className="b3" /><span className="lines" /></div>
       <div className="pm-poschips" aria-hidden="true">
         {POS_CHIPS.map(([label, x, y, d], i) => (
           <span key={label} className={`chip c${i % 3}`} style={{ left: `${x}%`, top: `${y}%`, animationDelay: `${d}s` }}><i />{label}</span>
@@ -353,9 +368,54 @@ function Positioning() {
       <div className="pm-wrap pm-posin">
         <h2 data-r>
           <span className="not">We are not <s>HR</s>.</span>
-          <em>We are ex creatives and business professionals building the talent intelligence tool the creative
-            ecosystem has been missing.</em>
         </h2>
+        <blockquote className="pm-quote" data-r>
+          <span className="qm" aria-hidden="true">&ldquo;</span>
+          We are <mark>ex creatives</mark> and <mark>business professionals</mark> building the{" "}
+          <mark>talent intelligence tool</mark> the creative ecosystem has been missing.
+          <span className="qm end" aria-hidden="true">&rdquo;</span>
+        </blockquote>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------------------------------------------------- helium reveal */
+
+/** A tall scene that pins Helium's mark in the middle of the screen. As the
+ *  reader scrolls, the mark settles and its introduction writes itself in. */
+function HeliumIntro() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [p, setP] = useState(1);
+  const [still, setStill] = useState(false);
+  useEffect(() => {
+    if (reduced()) { setStill(true); return; }
+    const el = ref.current;
+    if (!el) return;
+    const on = () => {
+      const r = el.getBoundingClientRect();
+      const span = r.height - window.innerHeight;
+      setP(Math.min(1, Math.max(0, -r.top / (span || 1))));
+    };
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    window.addEventListener("resize", on);
+    return () => { window.removeEventListener("scroll", on); window.removeEventListener("resize", on); };
+  }, []);
+  const k = (a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)));
+  const settle = k(0.05, 0.4);
+  const fade = (a: number, b: number) => ({ opacity: k(a, b), transform: `translateY(${(1 - k(a, b)) * 24}px)` });
+  return (
+    <section className={still ? "pm-hel still" : "pm-hel"} ref={ref} aria-label="Introducing Helium">
+      <div className="pm-helstage">
+        <div className="rings" aria-hidden="true" style={{ opacity: 1 - k(0.5, 0.9) * 0.6 }}><i /><i /><i /></div>
+        <p className="tag" style={fade(0.32, 0.48)}>Our innovation</p>
+        <span className="he" aria-hidden="true" style={{ transform: `scale(${1.9 - settle * 0.9})` }}>
+          <small>2</small>He<i>4.0026</i>
+        </span>
+        <h2 className="name" style={fade(0.42, 0.6)}>Helium</h2>
+        <p className="sub" style={fade(0.58, 0.78)}>The talent intelligence platform <em>for the creator economy.</em></p>
+        <a href="#how" className="cue" style={{ opacity: k(0.8, 0.95) }}>See how it works <span aria-hidden="true">&darr;</span></a>
       </div>
     </section>
   );
@@ -378,14 +438,6 @@ function How() {
   return (
     <section className="pm-sec" id="how">
       <div className="pm-wrap">
-        <div className="pm-helium" data-r>
-          <span className="he" aria-hidden="true"><small>2</small>He<i>4.0026</i></span>
-          <div>
-            <p className="tag">Our innovation</p>
-            <p className="name">Helium</p>
-            <p className="sub">The talent intelligence platform for the creator economy.</p>
-          </div>
-        </div>
         <h2 className="pm-h" data-r>From mandate <em>to hire.</em></h2>
         <div className="pm-how">
           <div className="pm-howsteps">
@@ -452,7 +504,8 @@ function Terms() {
   const ref = useRef<HTMLDivElement>(null);
   const p = useCountUp(ref);
   return (
-    <section className="pm-terms" aria-label="Terms">
+    <section className="pm-terms" aria-labelledby="terms-h">
+      <h2 className="pm-h" id="terms-h" data-r>The fine print, <em>in big print.</em></h2>
       <div className="pm-wrap pm-termsin" ref={ref} data-r>
         {TERMS.map((t) => (
           <div key={t.k}>
@@ -613,7 +666,6 @@ function Reach() {
             >
               <span className="ctry"><i />{r.country}</span>
               <span className="role">{r.role}</span>
-              {r.clients && <span className="cl">{r.clients}</span>}
             </button>
           ))}
         </div>
@@ -674,12 +726,12 @@ function Community() {
     <section className="pm-comm" id="community">
       <div className="pm-wrap pm-commin">
         <div className="pm-commtext" data-r>
-          <h2>Backstage <em>Creators Club.</em></h2>
+          <h2 className="pm-h">Backstage <em>Creators Club.</em></h2>
           <p className="pm-body light">
             A WhatsApp first, invite only community for the people who make India&rsquo;s content. City
             editions, closed door evenings and honest shop talk.
           </p>
-          <div className="pm-actions">
+          <div className="pm-actions center">
             <Link to="/bcc" className="pm-btn sun lg" data-mag>Explore the club</Link>
             <a href="/bcc#invite" className="pm-btn outline lg" data-mag>Request an invite</a>
           </div>
@@ -757,7 +809,7 @@ const PM_CSS = `
   font-family:var(--display); font-weight:var(--dw); }
 .pm h2 em, .pm h1 em{ font-style:italic; color:var(--purple); }
 .pm h2{ font-size:clamp(42px,5.4vw,84px); line-height:1.02; letter-spacing:-.025em; text-wrap:balance; }
-.pm-h{ margin-bottom:96px !important; max-width:16ch; }
+.pm-h{ margin:0 auto 96px !important; max-width:18ch; text-align:center; }
 .pm-kicker{ font-size:11.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); }
 .pm-body{ font-size:19px; line-height:1.6; color:var(--body); max-width:520px; margin-top:28px !important; }
 .pm-body.light{ color:#D8CCF2; }
@@ -799,12 +851,14 @@ const PM_CSS = `
   background:radial-gradient(60% 70% at 85% 10%, rgba(136,86,242,.38), transparent 70%), radial-gradient(40% 50% at 0% 100%, rgba(245,197,66,.10), transparent 70%); }
 .pm-herobody{ position:relative; z-index:2; width:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding-top:150px; padding-bottom:72px; pointer-events:none; }
 .pm-herobody a, .pm-herobody button{ pointer-events:auto; }
-.pm-hero h1{ font-size:clamp(52px,7.4vw,120px); line-height:.98; letter-spacing:-.035em; max-width:13.5ch; margin:0 auto !important; }
+.pm-hero h1{ font-size:clamp(44px,7.6vw,118px); line-height:1; letter-spacing:-.035em; white-space:nowrap; margin:0 auto !important; }
+.pm-hero h1 .br-m{ display:none; }
+@media (max-width:700px){ .pm-hero h1{ font-size:clamp(40px,11.4vw,64px); } .pm-hero h1 .br-m{ display:inline; } .pm-hero h1 .br-d{ display:none; } }
 .pm-hero h1 .w{ display:inline-block; margin:0 .11em; animation:pmWord 1s cubic-bezier(.2,.9,.25,1) both; }
 .pm-hero h1 em.w{ color:#D3C2FF; }
 @keyframes pmWord{ from{ opacity:0; transform:translateY(.45em); filter:blur(8px); } to{ opacity:1; transform:none; filter:none; } }
 .pm-herofoot{ display:flex; flex-direction:column; align-items:center; gap:64px; margin-top:52px; }
-.pm-herofoot .pm-actions{ margin-top:0; }
+.pm-herofoot .pm-actions{ margin-top:0; justify-content:center; }
 .pm-impact{ display:grid; grid-template-columns:repeat(4,auto); gap:0; }
 .pm-impact div{ padding:0 36px; border-left:1px solid rgba(255,255,255,.16); display:flex; flex-direction:column; align-items:center; gap:6px; }
 .pm-impact div:first-child{ border-left:0; }
@@ -826,7 +880,7 @@ const PM_CSS = `
 
 /* clients */
 .pm-clients{ padding:150px 0 160px; overflow:hidden; }
-.pm-cltitle{ font-size:clamp(34px,3.8vw,56px) !important; margin-bottom:72px !important; max-width:none !important; }
+.pm-cltitle{ font-size:clamp(34px,3.8vw,56px) !important; margin-bottom:72px !important; max-width:none !important; text-align:center; }
 .pm-mq{ overflow:hidden; mask-image:linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); -webkit-mask-image:linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
 .pm-mq + .pm-mq{ margin-top:18px; }
 .pm-mq .track{ display:flex; gap:18px; width:max-content; animation:pmMq 70s linear infinite; }
@@ -842,6 +896,7 @@ const PM_CSS = `
 
 /* ecosystem */
 .pm-eco{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:96px; align-items:center; }
+.pm-eco .pm-ecolist{ margin-top:0; }
 .pm-orbit{ position:relative; width:100%; max-width:520px; aspect-ratio:1; justify-self:center; }
 .pm-orbit svg{ width:100%; height:100%; overflow:visible; }
 .pm-orbit .o3{ fill:none; stroke:rgba(36,18,71,.14); stroke-dasharray:2 8; }
@@ -873,15 +928,32 @@ const PM_CSS = `
 
 /* positioning */
 .pm-pos{ background:var(--deep); color:#fff; position:relative; overflow:hidden; }
-.pm-pos::before{ content:''; position:absolute; inset:0; background:radial-gradient(50% 80% at 100% 0%, rgba(136,86,242,.35), transparent 70%); }
 .pm-posin{ position:relative; z-index:1; padding-top:220px; padding-bottom:220px; text-align:center; }
-.pm-pos h2{ font-size:clamp(38px,4.6vw,74px); line-height:1.1; max-width:22ch; margin:0 auto !important; }
-.pm-pos h2 .not{ display:block; margin-bottom:.35em; font-size:1.25em; }
+.pm-pos h2{ font-size:clamp(56px,7vw,110px); line-height:1; margin:0 auto !important; }
+.pm-pos h2 .not{ display:block; }
 .pm-pos h2 s{ text-decoration:none; position:relative; display:inline-block; color:rgba(255,255,255,.55); }
 .pm-pos h2 s::after{ content:''; position:absolute; left:-6%; right:-6%; top:54%; height:.09em; border-radius:1em; background:var(--sun);
   transform:rotate(-4deg) scaleX(1); transform-origin:0 50%; transition:transform .9s cubic-bezier(.7,0,.2,1) .55s; }
 .pm-pos [data-r].arm:not(.in) s::after{ transform:rotate(-4deg) scaleX(0); }
-.pm-pos h2 em{ color:#C9B6FF; }
+.pm-quote{ position:relative; margin:72px auto 0 !important; max-width:22ch; font-family:var(--ui); font-weight:650; font-size:clamp(28px,3.3vw,50px);
+  line-height:1.22; letter-spacing:-.025em; color:#F1EBFF; text-wrap:balance; }
+.pm-quote .qm{ font-family:var(--display); font-weight:400; color:var(--sun); font-size:1.6em; line-height:0; vertical-align:-.35em; margin-right:.06em; }
+.pm-quote .qm.end{ margin:0 0 0 .04em; }
+.pm-quote mark{ background:none; color:#fff; font-family:var(--display); font-style:italic; font-weight:400; font-size:1.12em; letter-spacing:-.01em;
+  background-image:linear-gradient(transparent 62%, rgba(245,197,66,.55) 62%, rgba(245,197,66,.55) 90%, transparent 90%);
+  background-repeat:no-repeat; background-size:100% 100%; transition:background-size 1.1s cubic-bezier(.7,0,.2,1) .4s; padding:0 .06em; }
+.pm-pos [data-r].arm:not(.in) mark{ background-size:0% 100%; }
+.pm-posbg{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+.pm-posbg span{ position:absolute; border-radius:50%; filter:blur(70px); }
+.pm-posbg .b1{ width:620px; height:620px; left:-160px; top:-120px; background:rgba(136,86,242,.55); animation:pmBlob1 18s ease-in-out infinite alternate; }
+.pm-posbg .b2{ width:520px; height:520px; right:-140px; bottom:-160px; background:rgba(106,47,212,.6); animation:pmBlob2 22s ease-in-out infinite alternate; }
+.pm-posbg .b3{ width:360px; height:360px; left:45%; top:40%; background:rgba(245,197,66,.16); animation:pmBlob3 16s ease-in-out infinite alternate; }
+.pm-posbg .lines{ inset:-50%; border-radius:0; filter:none; opacity:.35;
+  background-image:repeating-linear-gradient(115deg, rgba(255,255,255,.05) 0 1px, transparent 1px 46px); animation:pmLines 30s linear infinite; }
+@keyframes pmBlob1{ to{ transform:translate(260px,180px) scale(1.15); } }
+@keyframes pmBlob2{ to{ transform:translate(-300px,-140px) scale(.9); } }
+@keyframes pmBlob3{ to{ transform:translate(-220px,-120px) scale(1.3); } }
+@keyframes pmLines{ to{ transform:translateX(92px); } }
 .pm-poschips{ position:absolute; inset:0; pointer-events:none; }
 .pm-poschips .chip{ position:absolute; display:inline-flex; align-items:center; gap:9px; padding:10px 16px; border-radius:999px; white-space:nowrap;
   font:500 13.5px/1 var(--ui); color:#E8DEFF; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
@@ -894,15 +966,26 @@ const PM_CSS = `
 
 /* how it works: steps scroll, the product view stays */
 .pm-how{ display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:96px; }
-.pm-helium{ display:flex; align-items:center; gap:22px; margin-bottom:56px; }
-.pm-helium .he{ position:relative; width:96px; height:96px; flex:none; border-radius:20px; background:var(--deep); color:#fff;
-  display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:var(--dw); font-size:44px; letter-spacing:-.02em;
-  box-shadow:0 18px 40px -16px rgba(36,18,71,.6), inset 0 0 0 1px rgba(255,255,255,.08); }
-.pm-helium .he small{ position:absolute; left:12px; top:9px; font:600 12px var(--ui); color:var(--sun); }
-.pm-helium .he i{ position:absolute; left:0; right:0; bottom:9px; text-align:center; font:500 9.5px var(--ui); font-style:normal; color:#BBAEDD; letter-spacing:.04em; }
-.pm-helium .tag{ font-size:11.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--purple); }
-.pm-helium .name{ font-family:var(--display); font-weight:var(--dw); font-size:34px; line-height:1.1; letter-spacing:-.01em; }
-.pm-helium .sub{ font-size:16px; color:var(--body); }
+.pm-hel{ position:relative; height:260vh; background:var(--deeper); color:#fff; }
+.pm-hel.still{ height:auto; }
+.pm-helstage{ position:sticky; top:0; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:22px; overflow:hidden; padding:0 20px; }
+.pm-hel.still .pm-helstage{ position:relative; height:auto; padding:160px 20px; }
+.pm-helstage .rings{ position:absolute; left:50%; top:50%; width:0; height:0; }
+.pm-helstage .rings i{ position:absolute; left:-260px; top:-260px; width:520px; height:520px; border-radius:50%; border:1px solid rgba(201,182,255,.22); animation:pmRing 4.5s ease-out infinite; }
+.pm-helstage .rings i:nth-child(2){ animation-delay:1.5s; } .pm-helstage .rings i:nth-child(3){ animation-delay:3s; }
+@keyframes pmRing{ from{ transform:scale(.25); opacity:1; } to{ transform:scale(1.4); opacity:0; } }
+.pm-helstage::before{ content:''; position:absolute; left:50%; top:50%; width:900px; height:900px; transform:translate(-50%,-50%); border-radius:50%;
+  background:radial-gradient(circle, rgba(136,86,242,.35), transparent 60%); pointer-events:none; }
+.pm-helstage .he{ position:relative; width:128px; height:128px; border-radius:26px; background:linear-gradient(150deg,#3B1F7A,#241247);
+  display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:var(--dw); font-size:60px; letter-spacing:-.02em;
+  box-shadow:0 30px 80px -20px rgba(136,86,242,.7), inset 0 0 0 1px rgba(255,255,255,.14); will-change:transform; margin:26px 0; }
+.pm-helstage .he small{ position:absolute; left:14px; top:11px; font:600 14px var(--ui); color:var(--sun); }
+.pm-helstage .he i{ position:absolute; left:0; right:0; bottom:11px; text-align:center; font:500 11px var(--ui); font-style:normal; color:#BBAEDD; }
+.pm-helstage .tag{ position:relative; font-size:12px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--sun); }
+.pm-helstage .name{ position:relative; font-size:clamp(64px,9vw,140px) !important; line-height:.95 !important; }
+.pm-helstage .sub{ position:relative; font-size:clamp(20px,2vw,28px); color:#D8CCF2; max-width:24ch; line-height:1.35; }
+.pm-helstage .sub em{ font-family:var(--display); font-weight:var(--dw); color:#C9B6FF; }
+.pm-helstage .cue{ position:absolute; bottom:40px; font-size:13px; font-weight:600; letter-spacing:.08em; color:#BBAEDD; }
 .pm-howsteps .step{ min-height:62vh; display:flex; flex-direction:column; justify-content:center; padding:24px 0; opacity:.28; transition:opacity .5s; }
 .pm-howsteps .step:first-child{ min-height:44vh; justify-content:flex-start; }
 .pm-howsteps .step.on{ opacity:1; }
@@ -924,7 +1007,7 @@ const PM_CSS = `
   .pm-howsteps .inline{ display:block; margin-top:28px; } }
 
 /* why us */
-.pm-whyhead{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:32px; margin-bottom:72px; }
+.pm-whyhead{ display:flex; flex-direction:column; align-items:center; gap:36px; margin-bottom:80px; }
 .pm-whyhead .pm-h{ margin-bottom:0 !important; }
 .pm-seg{ position:relative; display:inline-grid; grid-template-columns:1fr 1fr; padding:5px; border-radius:999px; background:#fff; border:1px solid var(--line); }
 .pm-seg button{ position:relative; z-index:1; min-height:42px; padding:0 20px; border:0; background:none; border-radius:999px; font:600 14px var(--ui); color:var(--muted); cursor:pointer; transition:color .3s; }
@@ -946,7 +1029,10 @@ const PM_CSS = `
 
 /* terms band */
 .pm-terms{ background:var(--deeper); color:#fff; }
-.pm-termsin{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); padding-top:96px; padding-bottom:96px; }
+.pm-terms{ padding-top:150px; }
+.pm-terms .pm-h{ color:#fff; margin-bottom:80px !important; padding:0 20px; }
+.pm-terms .pm-h em{ color:var(--sun); }
+.pm-termsin{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); padding-top:0; padding-bottom:150px; }
 .pm-termsin div{ padding:0 24px; border-left:1px solid rgba(255,255,255,.14); display:flex; flex-direction:column; gap:12px; }
 .pm-termsin div:first-child{ border-left:0; padding-left:0; }
 .pm-termsin b{ font-size:clamp(34px,3.4vw,52px); line-height:1; letter-spacing:-.02em; font-variant-numeric:tabular-nums; white-space:nowrap; }
@@ -1021,7 +1107,7 @@ const PM_CSS = `
 @media (max-width:700px){ .pm-reachgrid{ grid-template-columns:1fr 1fr; } .pm-reach{ padding:110px 0; } }
 
 /* voices */
-.pm-voicehead{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:72px; }
+.pm-voicehead{ display:flex; flex-direction:column; align-items:center; gap:32px; margin-bottom:72px; }
 .pm-voicehead .pm-h{ margin-bottom:0 !important; }
 .pm-arrows{ display:flex; gap:10px; }
 .pm-arrows button{ width:58px; height:58px; border-radius:50%; border:1px solid rgba(26,22,20,.2); background:transparent; font-size:20px; cursor:pointer; color:var(--ink); transition:background .2s, color .2s, transform .35s cubic-bezier(.2,.9,.25,1); }
@@ -1041,7 +1127,10 @@ const PM_CSS = `
 /* community */
 .pm-comm{ background:#0E0A1A; color:#fff; overflow:hidden; position:relative; }
 .pm-comm::before{ content:''; position:absolute; left:40%; bottom:-560px; width:1300px; height:960px; border-radius:50%; background:radial-gradient(circle, rgba(136,86,242,.32), transparent 60%); }
-.pm-commin{ position:relative; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:72px; align-items:center; padding-top:180px; padding-bottom:180px; }
+.pm-commin{ position:relative; display:flex; flex-direction:column; align-items:center; gap:72px; padding-top:180px; padding-bottom:180px; text-align:center; }
+.pm-commtext .pm-h{ margin-bottom:0 !important; }
+.pm-commtext .pm-body{ margin-left:auto; margin-right:auto; }
+.pm-comm .pm-arc{ max-width:760px; }
 .pm-comm h2 em{ color:var(--sun); }
 .pm-arc{ position:relative; aspect-ratio:520/330; width:100%; }
 .pm-arc .arcline{ position:absolute; inset:auto 0 0 0; width:100%; }
@@ -1056,11 +1145,11 @@ const PM_CSS = `
 .pm-arc .tagm{ position:absolute; left:56%; top:2%; padding:7px 12px; border-radius:999px; background:var(--sun); color:var(--deep); font:700 11px var(--ui); letter-spacing:.12em; text-transform:uppercase; transition:transform .25s ease-out; }
 .pm-arc .dot{ position:absolute; width:12px; height:12px; border-radius:50%; background:var(--sun); transition:transform .25s ease-out; }
 .pm-arc .d1{ left:20%; top:30%; } .pm-arc .d2{ right:22%; top:26%; background:#C9B6FF; } .pm-arc .d3{ left:48%; bottom:2%; }
-@media (max-width:900px){ .pm-commin{ grid-template-columns:1fr; padding-top:110px; padding-bottom:110px; } }
+@media (max-width:900px){ .pm-commin{ padding-top:110px; padding-bottom:110px; } }
 
 /* close + footer */
 .pm-close{ padding:200px 0; text-align:center; }
-.pm-close h2{ max-width:16ch; margin:0 auto !important; }
+.pm-close h2{ margin:0 auto !important; }
 .pm-foot{ background:var(--deeper); color:#CFC5E6; }
 .pm-footin{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:40px; padding-top:80px; padding-bottom:56px; }
 .pm-foot .brand{ max-width:340px; color:#fff; }

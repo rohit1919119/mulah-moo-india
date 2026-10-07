@@ -96,13 +96,13 @@ export const HIRING_FOR = [
 
 export type Country = "in" | "us" | "uk" | "ae" | "ca";
 
-/** Markets. UAE and Canada focus lines are PLACEHOLDERS to confirm. */
-export const REACH: { key: Country; country: string; role: string; clients?: string }[] = [
-  { key: "in", country: "India", role: "Home market", clients: "Groww, Wakefit, Traya Health, Leap Scholar, SAHI" },
-  { key: "us", country: "United States", role: "Creators and creator led brands", clients: "Amy Wang, Glowie By Her, SEA" },
-  { key: "uk", country: "United Kingdom", role: "YouTube studios", clients: "Talking Heads" },
-  { key: "ae", country: "UAE", role: "Fintech and D2C brands" },
-  { key: "ca", country: "Canada", role: "Creator teams" },
+/** Markets and the kinds of clients we serve in each. No client names here. */
+export const REACH: { key: Country; country: string; role: string }[] = [
+  { key: "in", country: "India", role: "Content studios and Indian brands" },
+  { key: "us", country: "United States", role: "Brands, creators and studios" },
+  { key: "uk", country: "United Kingdom", role: "Brands, creators and studios" },
+  { key: "ae", country: "UAE", role: "Brands, creators and studios" },
+  { key: "ca", country: "Canada", role: "Creators and studios" },
 ];
 
 /** PLACEHOLDER testimonials. Every card renders a "Sample" tag until these are
