@@ -5,7 +5,7 @@ import { PM_CSS, useMagnetic } from "@/comic/PremiumHome";
 import { PMF_CSS } from "@/comic/PmForms";
 import { usePageTracking } from "@/comic/tracking";
 import { FONT } from "@/comic/premiumData";
-import { EXPERIENCE, OPPORTUNITY, SHEET_URL, TOTAL_STEPS } from "@/comic/data";
+import { EXPERIENCE, OPPORTUNITY, SHEET_URL } from "@/comic/data";
 import {
   APPLICATIONS_URL,
   RESUME_ACCEPT,
@@ -14,6 +14,7 @@ import {
   RESUME_UPLOAD_URL,
   loadVocabulary,
   VOCAB_SNAPSHOT,
+  type FormQuestion,
   type VocabDiscipline,
 } from "@/comic/talent-vocab";
 
@@ -35,28 +36,59 @@ const HELIUM_EMAIL =
   /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/;
 
 type Data = {
-  role: string; subrole: string[];
+  role: string;
+  /**
+   * Answers to the chosen pool's OWN questions, keyed by question key — what
+   * Helium's form for that pool asks (its specialisations, its tools, and the
+   * rest). Choice answers hold the option VALUE (a slug for a vocabulary list).
+   */
+  answers: Record<string, string[]>;
   name: string; email: string; phone: string; city: string; linkedin: string;
   experience: string; opportunity: string[]; portfolio: string;
   referredBy: string; note: string;
 };
 
 const EMPTY: Data = {
-  role: "", subrole: [],
+  role: "", answers: {},
   name: "", email: "", phone: "", city: "", linkedin: "",
   experience: "", opportunity: [], portfolio: "",
   referredBy: "", note: "",
 };
 
-const QUESTIONS = [
-  "What kind of creative work do you do?",
-  "What's your specific focus?",
-  "Let's start with the basics.",
-  "How many years have you been creating professionally?",
-  "What kind of opportunity are you open to?",
-  "Where can we see your work?",
-  "One last look before we send it off.",
-];
+/**
+ * The steps, in order. The CRAFT steps come from the chosen pool's form, so a
+ * brand manager is never asked about editing software; everything around them
+ * is about the person and is the same for everybody.
+ */
+type Step =
+  | { t: "role" }
+  | { t: "craft"; i: number }
+  | { t: "basics" }
+  | { t: "experience" }
+  | { t: "open" }
+  | { t: "work" }
+  | { t: "review" };
+
+const FIXED_TITLES = {
+  role: "What kind of creative work do you do?",
+  basics: "Let's start with the basics.",
+  experience: "How many years have you been doing this professionally?",
+  open: "What kind of opportunity are you open to?",
+  work: "Where can we see your work?",
+  review: "One last look before we send it off.",
+} as const;
+
+/** Helium's own check for one answer, as far as a form needs it. Helium re-checks. */
+function checkQuestion(q: FormQuestion, value: string[] | undefined): string {
+  const v = (value ?? []).map((x) => x.trim()).filter(Boolean);
+  if (v.length === 0) return q.required ? (q.input === "choice" ? "Pick at least one." : `“${q.prompt}” is needed.`) : "";
+  if (q.input === "number" && !/^\d[\d,\s]*$/.test(v.join(""))) return `“${q.prompt}” needs a whole number.`;
+  if (q.input === "url" && !/^https?:\/\/\S+$/i.test(v[0])) return `“${q.prompt}” needs a full link, starting https://`;
+  if (q.input === "links" && v.join("\n").split(/[\s,]+/).filter(Boolean).some((l) => !/^https?:\/\/\S+$/i.test(l))) {
+    return `Each link in “${q.prompt}” needs to start https://`;
+  }
+  return "";
+}
 
 type Resume =
   | { state: "none" }
@@ -89,20 +121,44 @@ export function TalentFormPremium() {
   }, []);
 
   const set = <K extends keyof Data>(k: K, v: Data[K]) => setData((d) => ({ ...d, [k]: v }));
+  // Takes an UPDATER, not a value: two quick taps in one batch would otherwise
+  // both read the pre-click list and the second would drop the first.
+  const setAnswer = (key: string, update: (prev: string[]) => string[]) => {
+    setData((d) => ({ ...d, answers: { ...d.answers, [key]: update(d.answers[key] ?? []) } }));
+    setErr("");
+  };
   const discipline = useMemo(
     () => vocab.find((d) => d.label === data.role) ?? null,
     [vocab, data.role],
   );
-  const subroleOptions = useMemo(
-    () => discipline?.specialisations ?? [],
+
+  const steps: Step[] = useMemo(
+    () => [
+      { t: "role" },
+      ...(discipline?.form.steps ?? []).map((_, i) => ({ t: "craft" as const, i })),
+      { t: "basics" },
+      { t: "experience" },
+      { t: "open" },
+      { t: "work" },
+      { t: "review" },
+    ],
     [discipline],
   );
+  const total = steps.length;
+  const cur = steps[Math.min(step, total - 1)];
+  const craft = cur.t === "craft" ? discipline?.form.steps[cur.i] ?? null : null;
+  const work = discipline?.form.work;
 
   /** Returns an error message for the current step, or "" when it may advance. */
   function validate(): string {
-    if (step === 0 && !data.role) return "Please pick one to continue.";
-    if (step === 1 && data.subrole.length === 0) return "Pick at least one specialty.";
-    if (step === 2) {
+    if (cur.t === "role" && !data.role) return "Please pick one to continue.";
+    if (craft) {
+      for (const q of craft.questions) {
+        const m = checkQuestion(q, data.answers[q.key]);
+        if (m) return m;
+      }
+    }
+    if (cur.t === "basics") {
       // These three match what Helium accepts (see HELIUM_EMAIL below). The
       // form used to check only for an "@", so an address like "name@gmail"
       // passed here, reached the Sheet, and was silently refused by Helium.
@@ -111,10 +167,12 @@ export function TalentFormPremium() {
       if (data.phone.trim().length < 6) return "Contact number is required.";
       if (!data.city.trim()) return "City is required.";
     }
-    if (step === 3 && !data.experience) return "Please select your experience level.";
-    if (step === 4 && data.opportunity.length === 0) return "Pick at least one.";
-    if (step === 5 && !data.portfolio.trim()) return "Please add a portfolio or work link.";
-    if (step === 5 && resume.state === "busy") return "Hang on — your résumé is still uploading.";
+    if (cur.t === "experience" && !data.experience) return "Please select your experience level.";
+    if (cur.t === "open" && data.opportunity.length === 0) return "Pick at least one.";
+    if (cur.t === "work") {
+      if ((work?.required ?? true) && !data.portfolio.trim()) return work?.missing ?? "Please add a portfolio or work link.";
+      if (resume.state === "busy") return "Hang on — your résumé is still uploading.";
+    }
     return "";
   }
 
@@ -122,7 +180,7 @@ export function TalentFormPremium() {
     const message = validate();
     if (message) { setErr(message); return; }
     setErr("");
-    if (step === TOTAL_STEPS - 1) { submit(); return; }
+    if (step === total - 1) { submit(); return; }
     setStep((s) => s + 1);
   }
 
@@ -160,6 +218,25 @@ export function TalentFormPremium() {
     setStep((s) => Math.max(0, s - 1));
   }
 
+  // The pool's questions, in order, with their answers in words — for the
+  // summary, and for the Sheet's "subrole" column (the specialisations).
+  const answered = useMemo(() => {
+    const rows: { q: FormQuestion; text: string }[] = [];
+    for (const s of discipline?.form.steps ?? []) {
+      for (const q of s.questions) {
+        const v = (data.answers[q.key] ?? []).map((x) => x.trim()).filter(Boolean);
+        if (v.length === 0) continue;
+        const text =
+          q.input === "choice"
+            ? v.map((x) => q.options.find((o) => o.value === x)?.label ?? x).join(", ")
+            : v.join(", ");
+        rows.push({ q, text });
+      }
+    }
+    return rows;
+  }, [discipline, data.answers]);
+  const specialtyText = answered.find((r) => r.q.key === "specialisations")?.text ?? "";
+
   /**
    * Sends the application to BOTH the Google Sheet and Helium.
    *
@@ -190,10 +267,12 @@ export function TalentFormPremium() {
       body: (() => {
         // drop the camelCase key so the payload carries referred_by only,
         // matching the sheet rather than shipping the same value twice
-        const { referredBy, ...rest } = data;
+        const { referredBy, answers, ...rest } = data;
+        void answers;
         return JSON.stringify({
           ...rest,
-          subrole: data.subrole.join(", "),
+          // The Sheet's column is unchanged: the specialisations, in words.
+          subrole: specialtyText,
           opportunity: data.opportunity.join(", "),
           referred_by: referredBy.trim(),
           note: data.note.trim() || "—",
@@ -202,16 +281,9 @@ export function TalentFormPremium() {
       })(),
     });
 
-    // Labels in, slugs out. The form holds labels throughout so the summary
-    // screen and the Sheet are unaffected; only Helium wants slugs.
-    //
-    // An unmapped SPECIALTY is sent as its label on purpose: Helium keeps it
-    // verbatim and flags it for a human, which is how a drift between the two
-    // lists becomes visible instead of silent. `discipline` is the exception —
-    // it is a strict enum, so an unmapped role would have the whole submission
-    // refused. That cannot happen (the role is always one of the tiles the
-    // vocabulary produced) and is guarded anyway.
-    const byLabel = new Map(subroleOptions.map((o) => [o.label, o.slug]));
+    // `discipline` is a strict enum on Helium's side, so an unmapped role would
+    // have the whole submission refused. That cannot happen (the role is
+    // always one of the tiles the vocabulary produced) and is guarded anyway.
     const heliumPost = discipline
       ? fetch(APPLICATIONS_URL, {
           method: "POST",
@@ -225,7 +297,10 @@ export function TalentFormPremium() {
             linkedin: data.linkedin.trim(),
             portfolio: data.portfolio.trim(),
             experience: data.experience,
-            specialisations: data.subrole.map((label) => byLabel.get(label) ?? label),
+            specialisations: data.answers.specialisations ?? [],
+            // The pool's own questions. Helium keeps only the keys this pool
+            // declares, and never refuses an applicant over one of these.
+            answers: data.answers,
             // Helium's wording, not this form's internal `val`. It maps on
             // these exact strings, so "Full-time" and "Open to all" would
             // both have arrived unmapped.
@@ -285,7 +360,7 @@ export function TalentFormPremium() {
 
   const summary: [string, string][] = [
     ["Role", data.role],
-    ["Specialty", data.subrole.join(", ")],
+    ...answered.map((r) => [r.q.prompt.replace(/\s*\((optional[^)]*|one link per line)\)\s*$/i, ""), r.text] as [string, string]),
     ["Name", data.name],
     ["Email", data.email],
     ["Phone", data.phone],
@@ -293,13 +368,14 @@ export function TalentFormPremium() {
     ["LinkedIn", data.linkedin],
     ["Experience", data.experience],
     ["Opportunity", data.opportunity.join(", ")],
-    ["Portfolio", data.portfolio],
+    ["Work", data.portfolio],
     ["Résumé", resume.state === "done" ? resume.name : "—"],
     ["Referred by", data.referredBy.trim() || "—"],
     ["Note", data.note.trim() || "—"],
   ];
 
-  const pct = done ? 100 : Math.round(((step + 1) / TOTAL_STEPS) * 100);
+  const pct = done ? 100 : Math.round(((step + 1) / total) * 100);
+  const title = cur.t === "craft" ? craft?.title ?? "" : FIXED_TITLES[cur.t];
 
   return (
     <div className="pm tf" style={{ "--display": FONT.display, "--ui": FONT.ui, "--dw": 400 } as React.CSSProperties}>
@@ -326,22 +402,24 @@ export function TalentFormPremium() {
           ) : (
             <>
               <div className="tf-meta">
-                <span>Question {step + 1} of {TOTAL_STEPS}</span>
+                <span>Question {step + 1} of {total}</span>
                 <span>{pct}%</span>
               </div>
               <div className="tf-bar" aria-hidden="true"><i style={{ width: `${pct}%` }} /></div>
 
-              <h1 className="tf-q" key={step}>{QUESTIONS[step]}</h1>
-              {(step === 1 || step === 4) && <p className="tf-hint">Pick all that apply.</p>}
+              <h1 className="tf-q" key={step}>{title}</h1>
+              {craft?.hint && <p className="tf-hint">{craft.hint}</p>}
+              {cur.t === "open" && <p className="tf-hint">Pick all that apply.</p>}
 
-              {step === 0 && (
+              {cur.t === "role" && (
                 <div className="tf-tiles">
                   {vocab.map((r) => (
                     <button
                       key={r.slug} type="button" aria-pressed={data.role === r.label}
                       onClick={() => {
-                        // changing role invalidates any specialty already chosen
-                        setData((d) => ({ ...d, role: r.label, subrole: [] }));
+                        // changing role invalidates every answer to the old
+                        // pool's questions — they were never this pool's
+                        setData((d) => ({ ...d, role: r.label, answers: {} }));
                         setErr("");
                       }}
                     >
@@ -352,31 +430,21 @@ export function TalentFormPremium() {
                 </div>
               )}
 
-              {step === 1 && (
-                <div className="tf-chips">
-                  {subroleOptions.map((option) => {
-                    const s = option.label;
-                    return (
-                      <button
-                        key={option.slug} type="button" aria-pressed={data.subrole.includes(s)}
-                        onClick={() => {
-                          // functional update: two taps in the same batch would
-                          // otherwise both read the pre-click list
-                          setData((d) => ({
-                            ...d,
-                            subrole: d.subrole.includes(s) ? d.subrole.filter((x) => x !== s) : [...d.subrole, s],
-                          }));
-                          setErr("");
-                        }}
-                      >
-                        {s}
-                      </button>
-                    );
-                  })}
+              {craft && (
+                <div className="tf-craft">
+                  {craft.questions.map((q) => (
+                    <CraftQuestion
+                      key={q.key}
+                      q={q}
+                      solo={craft.questions.length === 1}
+                      value={data.answers[q.key] ?? []}
+                      onChange={(v) => setAnswer(q.key, v)}
+                    />
+                  ))}
                 </div>
               )}
 
-              {step === 2 && (
+              {cur.t === "basics" && (
                 <div className="tf-fields">
                   {([
                     ["name", "Full name", "Your name", "text", "name"],
@@ -397,7 +465,7 @@ export function TalentFormPremium() {
                 </div>
               )}
 
-              {step === 3 && (
+              {cur.t === "experience" && (
                 <div className="tf-chips big">
                   {EXPERIENCE.map((x) => (
                     <button key={x} type="button" aria-pressed={data.experience === x} onClick={() => { set("experience", x); setErr(""); }}>
@@ -407,7 +475,7 @@ export function TalentFormPremium() {
                 </div>
               )}
 
-              {step === 4 && (
+              {cur.t === "open" && (
                 <div className="tf-tiles two">
                   {OPPORTUNITY.map((o) => (
                     <button
@@ -428,12 +496,13 @@ export function TalentFormPremium() {
                 </div>
               )}
 
-              {step === 5 && (
+              {cur.t === "work" && (
                 <div className="tf-fields one">
                   <label htmlFor="f-portfolio">
-                    <span>Portfolio, Behance, Dribbble or YouTube link</span>
+                    {/* Worded per pool: a brand manager has campaigns, not a reel. */}
+                    <span>{work?.label ?? "Portfolio or work link"}{work && !work.required && <i> optional</i>}</span>
                     <input
-                      id="f-portfolio" type="url" placeholder="https://" autoComplete="url"
+                      id="f-portfolio" type="url" placeholder={work?.placeholder ?? "https://"} autoComplete="url"
                       value={data.portfolio}
                       onChange={(e) => { set("portfolio", e.target.value); setErr(""); }}
                     />
@@ -474,7 +543,7 @@ export function TalentFormPremium() {
                 </div>
               )}
 
-              {step === 6 && (
+              {cur.t === "review" && (
                 <>
                   <dl className="tf-summary">
                     {summary.map(([k, v]) => (
@@ -497,7 +566,7 @@ export function TalentFormPremium() {
                   <Link to="/moo-talent" className="pm-btn outline">&larr; Back</Link>
                 )}
                 <button type="button" className="pm-btn sun" onClick={next} disabled={sending}>
-                  {sending ? "Sending..." : step === TOTAL_STEPS - 1 ? "Submit application" : "Continue"}
+                  {sending ? "Sending..." : step === total - 1 ? "Submit application" : "Continue"}
                 </button>
               </div>
             </>
@@ -508,7 +577,78 @@ export function TalentFormPremium() {
   );
 }
 
+/**
+ * One question from the pool's form, drawn by its input kind: a choice is
+ * chips (several) or big chips (one); the rest are fields.
+ */
+function CraftQuestion({
+  q,
+  solo,
+  value,
+  onChange,
+}: {
+  q: FormQuestion;
+  /** The only question on its step — the step's heading already asks it. */
+  solo: boolean;
+  value: string[];
+  onChange: (update: (prev: string[]) => string[]) => void;
+}) {
+  const id = `f-q-${q.key}`;
+  const optional = !q.required && !/optional/i.test(q.prompt) && !/optional/i.test(q.hint ?? "")
+    ? <i> optional</i>
+    : null;
+
+  if (q.input === "choice") {
+    const pick = (v: string) =>
+      onChange((prev) =>
+        q.multiple
+          ? prev.includes(v) ? prev.filter((x) => x !== v) : [...prev, v]
+          : prev.includes(v) ? [] : [v],
+      );
+    return (
+      <div className="tf-question">
+        {!solo && <p className="tf-qlabel">{q.prompt}{optional}</p>}
+        {(q.hint || q.multiple) && <p className="tf-hint">{q.hint ?? "Pick all that apply."}</p>}
+        <div className={q.multiple ? "tf-chips" : "tf-chips big"}>
+          {q.options.map((o) => (
+            <button key={o.value} type="button" aria-pressed={value.includes(o.value)} onClick={() => pick(o.value)}>
+              {o.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  const text = value.join("\n");
+  return (
+    <div className="tf-fields one">
+      <label htmlFor={id}>
+        <span>{q.prompt}{optional}</span>
+        {q.input === "longtext" || q.input === "links" ? (
+          <textarea id={id} rows={3} maxLength={2000} placeholder={q.placeholder ?? ""} value={text} onChange={(e) => { const t = e.target.value; onChange(() => [t]); }} />
+        ) : (
+          <input
+            id={id}
+            type={q.input === "url" ? "url" : "text"}
+            inputMode={q.input === "number" ? "numeric" : q.input === "url" ? "url" : undefined}
+            placeholder={q.placeholder ?? ""}
+            value={text}
+            onChange={(e) => { const t = e.target.value; onChange(() => [t]); }}
+          />
+        )}
+      </label>
+      {q.hint && <p className="tf-hint">{q.hint}</p>}
+    </div>
+  );
+}
+
 const TF_CSS = `
+.tf-craft{ display:flex; flex-direction:column; gap:28px; margin-top:32px; }
+.tf-craft .tf-chips, .tf-craft .tf-fields{ margin-top:0; }
+.tf-craft .tf-question .tf-chips{ margin-top:14px; }
+.tf-qlabel{ font-size:13px; font-weight:600; color:#D8CCF2; letter-spacing:.02em; }
+.tf-qlabel i{ font-style:normal; font-weight:500; color:#A897D0; }
 .tf{ min-height:100vh; background:var(--deeper); color:#fff; position:relative; overflow:hidden; display:flex; flex-direction:column; }
 .tf .pm-posbg{ position:fixed; }
 .tf-top{ position:relative; z-index:2; display:flex; justify-content:space-between; align-items:center; padding:28px 40px; }

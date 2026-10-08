@@ -1,0 +1,2230 @@
+{
+  "version": 1,
+  "disciplines": [
+    {
+      "slug": "video_editor",
+      "label": "Video Editor",
+      "hint": "Post-production specialists who cut, assemble and finish video",
+      "specialisations": [
+        {
+          "slug": "short_form",
+          "label": "Short-form / Reels"
+        },
+        {
+          "slug": "long_form",
+          "label": "Long-form YouTube"
+        },
+        {
+          "slug": "motion_graphics",
+          "label": "Motion graphics"
+        },
+        {
+          "slug": "documentary",
+          "label": "Documentary"
+        },
+        {
+          "slug": "vlog",
+          "label": "Vlog"
+        },
+        {
+          "slug": "talking_head",
+          "label": "Talking head"
+        },
+        {
+          "slug": "podcast",
+          "label": "Podcast"
+        },
+        {
+          "slug": "ads_performance",
+          "label": "Ads / performance creative"
+        },
+        {
+          "slug": "micro_drama",
+          "label": "Micro-drama"
+        },
+        {
+          "slug": "corporate",
+          "label": "Corporate"
+        },
+        {
+          "slug": "film_cinematic",
+          "label": "Film / Cinematic"
+        },
+        {
+          "slug": "product_saas",
+          "label": "Product / SaaS launches"
+        },
+        {
+          "slug": "ai_filmmaking",
+          "label": "AI filmmaking"
+        },
+        {
+          "slug": "wedding",
+          "label": "Wedding"
+        },
+        {
+          "slug": "gaming",
+          "label": "Gaming"
+        },
+        {
+          "slug": "vfx_compositing",
+          "label": "VFX / compositing"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "What kind of editing do you do?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "Editing styles",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "short_form",
+                    "label": "Short-form / Reels"
+                  },
+                  {
+                    "value": "long_form",
+                    "label": "Long-form YouTube"
+                  },
+                  {
+                    "value": "motion_graphics",
+                    "label": "Motion graphics"
+                  },
+                  {
+                    "value": "documentary",
+                    "label": "Documentary"
+                  },
+                  {
+                    "value": "vlog",
+                    "label": "Vlog"
+                  },
+                  {
+                    "value": "talking_head",
+                    "label": "Talking head"
+                  },
+                  {
+                    "value": "podcast",
+                    "label": "Podcast"
+                  },
+                  {
+                    "value": "ads_performance",
+                    "label": "Ads / performance creative"
+                  },
+                  {
+                    "value": "micro_drama",
+                    "label": "Micro-drama"
+                  },
+                  {
+                    "value": "corporate",
+                    "label": "Corporate"
+                  },
+                  {
+                    "value": "film_cinematic",
+                    "label": "Film / Cinematic"
+                  },
+                  {
+                    "value": "product_saas",
+                    "label": "Product / SaaS launches"
+                  },
+                  {
+                    "value": "ai_filmmaking",
+                    "label": "AI filmmaking"
+                  },
+                  {
+                    "value": "wedding",
+                    "label": "Wedding"
+                  },
+                  {
+                    "value": "gaming",
+                    "label": "Gaming"
+                  },
+                  {
+                    "value": "vfx_compositing",
+                    "label": "VFX / compositing"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Which software do you cut in?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "software",
+                "prompt": "Editing software",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "premiere_pro",
+                    "label": "Adobe Premiere Pro"
+                  },
+                  {
+                    "value": "after_effects",
+                    "label": "Adobe After Effects"
+                  },
+                  {
+                    "value": "davinci_resolve",
+                    "label": "DaVinci Resolve"
+                  },
+                  {
+                    "value": "final_cut_pro",
+                    "label": "Final Cut Pro"
+                  },
+                  {
+                    "value": "capcut",
+                    "label": "CapCut"
+                  },
+                  {
+                    "value": "photoshop",
+                    "label": "Adobe Photoshop"
+                  },
+                  {
+                    "value": "illustrator",
+                    "label": "Adobe Illustrator"
+                  },
+                  {
+                    "value": "audition",
+                    "label": "Adobe Audition"
+                  },
+                  {
+                    "value": "blender",
+                    "label": "Blender"
+                  },
+                  {
+                    "value": "cinema_4d",
+                    "label": "Cinema 4D"
+                  },
+                  {
+                    "value": "figma",
+                    "label": "Figma"
+                  },
+                  {
+                    "value": "nuke",
+                    "label": "Nuke"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Whose work have you cut?",
+            "hint": "Optional — channels, brands or shows.",
+            "questions": [
+              {
+                "key": "notable_channels",
+                "prompt": "Channels, brands or shows you've edited for",
+                "hint": null,
+                "placeholder": "e.g. Ranveer Show, Zomato's YouTube, a Netflix trailer…",
+                "required": false,
+                "input": "longtext",
+                "multiple": false,
+                "options": []
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "Showreel — YouTube, Vimeo or Drive link",
+          "placeholder": "https://…",
+          "missing": "Add a link to your edits — a showreel, YouTube or a Drive folder.",
+          "required": true
+        }
+      }
+    },
+    {
+      "slug": "designer",
+      "label": "Designer",
+      "hint": "Visual craft across brand, product and platform",
+      "specialisations": [
+        {
+          "slug": "thumbnail",
+          "label": "Thumbnail designer"
+        },
+        {
+          "slug": "visual_brand",
+          "label": "Visual / Brand designer"
+        },
+        {
+          "slug": "graphic",
+          "label": "Graphic designer"
+        },
+        {
+          "slug": "ui_ux",
+          "label": "UI / UX designer"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "What do you design?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "Design focus",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "thumbnail",
+                    "label": "Thumbnail designer"
+                  },
+                  {
+                    "value": "visual_brand",
+                    "label": "Visual / Brand designer"
+                  },
+                  {
+                    "value": "graphic",
+                    "label": "Graphic designer"
+                  },
+                  {
+                    "value": "ui_ux",
+                    "label": "UI / UX designer"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Which tools do you design in?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "software",
+                "prompt": "Design tools",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "figma",
+                    "label": "Figma"
+                  },
+                  {
+                    "value": "photoshop",
+                    "label": "Photoshop"
+                  },
+                  {
+                    "value": "illustrator",
+                    "label": "Illustrator"
+                  },
+                  {
+                    "value": "indesign",
+                    "label": "InDesign"
+                  },
+                  {
+                    "value": "after_effects",
+                    "label": "After Effects"
+                  },
+                  {
+                    "value": "canva",
+                    "label": "Canva"
+                  },
+                  {
+                    "value": "blender",
+                    "label": "Blender"
+                  },
+                  {
+                    "value": "cinema_4d",
+                    "label": "Cinema 4D"
+                  },
+                  {
+                    "value": "procreate",
+                    "label": "Procreate"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Show us a little more.",
+            "hint": "Both optional.",
+            "questions": [
+              {
+                "key": "dribbble_url",
+                "prompt": "Your Dribbble",
+                "hint": null,
+                "placeholder": "https://dribbble.com/…",
+                "required": false,
+                "input": "url",
+                "multiple": false,
+                "options": []
+              },
+              {
+                "key": "case_studies",
+                "prompt": "Design case studies (one link per line)",
+                "hint": null,
+                "placeholder": "https://…",
+                "required": false,
+                "input": "links",
+                "multiple": false,
+                "options": []
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "Behance, Dribbble or portfolio site",
+          "placeholder": "https://…",
+          "missing": "Add a link to your designs — Behance, Dribbble or your site.",
+          "required": true
+        }
+      }
+    },
+    {
+      "slug": "creative_head",
+      "label": "Creative Head / Production",
+      "hint": "People who own creative vision or manage production pipelines",
+      "specialisations": [
+        {
+          "slug": "creative_director",
+          "label": "Creative director"
+        },
+        {
+          "slug": "creative_producer",
+          "label": "Creative producer"
+        },
+        {
+          "slug": "head_of_content",
+          "label": "Head of content"
+        },
+        {
+          "slug": "youtube_producer",
+          "label": "YouTube producer"
+        },
+        {
+          "slug": "short_form_producer",
+          "label": "Short form producer"
+        },
+        {
+          "slug": "news_producer",
+          "label": "News producer"
+        },
+        {
+          "slug": "pre_production_lead",
+          "label": "Pre-production lead"
+        },
+        {
+          "slug": "post_production_lead",
+          "label": "Post-production lead"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "What have you owned?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "Remit",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "creative_director",
+                    "label": "Creative director"
+                  },
+                  {
+                    "value": "creative_producer",
+                    "label": "Creative producer"
+                  },
+                  {
+                    "value": "head_of_content",
+                    "label": "Head of content"
+                  },
+                  {
+                    "value": "youtube_producer",
+                    "label": "YouTube producer"
+                  },
+                  {
+                    "value": "short_form_producer",
+                    "label": "Short form producer"
+                  },
+                  {
+                    "value": "news_producer",
+                    "label": "News producer"
+                  },
+                  {
+                    "value": "pre_production_lead",
+                    "label": "Pre-production lead"
+                  },
+                  {
+                    "value": "post_production_lead",
+                    "label": "Post-production lead"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "How big has it got?",
+            "hint": "Both optional.",
+            "questions": [
+              {
+                "key": "team_size_managed",
+                "prompt": "Largest crew or team you've run",
+                "hint": null,
+                "placeholder": "e.g. 12",
+                "required": false,
+                "input": "number",
+                "multiple": false,
+                "options": []
+              },
+              {
+                "key": "largest_budget_handled",
+                "prompt": "Largest production budget",
+                "hint": null,
+                "placeholder": null,
+                "required": false,
+                "input": "choice",
+                "multiple": false,
+                "options": [
+                  {
+                    "value": "Under ₹10 lakh",
+                    "label": "Under ₹10 lakh"
+                  },
+                  {
+                    "value": "₹10 – 50 lakh",
+                    "label": "₹10 – 50 lakh"
+                  },
+                  {
+                    "value": "₹50 lakh – ₹2 crore",
+                    "label": "₹50 lakh – ₹2 crore"
+                  },
+                  {
+                    "value": "₹2 crore +",
+                    "label": "₹2 crore +"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "What does your team run on?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "software",
+                "prompt": "Production tools",
+                "hint": "Optional — pick any.",
+                "placeholder": null,
+                "required": false,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "frame_io",
+                    "label": "Frame.io"
+                  },
+                  {
+                    "value": "figma",
+                    "label": "Figma"
+                  },
+                  {
+                    "value": "premiere_pro",
+                    "label": "Premiere Pro"
+                  },
+                  {
+                    "value": "after_effects",
+                    "label": "After Effects"
+                  },
+                  {
+                    "value": "notion",
+                    "label": "Notion"
+                  },
+                  {
+                    "value": "asana",
+                    "label": "Asana"
+                  },
+                  {
+                    "value": "google_workspace",
+                    "label": "Google Workspace"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "A reel, deck or site of work you've led",
+          "placeholder": "https://…",
+          "missing": "Add a link to work you've led — a reel, a deck or a site.",
+          "required": true
+        }
+      }
+    },
+    {
+      "slug": "content_strategist",
+      "label": "Content Strategist",
+      "hint": "Platform-specific growth and content planning",
+      "specialisations": [
+        {
+          "slug": "youtube_strategist",
+          "label": "YouTube strategist"
+        },
+        {
+          "slug": "instagram_strategist",
+          "label": "Instagram strategist"
+        },
+        {
+          "slug": "linkedin_strategist",
+          "label": "LinkedIn strategist"
+        },
+        {
+          "slug": "x_twitter_strategist",
+          "label": "X / Twitter strategist"
+        },
+        {
+          "slug": "tiktok_strategist",
+          "label": "TikTok strategist"
+        },
+        {
+          "slug": "podcast_strategist",
+          "label": "Podcast strategist"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "Which platforms do you plan for?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "Platforms",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "youtube_strategist",
+                    "label": "YouTube strategist"
+                  },
+                  {
+                    "value": "instagram_strategist",
+                    "label": "Instagram strategist"
+                  },
+                  {
+                    "value": "linkedin_strategist",
+                    "label": "LinkedIn strategist"
+                  },
+                  {
+                    "value": "x_twitter_strategist",
+                    "label": "X / Twitter strategist"
+                  },
+                  {
+                    "value": "tiktok_strategist",
+                    "label": "TikTok strategist"
+                  },
+                  {
+                    "value": "podcast_strategist",
+                    "label": "Podcast strategist"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "What do you plan and measure with?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "software",
+                "prompt": "Planning tools",
+                "hint": "Optional — pick any.",
+                "placeholder": null,
+                "required": false,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "notion",
+                    "label": "Notion"
+                  },
+                  {
+                    "value": "google_analytics",
+                    "label": "Google Analytics"
+                  },
+                  {
+                    "value": "semrush",
+                    "label": "Semrush"
+                  },
+                  {
+                    "value": "google_workspace",
+                    "label": "Google Workspace"
+                  },
+                  {
+                    "value": "canva",
+                    "label": "Canva"
+                  },
+                  {
+                    "value": "figma",
+                    "label": "Figma"
+                  },
+                  {
+                    "value": "buffer",
+                    "label": "Buffer"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Which accounts have you grown?",
+            "hint": "Optional — from what to what.",
+            "questions": [
+              {
+                "key": "accounts_grown",
+                "prompt": "Accounts you've grown",
+                "hint": null,
+                "placeholder": "e.g. @brand, 12k → 180k in a year",
+                "required": false,
+                "input": "longtext",
+                "multiple": false,
+                "options": []
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "A strategy deck, case study or account you've grown",
+          "placeholder": "https://…",
+          "missing": "Add a link — a strategy deck, a case study or an account you've grown.",
+          "required": true
+        }
+      }
+    },
+    {
+      "slug": "writer",
+      "label": "Writer",
+      "hint": "Word-first creators across scripts, editorial and ads",
+      "specialisations": [
+        {
+          "slug": "ad_film_writer",
+          "label": "Ad film writer"
+        },
+        {
+          "slug": "long_form_scriptwriter",
+          "label": "Long form scriptwriter"
+        },
+        {
+          "slug": "short_form_scriptwriter",
+          "label": "Short form scriptwriter"
+        },
+        {
+          "slug": "screenplay_writer",
+          "label": "Screenplay writer"
+        },
+        {
+          "slug": "news_writer",
+          "label": "News writer"
+        },
+        {
+          "slug": "blog_writer",
+          "label": "Blog writer"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "What do you write?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "Writing formats",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "ad_film_writer",
+                    "label": "Ad film writer"
+                  },
+                  {
+                    "value": "long_form_scriptwriter",
+                    "label": "Long form scriptwriter"
+                  },
+                  {
+                    "value": "short_form_scriptwriter",
+                    "label": "Short form scriptwriter"
+                  },
+                  {
+                    "value": "screenplay_writer",
+                    "label": "Screenplay writer"
+                  },
+                  {
+                    "value": "news_writer",
+                    "label": "News writer"
+                  },
+                  {
+                    "value": "blog_writer",
+                    "label": "Blog writer"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "What do you draft in?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "software",
+                "prompt": "Writing tools",
+                "hint": "Optional — pick any.",
+                "placeholder": null,
+                "required": false,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "google_workspace",
+                    "label": "Google Workspace"
+                  },
+                  {
+                    "value": "notion",
+                    "label": "Notion"
+                  },
+                  {
+                    "value": "grammarly",
+                    "label": "Grammarly"
+                  },
+                  {
+                    "value": "final_draft",
+                    "label": "Final Draft"
+                  },
+                  {
+                    "value": "celtx",
+                    "label": "Celtx"
+                  },
+                  {
+                    "value": "wordpress",
+                    "label": "WordPress"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Where has your writing run?",
+            "hint": "Both optional.",
+            "questions": [
+              {
+                "key": "published_clips",
+                "prompt": "Published pieces (one link per line)",
+                "hint": null,
+                "placeholder": "https://…",
+                "required": false,
+                "input": "links",
+                "multiple": false,
+                "options": []
+              },
+              {
+                "key": "bylines",
+                "prompt": "Bylines and publications",
+                "hint": null,
+                "placeholder": "e.g. Mint, The Ken, a Netflix series",
+                "required": false,
+                "input": "longtext",
+                "multiple": false,
+                "options": []
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "Writing samples — a folder, site or published piece",
+          "placeholder": "https://…",
+          "missing": "Add a link to your writing — a samples folder, a site or a published piece.",
+          "required": true
+        }
+      }
+    },
+    {
+      "slug": "brand_face",
+      "label": "Brand Face / Creator",
+      "hint": "On-camera talent who front channels, ads and campaigns",
+      "specialisations": [
+        {
+          "slug": "yt_anchor_host",
+          "label": "YT anchor / host"
+        },
+        {
+          "slug": "ugc_creator",
+          "label": "UGC creator"
+        },
+        {
+          "slug": "meta_ad_creator",
+          "label": "Meta / performance ad creator"
+        },
+        {
+          "slug": "actor",
+          "label": "Actor"
+        },
+        {
+          "slug": "podcast_host",
+          "label": "Podcast host"
+        },
+        {
+          "slug": "voice_over_artist",
+          "label": "Voice-over artist"
+        },
+        {
+          "slug": "reels_short_form_face",
+          "label": "Reels / short form face"
+        },
+        {
+          "slug": "brand_ambassador",
+          "label": "Brand ambassador"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "What do you do on camera?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "On-camera formats",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "yt_anchor_host",
+                    "label": "YT anchor / host"
+                  },
+                  {
+                    "value": "ugc_creator",
+                    "label": "UGC creator"
+                  },
+                  {
+                    "value": "meta_ad_creator",
+                    "label": "Meta / performance ad creator"
+                  },
+                  {
+                    "value": "actor",
+                    "label": "Actor"
+                  },
+                  {
+                    "value": "podcast_host",
+                    "label": "Podcast host"
+                  },
+                  {
+                    "value": "voice_over_artist",
+                    "label": "Voice-over artist"
+                  },
+                  {
+                    "value": "reels_short_form_face",
+                    "label": "Reels / short form face"
+                  },
+                  {
+                    "value": "brand_ambassador",
+                    "label": "Brand ambassador"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "How big is your audience?",
+            "hint": "Optional — today's numbers, roughly.",
+            "questions": [
+              {
+                "key": "instagram_followers",
+                "prompt": "Instagram followers",
+                "hint": null,
+                "placeholder": "e.g. 48000",
+                "required": false,
+                "input": "number",
+                "multiple": false,
+                "options": []
+              },
+              {
+                "key": "youtube_subscribers",
+                "prompt": "YouTube subscribers",
+                "hint": null,
+                "placeholder": "e.g. 12000",
+                "required": false,
+                "input": "number",
+                "multiple": false,
+                "options": []
+              },
+              {
+                "key": "average_views",
+                "prompt": "Average views per post",
+                "hint": null,
+                "placeholder": "e.g. 20000",
+                "required": false,
+                "input": "number",
+                "multiple": false,
+                "options": []
+              }
+            ]
+          },
+          {
+            "title": "What can you shoot without a crew?",
+            "hint": "Optional.",
+            "questions": [
+              {
+                "key": "own_setup",
+                "prompt": "Your own setup",
+                "hint": null,
+                "placeholder": "e.g. Sony ZV-E10, two lights, a lav mic, a quiet room",
+                "required": false,
+                "input": "text",
+                "multiple": false,
+                "options": []
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "Your Instagram, YouTube or a reel",
+          "placeholder": "https://…",
+          "missing": "Add a link where we can see you on camera — Instagram, YouTube or a reel.",
+          "required": true
+        }
+      }
+    },
+    {
+      "slug": "copy_writer",
+      "label": "Copy Writer",
+      "hint": "Persuasive short-form words — ads, brand voice, social, UX and CRM copy",
+      "specialisations": [
+        {
+          "slug": "ad_copy",
+          "label": "Ad copy"
+        },
+        {
+          "slug": "brand_copy",
+          "label": "Brand & website copy"
+        },
+        {
+          "slug": "social_copy",
+          "label": "Social media copy"
+        },
+        {
+          "slug": "performance_copy",
+          "label": "Performance & direct-response"
+        },
+        {
+          "slug": "ux_copy",
+          "label": "UX & product microcopy"
+        },
+        {
+          "slug": "email_crm_copy",
+          "label": "Email & CRM copy"
+        },
+        {
+          "slug": "seo_content",
+          "label": "SEO content"
+        },
+        {
+          "slug": "campaign_lines",
+          "label": "Taglines & campaign lines"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "What kind of copy do you write?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "Copy formats",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "ad_copy",
+                    "label": "Ad copy"
+                  },
+                  {
+                    "value": "brand_copy",
+                    "label": "Brand & website copy"
+                  },
+                  {
+                    "value": "social_copy",
+                    "label": "Social media copy"
+                  },
+                  {
+                    "value": "performance_copy",
+                    "label": "Performance & direct-response"
+                  },
+                  {
+                    "value": "ux_copy",
+                    "label": "UX & product microcopy"
+                  },
+                  {
+                    "value": "email_crm_copy",
+                    "label": "Email & CRM copy"
+                  },
+                  {
+                    "value": "seo_content",
+                    "label": "SEO content"
+                  },
+                  {
+                    "value": "campaign_lines",
+                    "label": "Taglines & campaign lines"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Which brands have you written for?",
+            "hint": "Both optional.",
+            "questions": [
+              {
+                "key": "brands",
+                "prompt": "Brands you've written copy for",
+                "hint": null,
+                "placeholder": "e.g. CRED, Nykaa, Swiggy",
+                "required": false,
+                "input": "longtext",
+                "multiple": false,
+                "options": []
+              },
+              {
+                "key": "campaigns",
+                "prompt": "Ads or campaigns that ran (one link per line)",
+                "hint": null,
+                "placeholder": "https://…",
+                "required": false,
+                "input": "links",
+                "multiple": false,
+                "options": []
+              }
+            ]
+          },
+          {
+            "title": "Which tools do you write copy in?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "software",
+                "prompt": "Copy tools",
+                "hint": "Optional — pick any.",
+                "placeholder": null,
+                "required": false,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "google_workspace",
+                    "label": "Google Workspace"
+                  },
+                  {
+                    "value": "notion",
+                    "label": "Notion"
+                  },
+                  {
+                    "value": "grammarly",
+                    "label": "Grammarly"
+                  },
+                  {
+                    "value": "figma",
+                    "label": "Figma"
+                  },
+                  {
+                    "value": "wordpress",
+                    "label": "WordPress"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "Copy that ran — a deck, site or Drive folder",
+          "placeholder": "https://…",
+          "missing": "Add a link to copy of yours that ran — a deck, a site or a Drive folder.",
+          "required": true
+        }
+      }
+    },
+    {
+      "slug": "motion_designer",
+      "label": "Motion Graphics Designer",
+      "hint": "Animated graphics — titles, explainers, logo and brand motion, social motion",
+      "specialisations": [
+        {
+          "slug": "explainer_animation",
+          "label": "Explainer animation"
+        },
+        {
+          "slug": "title_sequences",
+          "label": "Titles & lower thirds"
+        },
+        {
+          "slug": "logo_animation",
+          "label": "Logo & brand motion"
+        },
+        {
+          "slug": "social_motion",
+          "label": "Social media motion"
+        },
+        {
+          "slug": "kinetic_typography",
+          "label": "Kinetic typography"
+        },
+        {
+          "slug": "ui_motion",
+          "label": "UI & product motion"
+        },
+        {
+          "slug": "motion_3d",
+          "label": "3D motion"
+        },
+        {
+          "slug": "character_animation",
+          "label": "Character animation"
+        },
+        {
+          "slug": "data_visualisation",
+          "label": "Data & infographic motion"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "What kind of motion work do you do?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "Motion focus",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "explainer_animation",
+                    "label": "Explainer animation"
+                  },
+                  {
+                    "value": "title_sequences",
+                    "label": "Titles & lower thirds"
+                  },
+                  {
+                    "value": "logo_animation",
+                    "label": "Logo & brand motion"
+                  },
+                  {
+                    "value": "social_motion",
+                    "label": "Social media motion"
+                  },
+                  {
+                    "value": "kinetic_typography",
+                    "label": "Kinetic typography"
+                  },
+                  {
+                    "value": "ui_motion",
+                    "label": "UI & product motion"
+                  },
+                  {
+                    "value": "motion_3d",
+                    "label": "3D motion"
+                  },
+                  {
+                    "value": "character_animation",
+                    "label": "Character animation"
+                  },
+                  {
+                    "value": "data_visualisation",
+                    "label": "Data & infographic motion"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Which software do you animate in?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "software",
+                "prompt": "Animation software",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "after_effects",
+                    "label": "After Effects"
+                  },
+                  {
+                    "value": "cinema_4d",
+                    "label": "Cinema 4D"
+                  },
+                  {
+                    "value": "blender",
+                    "label": "Blender"
+                  },
+                  {
+                    "value": "illustrator",
+                    "label": "Illustrator"
+                  },
+                  {
+                    "value": "premiere_pro",
+                    "label": "Premiere Pro"
+                  },
+                  {
+                    "value": "figma",
+                    "label": "Figma"
+                  },
+                  {
+                    "value": "rive",
+                    "label": "Rive"
+                  },
+                  {
+                    "value": "lottie",
+                    "label": "Lottie"
+                  },
+                  {
+                    "value": "houdini",
+                    "label": "Houdini"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "2D, 3D, or both?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "dimension",
+                "prompt": "You work in",
+                "hint": null,
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": false,
+                "options": [
+                  {
+                    "value": "2D",
+                    "label": "2D"
+                  },
+                  {
+                    "value": "3D",
+                    "label": "3D"
+                  },
+                  {
+                    "value": "Both",
+                    "label": "Both"
+                  }
+                ]
+              },
+              {
+                "key": "motion_pieces",
+                "prompt": "Pieces that show your range (optional, one link per line)",
+                "hint": null,
+                "placeholder": "https://…",
+                "required": false,
+                "input": "links",
+                "multiple": false,
+                "options": []
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "Motion reel — Vimeo, YouTube, Behance or Drive",
+          "placeholder": "https://…",
+          "missing": "Add a link to your motion reel.",
+          "required": true
+        }
+      }
+    },
+    {
+      "slug": "brand_manager",
+      "label": "Brand Manager / Brand Lead",
+      "hint": "People who own a brand — positioning, launches, campaigns and its P&L",
+      "specialisations": [
+        {
+          "slug": "brand_strategy",
+          "label": "Brand strategy & positioning"
+        },
+        {
+          "slug": "launches_rebrands",
+          "label": "Launches & rebrands"
+        },
+        {
+          "slug": "integrated_campaigns",
+          "label": "Integrated campaigns"
+        },
+        {
+          "slug": "consumer_insights",
+          "label": "Consumer insights & research"
+        },
+        {
+          "slug": "brand_partnerships",
+          "label": "Partnerships & sponsorships"
+        },
+        {
+          "slug": "brand_guidelines",
+          "label": "Brand identity & guidelines"
+        },
+        {
+          "slug": "d2c_brand_building",
+          "label": "D2C brand building"
+        },
+        {
+          "slug": "trade_retail",
+          "label": "Trade & retail marketing"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "Which parts of brand-building have you owned?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "Brand remit",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "brand_strategy",
+                    "label": "Brand strategy & positioning"
+                  },
+                  {
+                    "value": "launches_rebrands",
+                    "label": "Launches & rebrands"
+                  },
+                  {
+                    "value": "integrated_campaigns",
+                    "label": "Integrated campaigns"
+                  },
+                  {
+                    "value": "consumer_insights",
+                    "label": "Consumer insights & research"
+                  },
+                  {
+                    "value": "brand_partnerships",
+                    "label": "Partnerships & sponsorships"
+                  },
+                  {
+                    "value": "brand_guidelines",
+                    "label": "Brand identity & guidelines"
+                  },
+                  {
+                    "value": "d2c_brand_building",
+                    "label": "D2C brand building"
+                  },
+                  {
+                    "value": "trade_retail",
+                    "label": "Trade & retail marketing"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Which brands, in which categories?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "brands_managed",
+                "prompt": "Brands you've managed, and what you owned on each",
+                "hint": null,
+                "placeholder": "e.g. Mamaearth — relaunch and positioning, 2022–24",
+                "required": true,
+                "input": "longtext",
+                "multiple": false,
+                "options": []
+              },
+              {
+                "key": "categories",
+                "prompt": "Categories",
+                "hint": null,
+                "placeholder": null,
+                "required": false,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "FMCG",
+                    "label": "FMCG"
+                  },
+                  {
+                    "value": "D2C",
+                    "label": "D2C"
+                  },
+                  {
+                    "value": "Beauty & personal care",
+                    "label": "Beauty & personal care"
+                  },
+                  {
+                    "value": "Food & beverage",
+                    "label": "Food & beverage"
+                  },
+                  {
+                    "value": "Fashion & lifestyle",
+                    "label": "Fashion & lifestyle"
+                  },
+                  {
+                    "value": "Consumer tech",
+                    "label": "Consumer tech"
+                  },
+                  {
+                    "value": "BFSI",
+                    "label": "BFSI"
+                  },
+                  {
+                    "value": "Media & entertainment",
+                    "label": "Media & entertainment"
+                  },
+                  {
+                    "value": "Healthcare",
+                    "label": "Healthcare"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "How much have you been trusted with?",
+            "hint": "Both optional.",
+            "questions": [
+              {
+                "key": "annual_budget",
+                "prompt": "Largest annual brand budget",
+                "hint": null,
+                "placeholder": null,
+                "required": false,
+                "input": "choice",
+                "multiple": false,
+                "options": [
+                  {
+                    "value": "Under ₹50 lakh",
+                    "label": "Under ₹50 lakh"
+                  },
+                  {
+                    "value": "₹50 lakh – ₹2 crore",
+                    "label": "₹50 lakh – ₹2 crore"
+                  },
+                  {
+                    "value": "₹2 – 10 crore",
+                    "label": "₹2 – 10 crore"
+                  },
+                  {
+                    "value": "₹10 crore +",
+                    "label": "₹10 crore +"
+                  }
+                ]
+              },
+              {
+                "key": "team_size_managed",
+                "prompt": "People who reported to you",
+                "hint": null,
+                "placeholder": "e.g. 4",
+                "required": false,
+                "input": "number",
+                "multiple": false,
+                "options": []
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "A brand case study or deck (optional)",
+          "placeholder": "https://…",
+          "missing": "Add a link to a case study or deck.",
+          "required": false
+        }
+      }
+    },
+    {
+      "slug": "marketing_manager",
+      "label": "Marketing Manager / Marketing Lead",
+      "hint": "People who run marketing channels, budgets and growth",
+      "specialisations": [
+        {
+          "slug": "performance",
+          "label": "Performance marketing"
+        },
+        {
+          "slug": "seo",
+          "label": "SEO"
+        },
+        {
+          "slug": "crm_lifecycle",
+          "label": "CRM & lifecycle"
+        },
+        {
+          "slug": "influencer",
+          "label": "Influencer marketing"
+        },
+        {
+          "slug": "content_marketing",
+          "label": "Content marketing"
+        },
+        {
+          "slug": "product_marketing",
+          "label": "Product marketing"
+        },
+        {
+          "slug": "growth",
+          "label": "Growth & experiments"
+        },
+        {
+          "slug": "events_btl",
+          "label": "Events & BTL"
+        },
+        {
+          "slug": "atl_media",
+          "label": "ATL & media planning"
+        },
+        {
+          "slug": "affiliate",
+          "label": "Affiliate & partnerships"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "Which channels do you run?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "Channels",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "performance",
+                    "label": "Performance marketing"
+                  },
+                  {
+                    "value": "seo",
+                    "label": "SEO"
+                  },
+                  {
+                    "value": "crm_lifecycle",
+                    "label": "CRM & lifecycle"
+                  },
+                  {
+                    "value": "influencer",
+                    "label": "Influencer marketing"
+                  },
+                  {
+                    "value": "content_marketing",
+                    "label": "Content marketing"
+                  },
+                  {
+                    "value": "product_marketing",
+                    "label": "Product marketing"
+                  },
+                  {
+                    "value": "growth",
+                    "label": "Growth & experiments"
+                  },
+                  {
+                    "value": "events_btl",
+                    "label": "Events & BTL"
+                  },
+                  {
+                    "value": "atl_media",
+                    "label": "ATL & media planning"
+                  },
+                  {
+                    "value": "affiliate",
+                    "label": "Affiliate & partnerships"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Which marketing tools do you work in?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "software",
+                "prompt": "Marketing tools",
+                "hint": "Optional — pick any.",
+                "placeholder": null,
+                "required": false,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "meta_ads_manager",
+                    "label": "Meta Ads Manager"
+                  },
+                  {
+                    "value": "google_ads",
+                    "label": "Google Ads"
+                  },
+                  {
+                    "value": "ga4",
+                    "label": "Google Analytics 4"
+                  },
+                  {
+                    "value": "hubspot",
+                    "label": "HubSpot"
+                  },
+                  {
+                    "value": "salesforce",
+                    "label": "Salesforce"
+                  },
+                  {
+                    "value": "moengage",
+                    "label": "MoEngage"
+                  },
+                  {
+                    "value": "clevertap",
+                    "label": "CleverTap"
+                  },
+                  {
+                    "value": "semrush",
+                    "label": "Semrush"
+                  },
+                  {
+                    "value": "looker_studio",
+                    "label": "Looker Studio"
+                  },
+                  {
+                    "value": "mixpanel",
+                    "label": "Mixpanel"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "What have you been responsible for?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "monthly_spend",
+                "prompt": "Monthly spend you've managed",
+                "hint": null,
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": false,
+                "options": [
+                  {
+                    "value": "Under ₹5 lakh",
+                    "label": "Under ₹5 lakh"
+                  },
+                  {
+                    "value": "₹5 – 25 lakh",
+                    "label": "₹5 – 25 lakh"
+                  },
+                  {
+                    "value": "₹25 lakh – ₹1 crore",
+                    "label": "₹25 lakh – ₹1 crore"
+                  },
+                  {
+                    "value": "₹1 crore +",
+                    "label": "₹1 crore +"
+                  }
+                ]
+              },
+              {
+                "key": "team_size_managed",
+                "prompt": "Size of the marketing team you ran",
+                "hint": null,
+                "placeholder": "e.g. 6",
+                "required": false,
+                "input": "number",
+                "multiple": false,
+                "options": []
+              },
+              {
+                "key": "proudest_result",
+                "prompt": "One result you're proud of (optional)",
+                "hint": null,
+                "placeholder": "e.g. cut CAC 30% in two quarters",
+                "required": false,
+                "input": "longtext",
+                "multiple": false,
+                "options": []
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "A campaign case study or deck (optional)",
+          "placeholder": "https://…",
+          "missing": "Add a link to a campaign case study or deck.",
+          "required": false
+        }
+      }
+    },
+    {
+      "slug": "social_media_manager",
+      "label": "Social Media Manager",
+      "hint": "People who run a brand's social accounts and community",
+      "specialisations": [
+        {
+          "slug": "community",
+          "label": "Community management"
+        },
+        {
+          "slug": "content_calendar",
+          "label": "Content calendars"
+        },
+        {
+          "slug": "paid_social",
+          "label": "Paid social"
+        },
+        {
+          "slug": "creator_collabs",
+          "label": "Creator collaborations"
+        },
+        {
+          "slug": "social_reporting",
+          "label": "Analytics & reporting"
+        },
+        {
+          "slug": "ugc_programmes",
+          "label": "UGC programmes"
+        },
+        {
+          "slug": "reputation",
+          "label": "Reputation & moderation"
+        },
+        {
+          "slug": "social_commerce",
+          "label": "Social commerce"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "Which platforms have you run a brand on?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "platforms",
+                "prompt": "Platforms",
+                "hint": null,
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "Instagram",
+                    "label": "Instagram"
+                  },
+                  {
+                    "value": "LinkedIn",
+                    "label": "LinkedIn"
+                  },
+                  {
+                    "value": "YouTube",
+                    "label": "YouTube"
+                  },
+                  {
+                    "value": "X",
+                    "label": "X"
+                  },
+                  {
+                    "value": "Facebook",
+                    "label": "Facebook"
+                  },
+                  {
+                    "value": "Pinterest",
+                    "label": "Pinterest"
+                  },
+                  {
+                    "value": "Threads",
+                    "label": "Threads"
+                  },
+                  {
+                    "value": "Snapchat",
+                    "label": "Snapchat"
+                  },
+                  {
+                    "value": "WhatsApp channels",
+                    "label": "WhatsApp channels"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "What does your social work cover?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "Social remit",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "community",
+                    "label": "Community management"
+                  },
+                  {
+                    "value": "content_calendar",
+                    "label": "Content calendars"
+                  },
+                  {
+                    "value": "paid_social",
+                    "label": "Paid social"
+                  },
+                  {
+                    "value": "creator_collabs",
+                    "label": "Creator collaborations"
+                  },
+                  {
+                    "value": "social_reporting",
+                    "label": "Analytics & reporting"
+                  },
+                  {
+                    "value": "ugc_programmes",
+                    "label": "UGC programmes"
+                  },
+                  {
+                    "value": "reputation",
+                    "label": "Reputation & moderation"
+                  },
+                  {
+                    "value": "social_commerce",
+                    "label": "Social commerce"
+                  }
+                ]
+              },
+              {
+                "key": "software",
+                "prompt": "Scheduling and design tools",
+                "hint": "Optional — pick any.",
+                "placeholder": null,
+                "required": false,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "meta_business_suite",
+                    "label": "Meta Business Suite"
+                  },
+                  {
+                    "value": "buffer",
+                    "label": "Buffer"
+                  },
+                  {
+                    "value": "hootsuite",
+                    "label": "Hootsuite"
+                  },
+                  {
+                    "value": "sprout_social",
+                    "label": "Sprout Social"
+                  },
+                  {
+                    "value": "later",
+                    "label": "Later"
+                  },
+                  {
+                    "value": "canva",
+                    "label": "Canva"
+                  },
+                  {
+                    "value": "capcut",
+                    "label": "CapCut"
+                  },
+                  {
+                    "value": "notion",
+                    "label": "Notion"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Which accounts have you handled?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "accounts_handled",
+                "prompt": "Accounts, their size, and for how long",
+                "hint": null,
+                "placeholder": "e.g. @brand — 40k → 210k, 2023–25",
+                "required": true,
+                "input": "longtext",
+                "multiple": false,
+                "options": []
+              },
+              {
+                "key": "content_creation",
+                "prompt": "Who makes the content?",
+                "hint": null,
+                "placeholder": null,
+                "required": false,
+                "input": "choice",
+                "multiple": false,
+                "options": [
+                  {
+                    "value": "I plan and post",
+                    "label": "I plan and post"
+                  },
+                  {
+                    "value": "I also shoot and edit",
+                    "label": "I also shoot and edit"
+                  },
+                  {
+                    "value": "I brief creators and agencies",
+                    "label": "I brief creators and agencies"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "An account you run, or a case study",
+          "placeholder": "https://instagram.com/…",
+          "missing": "Add a link to an account you run or a case study.",
+          "required": true
+        }
+      }
+    },
+    {
+      "slug": "design_lead",
+      "label": "Design Lead",
+      "hint": "People who lead a design team and own its standard",
+      "specialisations": [
+        {
+          "slug": "brand_identity",
+          "label": "Brand identity"
+        },
+        {
+          "slug": "product_ui",
+          "label": "Product & UI"
+        },
+        {
+          "slug": "design_systems",
+          "label": "Design systems"
+        },
+        {
+          "slug": "marketing_creative",
+          "label": "Marketing creative"
+        },
+        {
+          "slug": "packaging",
+          "label": "Packaging"
+        },
+        {
+          "slug": "motion_video_direction",
+          "label": "Motion & video direction"
+        },
+        {
+          "slug": "ux_research",
+          "label": "UX research"
+        }
+      ],
+      "form": {
+        "steps": [
+          {
+            "title": "What has your team designed?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "specialisations",
+                "prompt": "Design remit",
+                "hint": "Pick all that apply.",
+                "placeholder": null,
+                "required": true,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "brand_identity",
+                    "label": "Brand identity"
+                  },
+                  {
+                    "value": "product_ui",
+                    "label": "Product & UI"
+                  },
+                  {
+                    "value": "design_systems",
+                    "label": "Design systems"
+                  },
+                  {
+                    "value": "marketing_creative",
+                    "label": "Marketing creative"
+                  },
+                  {
+                    "value": "packaging",
+                    "label": "Packaging"
+                  },
+                  {
+                    "value": "motion_video_direction",
+                    "label": "Motion & video direction"
+                  },
+                  {
+                    "value": "ux_research",
+                    "label": "UX research"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Which tools does your design team use?",
+            "hint": null,
+            "questions": [
+              {
+                "key": "software",
+                "prompt": "Team's tools",
+                "hint": "Optional — pick any.",
+                "placeholder": null,
+                "required": false,
+                "input": "choice",
+                "multiple": true,
+                "options": [
+                  {
+                    "value": "figma",
+                    "label": "Figma"
+                  },
+                  {
+                    "value": "photoshop",
+                    "label": "Photoshop"
+                  },
+                  {
+                    "value": "illustrator",
+                    "label": "Illustrator"
+                  },
+                  {
+                    "value": "after_effects",
+                    "label": "After Effects"
+                  },
+                  {
+                    "value": "framer",
+                    "label": "Framer"
+                  },
+                  {
+                    "value": "sketch",
+                    "label": "Sketch"
+                  },
+                  {
+                    "value": "miro",
+                    "label": "Miro"
+                  },
+                  {
+                    "value": "jira",
+                    "label": "Jira"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "Tell us about the team you lead.",
+            "hint": null,
+            "questions": [
+              {
+                "key": "team_size_managed",
+                "prompt": "Designers who report to you",
+                "hint": null,
+                "placeholder": "e.g. 5",
+                "required": true,
+                "input": "number",
+                "multiple": false,
+                "options": []
+              },
+              {
+                "key": "products_led",
+                "prompt": "Products or brands you've led design for (optional)",
+                "hint": null,
+                "placeholder": "e.g. the Groww app, 2022–25",
+                "required": false,
+                "input": "longtext",
+                "multiple": false,
+                "options": []
+              },
+              {
+                "key": "case_studies",
+                "prompt": "Case studies from your team (optional, one link per line)",
+                "hint": null,
+                "placeholder": "https://…",
+                "required": false,
+                "input": "links",
+                "multiple": false,
+                "options": []
+              }
+            ]
+          }
+        ],
+        "work": {
+          "label": "Portfolio or case studies",
+          "placeholder": "https://…",
+          "missing": "Add a link to your portfolio or a case study.",
+          "required": true
+        }
+      }
+    }
+  ],
+  "experienceBands": [
+    "0–1 yr",
+    "1–2 yrs",
+    "3–4 yrs",
+    "5–6 yrs",
+    "7–10 yrs",
+    "10+ yrs"
+  ],
+  "opportunityOptions": [
+    "Full-time role",
+    "Freelance / contract",
+    "Part-time",
+    "Open to anything"
+  ]
+}
