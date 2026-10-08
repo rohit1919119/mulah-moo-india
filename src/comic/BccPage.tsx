@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { PM_CSS, useCountUp, useMagnetic, useReveals } from "@/comic/PremiumHome";
 import { FONT } from "@/comic/premiumData";
 import { usePageTracking } from "@/comic/tracking";
+import { BccUpcoming, UP_CSS, type Upcoming } from "@/comic/BccUpcoming";
 import { BccForm, PMF_CSS, type BccIntent } from "@/comic/PmForms";
 
 /**
@@ -67,7 +68,9 @@ export function BccPage() {
   const [open, setOpen] = useState(0);
   const [form, setForm] = useState<BccIntent | null>(null);
   const [intent, setIntent] = useState<BccIntent>("Attend");
-  const ask = (i: BccIntent) => { setIntent(i); setForm(i); };
+  const [preset, setPreset] = useState<{ city?: string; note?: string }>({});
+  const ask = (i: BccIntent, p: { city?: string; note?: string } = {}) => { setPreset(p); setIntent(i); setForm(i); };
+  const askFor = (u: Upcoming) => ask("Attend", { city: u.formCity, note: `Interested in: ${u.city}, ${u.month} ${u.year} (${u.format.toLowerCase()})` });
   const statRef = useRef<HTMLDivElement>(null);
   const p = useCountUp(statRef, 1600);
   useReveals();
@@ -95,7 +98,7 @@ export function BccPage() {
 
   return (
     <div className="pm bc" style={vars}>
-      <style dangerouslySetInnerHTML={{ __html: PM_CSS + BC_CSS + PMF_CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: PM_CSS + BC_CSS + PMF_CSS + UP_CSS }} />
 
       <header className={scrolled ? "pm-nav solid" : "pm-nav"}>
         <div className="pm-navpill">
@@ -104,6 +107,7 @@ export function BccPage() {
           </a>
           <nav className="pm-links" aria-label="Main">
             <a href="#about">About</a>
+            <a href="#upcoming">Upcoming</a>
             <a href="#editions">Editions</a>
             <a href="#partner">Partner</a>
             <a href="#faq">FAQ</a>
@@ -153,12 +157,10 @@ export function BccPage() {
               <div key={w.t}><span>0{i + 1}</span><h3>{w.t}</h3><p>{w.b}</p></div>
             ))}
           </div>
-          <figure className="bc-wide" data-r>
-            <img src="/bcc/mumbai-1.jpg" alt="Members at the Backstage Creators Club Mumbai edition" loading="lazy" />
-            <figcaption>Mumbai edition</figcaption>
-          </figure>
         </div>
       </section>
+
+      <BccUpcoming onRequest={askFor} />
 
       <section className="pm-sec pm-sand" id="ways">
         <div className="pm-wrap">
@@ -287,7 +289,7 @@ export function BccPage() {
         </div>
         <div className="pm-wrap pm-legal">&copy; 2026 Backstage Creators Club &middot; <Link to="/">A Mulah Moo community</Link> &middot; <Link to="/privacy">Privacy</Link></div>
       </footer>
-      <BccForm open={form !== null} intent={intent} onClose={() => { setForm(null); if (window.location.hash === "#invite") history.replaceState(null, "", window.location.pathname); }} />
+      <BccForm open={form !== null} intent={intent} city={preset.city} note={preset.note} onClose={() => { setForm(null); if (window.location.hash === "#invite") history.replaceState(null, "", window.location.pathname); }} />
     </div>
   );
 }
@@ -357,8 +359,8 @@ const BC_CSS = `
 .bc-editions .pm-h em{ color:#C9B6FF; }
 .bc-edgrid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
 .bc-edgrid article{ position:relative; min-height:520px; border-radius:28px; overflow:hidden; }
-.bc-edgrid img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:grayscale(.4); transition:transform 1s cubic-bezier(.2,.9,.25,1), filter .6s; }
-.bc-edgrid article:hover img{ transform:scale(1.05); filter:none; }
+.bc-edgrid img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform 1s cubic-bezier(.2,.9,.25,1); }
+.bc-edgrid article:hover img{ transform:scale(1.04); }
 .bc-edgrid .veil{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,10,43,.05) 30%, rgba(20,10,43,.94) 100%); }
 .bc-edgrid .txt{ position:absolute; left:28px; right:28px; bottom:28px; display:flex; flex-direction:column; gap:8px; }
 .bc-edgrid .st{ align-self:flex-start; font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.12); }

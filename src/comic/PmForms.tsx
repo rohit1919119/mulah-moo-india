@@ -181,12 +181,15 @@ const BCC_COPY: Record<BccIntent, { h: string; done: string; btn: string }> = {
   "Host a city": { h: "Bring the club to your city.", done: "We will reach out to plan a first room in your city.", btn: "Send" },
 };
 
-export function BccForm({ open, onClose, intent: start }: { open: boolean; onClose: () => void; intent: BccIntent }) {
+export function BccForm({ open, onClose, intent: start, city, note }: { open: boolean; onClose: () => void; intent: BccIntent; city?: string; note?: string }) {
   const blank = { intent: start as BccIntent, name: "", email: "", phone: "", city: "", role: "", company: "", experience: "", link: "", note: "" };
   const [f, setF] = useState(blank);
   const [err, setErr] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "done">("idle");
-  useEffect(() => { if (open) setF((d) => ({ ...d, intent: start })); }, [open, start]);
+  // a room picked from the Upcoming posters arrives with its city and a note
+  useEffect(() => {
+    if (open) setF((d) => ({ ...d, intent: start, city: city ?? d.city, note: note && !d.note ? note : d.note }));
+  }, [open, start, city, note]);
   const set = (k: keyof typeof f, v: string) => { setF((d) => ({ ...d, [k]: v })); setErr(""); };
   const close = () => { onClose(); if (state === "done") { setF(blank); setState("idle"); } };
   const attend = f.intent === "Attend";
