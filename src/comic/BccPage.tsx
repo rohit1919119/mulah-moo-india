@@ -70,7 +70,7 @@ export function BccPage() {
   const [intent, setIntent] = useState<BccIntent>("Attend");
   const [preset, setPreset] = useState<{ city?: string; note?: string }>({});
   const ask = (i: BccIntent, p: { city?: string; note?: string } = {}) => { setPreset(p); setIntent(i); setForm(i); };
-  const askFor = (u: Upcoming) => ask("Attend", { city: u.formCity, note: `Interested in: ${u.city}, ${u.month} ${u.year} (${u.format.toLowerCase()})` });
+  const askFor = (u: Upcoming) => ask("Attend", { city: u.formCity, note: `Interested in: ${u.room}, ${u.city}, ${u.month} ${u.year} (${u.format.toLowerCase()})` });
   const statRef = useRef<HTMLDivElement>(null);
   const p = useCountUp(statRef, 1600);
   useReveals();

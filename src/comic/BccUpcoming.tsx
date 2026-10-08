@@ -17,6 +17,8 @@ export type Upcoming = {
   month: string;
   year: string;
   format: string;
+  /** Which room this is: the community it is for. */
+  room: string;
   who: string[];
   accent: string;
   photo: { src: string; by: string; user: string; pos?: string };
@@ -24,22 +26,22 @@ export type Upcoming = {
 
 export const UPCOMING: Upcoming[] = [
   {
-    city: "Delhi", formCity: "Delhi NCR", month: "October", year: "2026", format: "Afternoon meetup", accent: "#F5C542",
+    city: "Delhi", formCity: "Delhi NCR", month: "October", year: "2026", format: "Afternoon meetup", room: "Editing community", accent: "#F5C542",
     who: ["Video editors", "Designers", "Motion graphic designers"],
     photo: { src: "https://images.unsplash.com/photo-1633944241961-e511ab23455f", by: "micheile henderson", user: "micheile", pos: "50% 40%" },
   },
   {
-    city: "Bangalore", formCity: "Bengaluru", month: "November", year: "2026", format: "House party", accent: "#FFB86B",
+    city: "Bangalore", formCity: "Bengaluru", month: "November", year: "2026", format: "House party", room: "YouTube professionals", accent: "#FFB86B",
     who: ["YouTube professionals", "Content heads", "Brand YouTube leads", "YouTube creators", "YouTube strategists"],
     photo: { src: "https://images.unsplash.com/photo-1493859923015-f05bc8960fa0", by: "James Fitzgerald", user: "reallygoodjames", pos: "50% 40%" },
   },
   {
-    city: "Delhi", formCity: "Delhi NCR", month: "December", year: "2026", format: "Evening meetup", accent: "#C9B6FF",
+    city: "Delhi", formCity: "Delhi NCR", month: "December", year: "2026", format: "Evening meetup", room: "D2C brand teams", accent: "#C9B6FF",
     who: ["Brand managers", "D2C brand leads", "Marketing leads", "D2C content leads"],
     photo: { src: "https://images.unsplash.com/photo-1759038086846-c97a8adfce98", by: "Neon Wang", user: "neonwangphotography", pos: "50% 50%" },
   },
   {
-    city: "Mumbai", formCity: "Mumbai", month: "December", year: "2026", format: "Dinner", accent: "#FF9B85",
+    city: "Mumbai", formCity: "Mumbai", month: "December", year: "2026", format: "Dinner", room: "Production people", accent: "#FF9B85",
     who: ["Content producers", "Creative producers", "Post producers", "Content studio leads", "Micro drama professionals"],
     photo: { src: "https://images.unsplash.com/photo-1688437307687-fe226bddfab1", by: "Zac Cain", user: "zaccain", pos: "50% 45%" },
   },
@@ -67,6 +69,7 @@ export function BccUpcoming({ onRequest }: { onRequest: (u: Upcoming) => void })
               <div className="veil" aria-hidden="true" />
               <div className="top">
                 <span className="when">{u.month} {u.year}</span>
+                <span className="room"><small>The room for</small>{u.room}</span>
                 <span className="fmt">{u.format}</span>
               </div>
               <div className="body">
@@ -102,11 +105,14 @@ export const UP_CSS = `
   background:linear-gradient(180deg, rgba(14,8,32,.55) 0%, rgba(14,8,32,0) 22%, rgba(14,8,32,0) 38%, rgba(14,8,32,.78) 66%, rgba(14,8,32,.96) 100%); }
 .bc-poster:hover{ transform:translateY(-10px); box-shadow:0 0 0 1px rgba(255,255,255,.14), 0 40px 80px -30px rgba(0,0,0,.7); }
 .bc-poster:hover > img{ transform:scale(1.08); }
-.bc-poster .top{ display:flex; flex-direction:column; align-items:flex-start; gap:10px; }
+.bc-poster .top{ display:flex; flex-direction:column; align-items:flex-start; gap:10px; padding-right:20px; }
 .bc-poster .when{ font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--acc); text-shadow:0 1px 10px rgba(0,0,0,.4); }
 .bc-poster .fmt{ font-size:12.5px; font-weight:600; padding:7px 12px; border-radius:999px; background:rgba(14,8,32,.45);
   border:1px solid rgba(255,255,255,.22); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
 .bc-poster .body{ display:flex; flex-direction:column; gap:14px; }
+.bc-poster .room{ display:flex; flex-direction:column; gap:3px; padding:10px 14px 11px; border-radius:16px; background:var(--acc); color:#140A2B;
+  font-family:var(--display); font-style:italic; font-size:clamp(21px,1.8vw,25px); line-height:1.05; box-shadow:0 10px 30px -12px rgba(0,0,0,.5); }
+.bc-poster .room small{ font-family:var(--ui); font-style:normal; font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; opacity:.7; }
 .bc-poster h3{ font-family:var(--display); font-weight:var(--dw); font-size:clamp(46px,4.2vw,64px); line-height:.92; letter-spacing:-.025em; }
 .bc-poster ul{ list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:6px; }
 .bc-poster li{ font-size:12.5px; font-weight:500; padding:6px 10px; border-radius:999px; line-height:1.2;
