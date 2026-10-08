@@ -1,10 +1,10 @@
 /**
  * Upcoming Backstage Creators Club rooms, shown as photo posters on /bcc.
  *
- * The photos are mood images from Unsplash (free to use under the Unsplash
- * licence), served from Unsplash's own image CDN at the size each card needs.
- * They set the feel of each format; they are not photos of these rooms, so
- * each carries a small photographer credit. Swap `photo` for a real venue
+ * The photos are mood images of spaces, with no people in them, from Unsplash
+ * (free to use under the Unsplash licence), served from Unsplash's own image
+ * CDN at the size each card needs. They set the feel of each format and each
+ * carries a small photographer credit. Swap `photo` for a real venue
  * or event photo once a room has one.
  *
  * Edit UPCOMING to add, move or retire a room. `formCity` must match one of
@@ -26,27 +26,27 @@ export const UPCOMING: Upcoming[] = [
   {
     city: "Delhi", formCity: "Delhi NCR", month: "October", year: "2026", format: "Afternoon meetup", accent: "#F5C542",
     who: ["Video editors", "Designers", "Motion graphic designers"],
-    photo: { src: "https://images.unsplash.com/photo-1682962232755-f1d051ddb638", by: "Sanket Mishra", user: "sanketgraphy", pos: "50% 45%" },
+    photo: { src: "https://images.unsplash.com/photo-1633944241961-e511ab23455f", by: "micheile henderson", user: "micheile", pos: "50% 40%" },
   },
   {
     city: "Bangalore", formCity: "Bengaluru", month: "November", year: "2026", format: "House party", accent: "#FFB86B",
     who: ["YouTube professionals", "Content heads", "Brand YouTube leads", "YouTube creators", "YouTube strategists"],
-    photo: { src: "https://images.unsplash.com/photo-1674889143237-14899c01c87b", by: "Nishanth Avva", user: "nichu_avva", pos: "60% 40%" },
+    photo: { src: "https://images.unsplash.com/photo-1493859923015-f05bc8960fa0", by: "James Fitzgerald", user: "reallygoodjames", pos: "50% 40%" },
   },
   {
     city: "Delhi", formCity: "Delhi NCR", month: "December", year: "2026", format: "Evening meetup", accent: "#C9B6FF",
     who: ["Brand managers", "D2C brand leads", "Marketing leads", "D2C content leads"],
-    photo: { src: "https://images.unsplash.com/photo-1599318011235-904154a09c36", by: "Gyan Shahane", user: "gyanoba", pos: "50% 35%" },
+    photo: { src: "https://images.unsplash.com/photo-1759038086846-c97a8adfce98", by: "Neon Wang", user: "neonwangphotography", pos: "50% 50%" },
   },
   {
     city: "Mumbai", formCity: "Mumbai", month: "December", year: "2026", format: "Dinner", accent: "#FF9B85",
     who: ["Content producers", "Creative producers", "Post producers", "Content studio leads", "Micro drama professionals"],
-    photo: { src: "https://images.unsplash.com/photo-1728910156510-77488f19b152", by: "Perspective Studio", user: "perspectievstudio", pos: "50% 50%" },
+    photo: { src: "https://images.unsplash.com/photo-1688437307687-fe226bddfab1", by: "Zac Cain", user: "zaccain", pos: "50% 45%" },
   },
 ];
 
 const UTM = "?utm_source=mulahmoo&utm_medium=referral";
-const img = (src: string, w: number) => `${src}?w=${w}&h=${Math.round(w * 1.4)}&fit=crop&crop=faces,entropy&auto=format&q=78`;
+const img = (src: string, w: number) => `${src}?w=${w}&h=${Math.round(w * 1.4)}&fit=crop&crop=entropy&auto=format&q=78`;
 
 export function BccUpcoming({ onRequest }: { onRequest: (u: Upcoming) => void }) {
   return (
